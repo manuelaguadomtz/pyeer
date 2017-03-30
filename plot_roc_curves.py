@@ -15,8 +15,8 @@ __author__ = u'Lic. Manuel Aguado Martínez'
 
 def __get_score(line):
     """Get the score value from a match file line"""
-    splitted_line = line.split(' ', 2)
-    return float(splitted_line[len(splitted_line) - 1])
+    splitted_line = line.split(' ')
+    return float(splitted_line[-1])
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--path", required=True, help="path to match files")
@@ -30,7 +30,7 @@ ap.add_argument("-ht", "--hist", required=False, action='store_true',
                 help="Indicates that the impostor file is in histogram format")
 ap.add_argument("-ts", "--thr_step", required=False, default=0,
                 help="The value in which increase the threshold at each step,"
-                     " if 0 we will use the scores as thresholds")
+                     " if 0 (default) we will use the scores as thresholds")
 args = ap.parse_args()
 
 genuine_match_file_names = args.genuine_match_file_names.split(',')
