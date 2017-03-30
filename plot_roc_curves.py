@@ -15,7 +15,7 @@ __author__ = u'Lic. Manuel Aguado Martínez'
 
 def __get_score(line):
     """Get the score value from a match file line"""
-    splitted_line = line.split(' ')
+    splitted_line = line.strip().split(' ')
     return float(splitted_line[-1])
 
 ap = argparse.ArgumentParser()
