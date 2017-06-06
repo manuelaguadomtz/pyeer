@@ -88,14 +88,23 @@ for match in match_pairs:
     
     print(exp_name + ' EER = ' + str(eer))
 	
+    index = np.argmin(abs(false_match_rate - 0))
+    print exp_name + ' FNMR_0 = ' + str(false_non_match_rate[index])
+
+    index = np.argmin(abs(false_match_rate - 0.2))
+    print exp_name + ' FNMR_5 = ' + str(false_non_match_rate[index])
+
     index = np.argmin(abs(false_match_rate - 0.1))
-    print(exp_name + ' FNMR_10 = ' + str(false_non_match_rate[index]))
+    print exp_name + ' FNMR_10 = ' + str(false_non_match_rate[index])
+
+    index = np.argmin(abs(false_match_rate - 0.05))
+    print exp_name + ' FNMR_20 = ' + str(false_non_match_rate[index])
 
     index = np.argmin(abs(false_match_rate - 0.001))
-    print(exp_name + ' FNMR_100 = ' + str(false_non_match_rate[index]))
+    print exp_name + ' FNMR_100 = ' + str(false_non_match_rate[index])
 
     index = np.argmin(abs(false_match_rate - 0.0001))
-    print(exp_name + ' FNMR_1000 = ' + str(false_non_match_rate[index]))
+    print exp_name + ' FNMR_1000 = ' + str(false_non_match_rate[index])
 
     # Plotting DET Curves
     det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name)
