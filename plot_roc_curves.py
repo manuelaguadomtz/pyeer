@@ -72,26 +72,35 @@ for match in match_pairs:
     impostor_match_file = join(args.path, match[1])
     exp_name = match[2]
 
-    print('Loading genuines file')
+    print('Loading genuines file...')
     genuine_match = [__get_score(line) for line in open(genuine_match_file)]
 
-    print('Loading impostor file')
+    print('Loading impostor file...')
     impostor_match = [__get_score(line) for line in open(impostor_match_file)]
 
-    print('Calculating probabilities')
+    print('Calculating probabilities...')
     if args.thr_step != 0 or args.hist:
-        thr_step = 1 if args.hist and args.thr_step == 0 else float(args.thr_step)
+        # Setting threshold step for step by step calculation
+        thr_step = (1 if args.hist and args.thr_step == 0
+                    else float(args.thr_step))
+
+        # Calculating probabilities step by step
         roc_info = calculate_eer_step_by_step(genuine_match, impostor_match,
                                               thr_step, args.hist)
     else:
+        # Calculating probabilities using scores as thresholds
         roc_info = calculate_eer(genuine_match, impostor_match)
+
+    # Unboxing probability rates and info
     (thresholds, false_match_rate, false_non_match_rate, eer) = roc_info
 
-    print('Ploting Curves')
+    print('Ploting Curves...')
+    
     # Plotting FMR and FNMR curves
     eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)')
     eer_plot.plot(thresholds, false_non_match_rate, label=exp_name + '(FNMR)')
     
+    # Printing EER and operation points values
     print(exp_name + ' EER = ' + str(eer))
 	
     index = np.argmin(abs(false_match_rate - 0))
