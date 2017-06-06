@@ -14,9 +14,14 @@ __author__ = u'Lic. Manuel Aguado Martínez'
 
 
 def __get_score(line):
-    """Get the score value from a match file line"""
+    """Get the score value from an input score file line
+
+    Keyword Arguments:
+    line -- An input score file line
+    """
     splitted_line = line.strip().split(' ')
     return float(splitted_line[-1])
+
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--path", required=True, help="path to match files")
@@ -33,6 +38,7 @@ ap.add_argument("-ts", "--thr_step", required=False, default=0,
                      " if 0 (default) we will use the scores as thresholds")
 args = ap.parse_args()
 
+# Parsing arguments
 genuine_match_file_names = args.genuine_match_file_names.split(',')
 impostor_match_file_names = args.impostor_match_file_names.split(',')
 experiment_names = args.experiment_names.split(',')
@@ -89,22 +95,22 @@ for match in match_pairs:
     print(exp_name + ' EER = ' + str(eer))
 	
     index = np.argmin(abs(false_match_rate - 0))
-    print exp_name + ' FNMR_0 = ' + str(false_non_match_rate[index])
+    print(exp_name + ' FNMR_0 = ' + str(false_non_match_rate[index]))
 
     index = np.argmin(abs(false_match_rate - 0.2))
-    print exp_name + ' FNMR_5 = ' + str(false_non_match_rate[index])
+    print(exp_name + ' FNMR_5 = ' + str(false_non_match_rate[index]))
 
     index = np.argmin(abs(false_match_rate - 0.1))
-    print exp_name + ' FNMR_10 = ' + str(false_non_match_rate[index])
+    print(exp_name + ' FNMR_10 = ' + str(false_non_match_rate[index]))
 
     index = np.argmin(abs(false_match_rate - 0.05))
-    print exp_name + ' FNMR_20 = ' + str(false_non_match_rate[index])
+    print(exp_name + ' FNMR_20 = ' + str(false_non_match_rate[index]))
 
     index = np.argmin(abs(false_match_rate - 0.001))
-    print exp_name + ' FNMR_100 = ' + str(false_non_match_rate[index])
+    print(exp_name + ' FNMR_100 = ' + str(false_non_match_rate[index]))
 
     index = np.argmin(abs(false_match_rate - 0.0001))
-    print exp_name + ' FNMR_1000 = ' + str(false_non_match_rate[index])
+    print(exp_name + ' FNMR_1000 = ' + str(false_non_match_rate[index]))
 
     # Plotting DET Curves
     det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name)
