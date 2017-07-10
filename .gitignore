@@ -3,3 +3,6 @@
 
 # Ignoring temporal files
 *~
+
+# Ignoring pycharm idea folder
+.idea/

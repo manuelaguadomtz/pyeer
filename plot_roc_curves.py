@@ -102,7 +102,7 @@ for match in match_pairs:
     
     # Printing EER and operation points values
     print(exp_name + ' EER = ' + str(eer))
-	
+
     index = np.argmin(abs(false_match_rate - 0))
     print(exp_name + ' FNMR_0 = ' + str(false_non_match_rate[index]))
 
