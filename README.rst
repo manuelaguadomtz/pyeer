@@ -2,7 +2,7 @@ PyEER
 =====
 
 **PyEER** is a python package with utilities to calculate Equal Error Values, operation points
-an to plot the associated curves.
+and to plot the probability error curves.
 
 Installing
 ----------
@@ -33,8 +33,8 @@ Histogram format
 | ...
 |
 
-The above file example indicates that there are 123 score equals to 0, 12 score equals to 1, 212 score
-equals to 2, 321 score equals to 3 and so on.
+The above file example indicates that there are 123 scores equals to 0, 12 scores equals to 1, 212 scores
+equals to 2, 321 scores equals to 3 and so on.
 
 **Recommendations:** Use this format for very large experiments.
 
