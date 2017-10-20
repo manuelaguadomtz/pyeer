@@ -17,7 +17,7 @@ setup(
     packages=find_packages(),
 
     # Package author information
-    author=u'BSc. Manuel Aguado Martínez',
+    author=u'Manuel Aguado Martínez',
     author_email='manuelaguadomtz@gmail.com',
     url='https://www.researchgate.net/profile/Manuel_Aguado_Martinez2',
 

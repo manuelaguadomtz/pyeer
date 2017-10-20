@@ -6,3 +6,8 @@
 
 # Ignoring pycharm idea folder
 .idea/
+
+# Ignoring build directories
+pyeer.egg-info/
+build/
+dist/
