@@ -8,12 +8,16 @@ Installing
 ----------
 
 .. code:: sh
-
     pip install pyeer
 
 Input file formats
 ------------------
-Histogram format:
+
+asdasdasdasdadsadasd
+
+Histogram format
+................
+
 1. Only integer scores are supported
 2. Impostor file format: Each line contains the number of score equals to the index of the line in the file
 (starting from zero). For example, given a file:
@@ -29,6 +33,11 @@ Histogram format:
 This means that there are 123 score equals to 0, 12 score equals to 1, 212 score equals to 2, 321 score equals to 3 and so on.
 
 3. Use this format for very large experiments.
+
+Non-Histogram format
+....................
+
+bahblahsdbajhbdjhabdhjasd
 
 Usage
 -----
