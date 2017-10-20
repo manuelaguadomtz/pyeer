@@ -21,7 +21,7 @@ Histogram format
 
 **Restrictions:** Only integer scores are supported
 
-**File format:** Each line contains the number of score equals to the index of the line in the file
+**File format:** Each line contains the number of scores equals to the index of the line in the file
 (starting from zero). For example, given a file:
 
 | 123
@@ -32,6 +32,7 @@ Histogram format
 | ...
 | ...
 
+
 The above file example indicates that there are 123 score equals to 0, 12 score equals to 1, 212 score
 equals to 2, 321 score equals to 3 and so on.
 
@@ -40,7 +41,9 @@ equals to 2, 321 score equals to 3 and so on.
 Non-Histogram format
 ....................
 
-bahblahsdbajhbdjhabdhjasd
+**Restrictions:** None. Integer and float scores are both supported.
+
+**File format:** All the scores one by line
 
 Usage
 -----
