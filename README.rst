@@ -24,13 +24,13 @@ Histogram format
 **File format:** Each line contains the number of score equals to the index of the line in the file
 (starting from zero). For example, given a file:
 
-|123
-|12
-|212
-|321
-|...
-|...
-|...
+| 123
+| 12
+| 212
+| 321
+| ...
+| ...
+| ...
 
 The above file example indicates that there are 123 score equals to 0, 12 score equals to 1, 212 score
 equals to 2, 321 score equals to 3 and so on.
