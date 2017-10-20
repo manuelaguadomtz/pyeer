@@ -31,12 +31,14 @@ Histogram format
 | ...
 | ...
 | ...
-
+|
 
 The above file example indicates that there are 123 score equals to 0, 12 score equals to 1, 212 score
 equals to 2, 321 score equals to 3 and so on.
 
 **Recommendations:** Use this format for very large experiments.
+
+**Note:** Only impostor scores file can mimic this format.
 
 Non-Histogram format
 ....................
