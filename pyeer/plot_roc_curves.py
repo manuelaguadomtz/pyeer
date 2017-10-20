@@ -1,4 +1,3 @@
-# !/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 import argparse
@@ -7,10 +6,10 @@ from os.path import join
 import matplotlib.pyplot as plt
 import numpy as np
 
-from eer import calculate_eer, calculate_eer_step_by_step
+from stats import calculate_eer, calculate_eer_step_by_step
 
 __copyright__ = 'Copyright 2016'
-__author__ = u'Lic. Manuel Aguado Martínez'
+__author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 def __get_score(line):

@@ -1,4 +1,3 @@
-# !/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 import operator
@@ -6,7 +5,7 @@ import operator
 import numpy as np
 
 __copyright__ = 'Copyright 2016'
-__author__ = u'Lic. Manuel Aguado Martínez'
+__author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 def calculate_eer_step_by_step(genuine_match_scores, imp_match_scores,
