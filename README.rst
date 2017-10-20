@@ -78,8 +78,8 @@ One experiment (Histogram format):
 
     python plot_roc_curves.py -p "example_files/hist/" -i "exp1_false" -g "exp1_true" -e "exp1" -ht
 
-Contribution Guidelines
------------------------
+Contributing
+------------
 
 Do you find **PyEER** useful? You can collaborate with us:
 
