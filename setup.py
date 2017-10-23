@@ -13,6 +13,12 @@ setup(
     # Package version
     version='0.1.0',
 
+    entry_points={
+        'console_scripts': [
+            'geteerinf = pyeer.eer_info:get_eer_info',
+        ],
+    },
+
     # Included packages
     packages=find_packages(),
 
