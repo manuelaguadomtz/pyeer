@@ -50,7 +50,7 @@ Non-Histogram format
 Usage
 -----
 
-**main script:** plot_roc_curves.py
+**console cmd:** geteerinf
 
 Examples:
 .........
@@ -59,25 +59,28 @@ Examples:
 
 .. code:: sh
 
-    python plot_roc_curves.py -h
+    python geteerinf -h
 
 **One experiment (Non-histogram format):**
 
 .. code:: sh
 
-    python plot_roc_curves.py -p "example_files/non_hist/" -i "exp1_false" -g "exp1_true" -e "exp1"
+    python geteerinf -p "example_files/non_hist/" -i "exp1_false" -g "exp1_true" -e "exp1"
 
 **More than one experiment (Non-histogram format):**
 
 .. code:: sh
 
-    python plot_roc_curves.py -p "example_files/non_hist/" -i "exp1_false,exp2_false" -g "exp1_true,exp2_true" -e "exp1,exp2"
+    python geteerinf -p "example_files/non_hist/" -i "exp1_false,exp2_false" -g "exp1_true,exp2_true" -e "exp1,exp2"
 
 **One experiment (Histogram format):**
 
 .. code:: sh
 
-    python plot_roc_curves.py -p "example_files/hist/" -i "exp1_false" -g "exp1_true" -e "exp1" -ht
+    python geteerinf -p "example_files/hist/" -i "exp1_false" -g "exp1_true" -e "exp1" -ht
+
+**Note:** To run the above examples you can download the example files from the project site
+on Gitlab or extract them from inside the package installation
 
 Contributing
 ------------
