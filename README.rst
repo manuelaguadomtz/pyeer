@@ -59,25 +59,25 @@ Examples:
 
 .. code:: sh
 
-    python geteerinf -h
+    geteerinf -h
 
 **One experiment (Non-histogram format):**
 
 .. code:: sh
 
-    python geteerinf -p "example_files/non_hist/" -i "exp1_false" -g "exp1_true" -e "exp1"
+    geteerinf -p "example_files/non_hist/" -i "exp1_false.txt" -g "exp1_true.txt" -e "exp1"
 
 **More than one experiment (Non-histogram format):**
 
 .. code:: sh
 
-    python geteerinf -p "example_files/non_hist/" -i "exp1_false,exp2_false" -g "exp1_true,exp2_true" -e "exp1,exp2"
+    geteerinf -p "example_files/non_hist/" -i "exp1_false.txt,exp2_false.txt" -g "exp1_true.txt,exp2_true.txt" -e "exp1,exp2"
 
 **One experiment (Histogram format):**
 
 .. code:: sh
 
-    python geteerinf -p "example_files/hist/" -i "exp1_false" -g "exp1_true" -e "exp1" -ht
+    geteerinf -p "example_files/hist/" -i "exp1_false.txt" -g "exp1_true.txt" -e "exp1" -ht
 
 **Note:** To run the above examples you can download the example files from the project site
 on Gitlab or extract them from inside the package installation
