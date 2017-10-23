@@ -18,8 +18,8 @@ def __get_score(line):
     Keyword Arguments:
     line -- An input score file line
     """
-    splitted_line = line.strip().split(' ')
-    return float(splitted_line[-1])
+    sline = line.strip().split(' ')
+    return float(sline[-1])
 
 
 def get_eer_info():
@@ -33,6 +33,17 @@ def get_eer_info():
                     help="Experiment names separated by comma")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in histogram format")
+    ap.add_argument("-s", "--save_plots", required=False, action='store_true',
+                    help="Indicates whether to save the plots instead of showing them")
+    ap.add_argument("-sp", "--save_path", required=False, default='',
+                    help="Path to save the plots in the cases where the option -s was specified")
+    ap.add_argument("-sf", "--save_format", required=False, default='png',
+                    help="Format to save the plots in the cases where the option -s was"
+                         " specified. Valid formats are: (png, pdf, ps, eps and svg)")
+    ap.add_argument("-sr", "--save_dpi", required=False, default=None,
+                    help="Plots resolution (dots per inch) in the cases where the option -s was"
+                         " specified. If not given it will default to the value"
+                         " savefig.dpi in the matplotlibrc file")
     ap.add_argument("-ts", "--thr_step", required=False, default=0,
                     help="The value in which increase the threshold at each step,"
                          " if 0 (default) we will use the scores as thresholds")
@@ -94,12 +105,6 @@ def get_eer_info():
         # Unboxing probability rates and info
         (thresholds, false_match_rate, false_non_match_rate, eer) = roc_info
 
-        print('Ploting Curves...')
-
-        # Plotting FMR and FNMR curves
-        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)')
-        eer_plot.plot(thresholds, false_non_match_rate, label=exp_name + '(FNMR)')
-
         # Printing EER and operation points values
         print(exp_name + ' EER = ' + str(eer))
 
@@ -121,6 +126,12 @@ def get_eer_info():
         index = np.argmin(abs(false_match_rate - 0.0001))
         print(exp_name + ' FNMR_1000 = ' + str(false_non_match_rate[index]))
 
+        print('Ploting Curves...')
+
+        # Plotting FMR and FNMR curves
+        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)')
+        eer_plot.plot(thresholds, false_non_match_rate, label=exp_name + '(FNMR)')
+
         # Plotting DET Curves
         det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name)
 
@@ -131,4 +142,18 @@ def get_eer_info():
     eer_plot.legend(loc='best')
     det_plot.legend(loc='best')
     roc_plot.legend(loc='best')
-    plt.show()
+
+    # Showing plots or saving plots
+    if args.save_plots:
+        # Parsing dpi
+        dpi = None if args.save_dpi is None else int(args.save_dpi)
+
+        # saving plots
+        eer_fig.savefig(join(args.save_path, 'EER' + '.' + args.save_format), dpi=dpi)
+        det_fig.savefig(join(args.save_path, 'DET' + '.' + args.save_format), dpi=dpi)
+        roc_fig.savefig(join(args.save_path, 'ROC' + '.' + args.save_format), dpi=dpi)
+
+        # closing plots
+        plt.close()
+    else:
+        plt.show()
