@@ -4,6 +4,7 @@ import argparse
 from os.path import join
 
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as font
 import numpy as np
 
 from stats import calculate_eer, calculate_eer_step_by_step
@@ -31,6 +32,10 @@ def get_eer_info():
                     help="Genuine match file names separated by comma")
     ap.add_argument("-e", "--experiment_names", required=True,
                     help="Experiment names separated by comma")
+    ap.add_argument("-lw", "--line_width", required=False, default=3,
+                    help="The width of the plotted curves (default=5)")
+    ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
+                    help="The size of the legend font (default=20)")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in histogram format")
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
@@ -55,6 +60,8 @@ def get_eer_info():
     experiment_names = args.experiment_names.split(',')
     match_pairs = zip(genuine_match_file_names, impostor_match_file_names,
                       experiment_names)
+    line_width = int(args.line_width)
+    legend_font = int(args.legend_font_size)
 
     # Preparing plots
     eer_fig = plt.figure()
@@ -129,19 +136,19 @@ def get_eer_info():
         print('Ploting Curves...')
 
         # Plotting FMR and FNMR curves
-        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)')
-        eer_plot.plot(thresholds, false_non_match_rate, label=exp_name + '(FNMR)')
+        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)', linewidth=line_width)
+        eer_plot.plot(thresholds, false_non_match_rate, label=exp_name + '(FNMR)', linewidth=line_width)
 
         # Plotting DET Curves
-        det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name)
+        det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name, linewidth=line_width)
 
         # Plotting ROC Curves
-        roc_plot.plot(false_match_rate, 1 - false_non_match_rate, label=exp_name)
+        roc_plot.plot(false_match_rate, 1 - false_non_match_rate, label=exp_name, linewidth=line_width)
 
     # Finalizing plots
-    eer_plot.legend(loc='best')
-    det_plot.legend(loc='best')
-    roc_plot.legend(loc='best')
+    eer_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
+    det_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
+    roc_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
 
     # Showing plots or saving plots
     if args.save_plots:
