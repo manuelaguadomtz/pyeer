@@ -28,7 +28,7 @@ def get_eer_info():
     ap.add_argument("-p", "--path", required=True, help="path to match files")
     ap.add_argument("-i", "--impostor_match_file_names", required=True,
                     help="Impostor match file names separated by comma")
-    ap.add_argument("-g", "--genuine_match_file_names", required=True,
+    ap.add_argument("-g", "--true_match_file_names", required=True,
                     help="Genuine match file names separated by comma")
     ap.add_argument("-e", "--experiment_names", required=True,
                     help="Experiment names separated by comma")
@@ -37,28 +37,34 @@ def get_eer_info():
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
                     help="The size of the legend font (default=20)")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
-                    help="Indicates that the impostor file is in histogram format")
+                    help="Indicates that the impostor file is in"
+                         "histogram format")
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
-                    help="Indicates whether to save the plots instead of showing them")
+                    help="Indicates whether to save the plots instead of"
+                         " showing them")
     ap.add_argument("-sp", "--save_path", required=False, default='',
-                    help="Path to save the plots in the cases where the option -s was specified")
+                    help="Path to save the plots in the cases where the option"
+                         " -s was specified")
     ap.add_argument("-sf", "--save_format", required=False, default='png',
-                    help="Format to save the plots in the cases where the option -s was"
-                         " specified. Valid formats are: (png, pdf, ps, eps and svg)")
+                    help="Format to save the plots in the cases where the"
+                         " option -s was specified. Valid formats are: "
+                         "(png, pdf, ps, eps and svg)")
     ap.add_argument("-sr", "--save_dpi", required=False, default=None,
-                    help="Plots resolution (dots per inch) in the cases where the option -s was"
-                         " specified. If not given it will default to the value"
-                         " savefig.dpi in the matplotlibrc file")
+                    help="Plots resolution (dots per inch) in the cases"
+                         " where the option -s was specified. If not given"
+                         " it will default to the value savefig.dpi in the"
+                         " matplotlibrc file")
     ap.add_argument("-ts", "--thr_step", required=False, default=0,
-                    help="The value in which increase the threshold at each step,"
-                         " if 0 (default) we will use the scores as thresholds")
+                    help="The value in which increase the threshold at each"
+                         " step, if 0 (default) we will use the scores as"
+                         " thresholds")
     args = ap.parse_args()
 
     # Parsing arguments
-    genuine_match_file_names = args.genuine_match_file_names.split(',')
+    true_match_file_names = args.true_match_file_names.split(',')
     impostor_match_file_names = args.impostor_match_file_names.split(',')
     experiment_names = args.experiment_names.split(',')
-    match_pairs = zip(genuine_match_file_names, impostor_match_file_names,
+    match_pairs = zip(true_match_file_names, impostor_match_file_names,
                       experiment_names)
     line_width = int(args.line_width)
     legend_font = int(args.legend_font_size)
@@ -87,15 +93,15 @@ def get_eer_info():
     roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
     for match in match_pairs:
-        genuine_match_file = join(args.path, match[0])
-        impostor_match_file = join(args.path, match[1])
+        true_match_file = join(args.path, match[0])
+        false_match_file = join(args.path, match[1])
         exp_name = match[2]
 
         print('Loading genuines file...')
-        genuine_match = [__get_score(line) for line in open(genuine_match_file)]
+        genuine_match = [__get_score(line) for line in open(true_match_file)]
 
         print('Loading impostor file...')
-        impostor_match = [__get_score(line) for line in open(impostor_match_file)]
+        impostor_match = [__get_score(line) for line in open(false_match_file)]
 
         print('Calculating probabilities...')
         if args.thr_step != 0 or args.hist:
@@ -104,7 +110,8 @@ def get_eer_info():
                         else float(args.thr_step))
 
             # Calculating probabilities step by step
-            roc_info = calculate_eer_step_by_step(genuine_match, impostor_match,
+            roc_info = calculate_eer_step_by_step(genuine_match,
+                                                  impostor_match,
                                                   thr_step, args.hist)
         else:
             # Calculating probabilities using scores as thresholds
@@ -137,14 +144,18 @@ def get_eer_info():
         print('Ploting Curves...')
 
         # Plotting FMR and FNMR curves
-        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)', linewidth=line_width)
-        eer_plot.plot(thresholds, false_non_match_rate, label=exp_name + '(FNMR)', linewidth=line_width)
+        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)',
+                      linewidth=line_width)
+        eer_plot.plot(thresholds, false_non_match_rate, linewidth=line_width,
+                      label=exp_name + '(FNMR)')
 
         # Plotting DET Curves
-        det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name, linewidth=line_width)
+        det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name,
+                      linewidth=line_width)
 
         # Plotting ROC Curves
-        roc_plot.plot(false_match_rate, 1 - false_non_match_rate, label=exp_name, linewidth=line_width)
+        roc_plot.plot(false_match_rate, 1 - false_non_match_rate,
+                      label=exp_name, linewidth=line_width)
 
     # Finalizing plots
     eer_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
@@ -157,9 +168,10 @@ def get_eer_info():
         dpi = None if args.save_dpi is None else int(args.save_dpi)
 
         # saving plots
-        eer_fig.savefig(join(args.save_path, 'EER' + '.' + args.save_format), dpi=dpi)
-        det_fig.savefig(join(args.save_path, 'DET' + '.' + args.save_format), dpi=dpi)
-        roc_fig.savefig(join(args.save_path, 'ROC' + '.' + args.save_format), dpi=dpi)
+        ext = '.' + args.save_format
+        eer_fig.savefig(join(args.save_path, 'EER' + ext), dpi=dpi)
+        det_fig.savefig(join(args.save_path, 'DET' + ext), dpi=dpi)
+        roc_fig.savefig(join(args.save_path, 'ROC' + ext), dpi=dpi)
 
         # closing plots
         plt.close()

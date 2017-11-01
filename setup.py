@@ -31,7 +31,9 @@ setup(
 
     # Package author information
     author=u'Manuel Aguado Martínez',
+
     author_email='manuelaguadomtz@gmail.com',
+
     url='https://www.researchgate.net/profile/Manuel_Aguado_Martinez2',
 
     # Package requirements
@@ -39,9 +41,12 @@ setup(
                       'matplotlib'],
 
     # Package description
-    description='A python package with utilities to calculate Equal Error Values,'
-                ' operation points and to plot the probability error curves.',
-    long_description=readme,
-    keywords=['Equal Error Rate', 'False Matching Rate', 'False Non-matching rate', 'ROC', 'DET', 'EER', 'FMR', 'FNMR'],
+    description='A python package with utilities to calculate Equal Error'
+                ' Values, operation points and to plot the probability'
+                ' error curves.',
 
+    long_description=readme,
+
+    keywords=['Equal Error Rate', 'False Matching Rate', 'ROC', 'DET',
+              'False Non-matching rate', 'EER', 'FMR', 'FNMR'],
 )

@@ -52,13 +52,13 @@ def calculate_eer_step_by_step(genuine_match_scores, imp_match_scores,
         else:
             # List convertion for Python3 compatibility
             false_match = len(list(filter(lambda s: s > match_thr,
-                                     imp_match_scores)))
+                                          imp_match_scores)))
 
         false_match_rates.append(false_match / total_false_match)
 
         # List convertion for Python3 compatibility
         false_non_match = len(list(filter(lambda s: s <= match_thr,
-                                     genuine_match_scores)))
+                                          genuine_match_scores)))
         false_non_match_rates.append(false_non_match / total_true_match)
 
         thresholds.append(match_thr)
@@ -86,11 +86,12 @@ def calculate_eer(genuine_match_scores, impostor_match_scores):
     total_false_match = len(impostor_match_scores)
     total = total_true_match + total_false_match
 
-    genuine_match_scores = zip(genuine_match_scores, [1] * total_true_match)    
-    genuine_match_scores = list(genuine_match_scores) # Python3 compatibility
+    genuine_match_scores = zip(genuine_match_scores, [1] * total_true_match)
+    impostor_match_scores = zip(impostor_match_scores, [0] * total_false_match)
 
-    impostor_match_scores = zip(impostor_match_scores, [0] * total_false_match)    
-    impostor_match_scores = list(impostor_match_scores) # Python3 compatibility
+    # Python3 compatibility
+    genuine_match_scores = list(genuine_match_scores)
+    impostor_match_scores = list(impostor_match_scores)
 
     scores = np.array(sorted(genuine_match_scores + impostor_match_scores,
                              key=operator.itemgetter(0)))
@@ -110,4 +111,3 @@ def calculate_eer(genuine_match_scores, impostor_match_scores):
     eer = abs(false_non_match_rates[index] + false_match_rates[index]) / 2.0
 
     return thresholds, false_match_rates, false_non_match_rates, eer
-
