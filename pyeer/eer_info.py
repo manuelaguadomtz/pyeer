@@ -84,6 +84,7 @@ def get_eer_info():
     roc_plot.grid(True)
     roc_plot.set_ylabel('1 - FNMR')
     roc_plot.set_xlabel('FMR')
+    roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
     for match in match_pairs:
         genuine_match_file = join(args.path, match[0])
