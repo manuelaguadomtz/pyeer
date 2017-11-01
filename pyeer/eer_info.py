@@ -124,25 +124,25 @@ def get_eer_info():
         (thresholds, false_match_rate, false_non_match_rate, eer) = roc_info
 
         # Printing EER and operation points values
-        print(exp[2] + ' EER = ' + str(eer))
+        print(exp[2] + ' EER \t= ' + str(eer))
 
         index = np.argmin(abs(false_match_rate - 0))
-        print(exp[2] + ' FNMR_0 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_0 \t= ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.2))
-        print(exp[2] + ' FNMR_5 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_5 \t= ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.1))
-        print(exp[2] + ' FNMR_10 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_10 \t= ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.05))
-        print(exp[2] + ' FNMR_20 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_20 \t= ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.001))
-        print(exp[2] + ' FNMR_100 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_100 \t= ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.0001))
-        print(exp[2] + ' FNMR_1000 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_1000 \t= ' + str(false_non_match_rate[index]))
 
         print('Ploting Curves...')
 
