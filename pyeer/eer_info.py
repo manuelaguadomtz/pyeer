@@ -25,12 +25,12 @@ def __get_score(line):
 
 def get_eer_info():
     ap = argparse.ArgumentParser()
-    ap.add_argument("-p", "--path", required=True, help="path to match files")
-    ap.add_argument("-i", "--impostor_match_file_names", required=True,
-                    help="Impostor match file names separated by comma")
-    ap.add_argument("-g", "--true_match_file_names", required=True,
-                    help="Genuine match file names separated by comma")
-    ap.add_argument("-e", "--experiment_names", required=True,
+    ap.add_argument("-p", "--path", required=True, help="path to exp files")
+    ap.add_argument("-i", "--fscore_files", required=True,
+                    help="Impostor exp file names separated by comma")
+    ap.add_argument("-g", "--tscore_files", required=True,
+                    help="Genuine exp file names separated by comma")
+    ap.add_argument("-e", "--experiment_ids", required=True,
                     help="Experiment names separated by comma")
     ap.add_argument("-lw", "--line_width", required=False, default=3,
                     help="The width of the plotted curves (default=5)")
@@ -61,11 +61,10 @@ def get_eer_info():
     args = ap.parse_args()
 
     # Parsing arguments
-    true_match_file_names = args.true_match_file_names.split(',')
-    impostor_match_file_names = args.impostor_match_file_names.split(',')
-    experiment_names = args.experiment_names.split(',')
-    match_pairs = zip(true_match_file_names, impostor_match_file_names,
-                      experiment_names)
+    tscore_files = [f.strip() for f in args.tscore_files.split(',')]
+    fscore_files = [f.strip() for f in args.fscore_files.split(',')]
+    experiment_ids = [e.strip() for e in args.experiment_ids.split(',')]
+    experiments = zip(tscore_files, fscore_files, experiment_ids)
     line_width = int(args.line_width)
     legend_font = int(args.legend_font_size)
 
@@ -92,16 +91,20 @@ def get_eer_info():
     roc_plot.set_xlabel('FMR')
     roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
-    for match in match_pairs:
-        true_match_file = join(args.path, match[0])
-        false_match_file = join(args.path, match[1])
-        exp_name = match[2]
+    for exp in experiments:
+        # Printing experiment log header
+        print(''.join(['=' for _ in xrange(len(exp[2]) + 12)]))
+        print('Experiment: ' + exp[2])
+        print(''.join(['=' for _ in xrange(len(exp[2]) + 12)]))
 
-        print('Loading genuines file...')
-        genuine_match = [__get_score(line) for line in open(true_match_file)]
+        # Loading scores
+        print('Loading genuine scores file...')
+        with open(join(args.path, exp[0])) as tf:
+            genuine_match = [__get_score(line) for line in tf]
 
-        print('Loading impostor file...')
-        impostor_match = [__get_score(line) for line in open(false_match_file)]
+        print('Loading impostor scores file...')
+        with open(join(args.path, exp[1])) as tf:
+            impostor_match = [__get_score(line) for line in tf]
 
         print('Calculating probabilities...')
         if args.thr_step != 0 or args.hist:
@@ -121,41 +124,41 @@ def get_eer_info():
         (thresholds, false_match_rate, false_non_match_rate, eer) = roc_info
 
         # Printing EER and operation points values
-        print(exp_name + ' EER = ' + str(eer))
+        print(exp[2] + ' EER = ' + str(eer))
 
         index = np.argmin(abs(false_match_rate - 0))
-        print(exp_name + ' FNMR_0 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_0 = ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.2))
-        print(exp_name + ' FNMR_5 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_5 = ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.1))
-        print(exp_name + ' FNMR_10 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_10 = ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.05))
-        print(exp_name + ' FNMR_20 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_20 = ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.001))
-        print(exp_name + ' FNMR_100 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_100 = ' + str(false_non_match_rate[index]))
 
         index = np.argmin(abs(false_match_rate - 0.0001))
-        print(exp_name + ' FNMR_1000 = ' + str(false_non_match_rate[index]))
+        print(exp[2] + ' FNMR_1000 = ' + str(false_non_match_rate[index]))
 
         print('Ploting Curves...')
 
         # Plotting FMR and FNMR curves
-        eer_plot.plot(thresholds, false_match_rate, label=exp_name + '(FMR)',
+        eer_plot.plot(thresholds, false_match_rate, label=exp[2] + '(FMR)',
                       linewidth=line_width)
         eer_plot.plot(thresholds, false_non_match_rate, linewidth=line_width,
-                      label=exp_name + '(FNMR)')
+                      label=exp[2] + '(FNMR)')
 
         # Plotting DET Curves
-        det_plot.plot(false_match_rate, false_non_match_rate, label=exp_name,
+        det_plot.plot(false_match_rate, false_non_match_rate, label=exp[2],
                       linewidth=line_width)
 
         # Plotting ROC Curves
         roc_plot.plot(false_match_rate, 1 - false_non_match_rate,
-                      label=exp_name, linewidth=line_width)
+                      label=exp[2], linewidth=line_width)
 
     # Finalizing plots
     eer_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
