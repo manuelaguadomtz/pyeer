@@ -79,21 +79,21 @@ def get_eer_info():
     eer_plot.grid(True)
     eer_plot.set_ylabel('Error')
     eer_plot.set_xlabel('Matching Scores')
-    eer_plot.set_title('fmr and fnmr Curves')
+    eer_plot.set_title('FMR and FNMR Curves')
 
     det_fig = plt.figure()
     det_plot = det_fig.add_subplot(111)
     det_plot.set_title('DET Curves')
     det_plot.grid(True)
-    det_plot.set_ylabel('fnmr')
-    det_plot.set_xlabel('fmr')
+    det_plot.set_ylabel('FNMR')
+    det_plot.set_xlabel('FMR')
 
     roc_fig = plt.figure()
     roc_plot = roc_fig.add_subplot(111)
     roc_plot.set_title('ROC Curves')
     roc_plot.grid(True)
-    roc_plot.set_ylabel('1 - fnmr')
-    roc_plot.set_xlabel('fmr')
+    roc_plot.set_ylabel('1 - FNMR')
+    roc_plot.set_xlabel('FMR')
     roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
     for exp in experiments:
