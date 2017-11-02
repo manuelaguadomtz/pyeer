@@ -26,9 +26,9 @@ def __get_score(line):
 def get_eer_info():
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--path", required=True, help="path to exp files")
-    ap.add_argument("-i", "--fscore_files", required=True,
+    ap.add_argument("-i", "--iscores_files", required=True,
                     help="Impostor exp file names separated by comma")
-    ap.add_argument("-g", "--tscore_files", required=True,
+    ap.add_argument("-g", "--gscores_files", required=True,
                     help="Genuine exp file names separated by comma")
     ap.add_argument("-e", "--experiment_ids", required=True,
                     help="Experiment names separated by comma")
@@ -57,14 +57,14 @@ def get_eer_info():
     ap.add_argument("-ts", "--thr_step", required=False, default=0,
                     help="The value in which increase the threshold at each"
                          " step, if 0 (default) we will use the scores as"
-                         " thresholds")
+                         " thrs")
     args = ap.parse_args()
 
     # Parsing arguments
-    tscore_files = [f.strip() for f in args.tscore_files.split(',')]
-    fscore_files = [f.strip() for f in args.fscore_files.split(',')]
+    gscores_files = [f.strip() for f in args.gscores_files.split(',')]
+    iscores_files = [f.strip() for f in args.iscores_files.split(',')]
     experiment_ids = [e.strip() for e in args.experiment_ids.split(',')]
-    experiments = zip(tscore_files, fscore_files, experiment_ids)
+    experiments = zip(gscores_files, iscores_files, experiment_ids)
     line_width = int(args.line_width)
     legend_font = int(args.legend_font_size)
 
@@ -74,21 +74,21 @@ def get_eer_info():
     eer_plot.grid(True)
     eer_plot.set_ylabel('Error')
     eer_plot.set_xlabel('Matching Scores')
-    eer_plot.set_title('FMR and FNMR Curves')
+    eer_plot.set_title('fmr and fnmr Curves')
 
     det_fig = plt.figure()
     det_plot = det_fig.add_subplot(111)
     det_plot.set_title('DET Curves')
     det_plot.grid(True)
-    det_plot.set_ylabel('FNMR')
-    det_plot.set_xlabel('FMR')
+    det_plot.set_ylabel('fnmr')
+    det_plot.set_xlabel('fmr')
 
     roc_fig = plt.figure()
     roc_plot = roc_fig.add_subplot(111)
     roc_plot.set_title('ROC Curves')
     roc_plot.grid(True)
-    roc_plot.set_ylabel('1 - FNMR')
-    roc_plot.set_xlabel('FMR')
+    roc_plot.set_ylabel('1 - fnmr')
+    roc_plot.set_xlabel('fmr')
     roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
     for exp in experiments:
@@ -117,48 +117,46 @@ def get_eer_info():
                                                   impostor_match,
                                                   thr_step, args.hist)
         else:
-            # Calculating probabilities using scores as thresholds
+            # Calculating probabilities using scores as thrs
             roc_info = calculate_eer(genuine_match, impostor_match)
 
         # Unboxing probability rates and info
-        (thresholds, false_match_rate, false_non_match_rate, eer) = roc_info
+        (thrs, fmr, fnmr, eer) = roc_info
 
         # Printing EER and operation points values
         print(exp[2] + ' EER \t= ' + str(eer))
 
-        index = np.argmin(abs(false_match_rate - 0))
-        print(exp[2] + ' FNMR_0 \t= ' + str(false_non_match_rate[index]))
+        index = np.argmin(abs(fmr - 0))
+        print(exp[2] + ' FNMR_0 \t= ' + str(fnmr[index]))
 
-        index = np.argmin(abs(false_match_rate - 0.2))
-        print(exp[2] + ' FNMR_5 \t= ' + str(false_non_match_rate[index]))
+        index = np.argmin(abs(fmr - 0.2))
+        print(exp[2] + ' FNMR_5 \t= ' + str(fnmr[index]))
 
-        index = np.argmin(abs(false_match_rate - 0.1))
-        print(exp[2] + ' FNMR_10 \t= ' + str(false_non_match_rate[index]))
+        index = np.argmin(abs(fmr - 0.1))
+        print(exp[2] + ' FNMR_10 \t= ' + str(fnmr[index]))
 
-        index = np.argmin(abs(false_match_rate - 0.05))
-        print(exp[2] + ' FNMR_20 \t= ' + str(false_non_match_rate[index]))
+        index = np.argmin(abs(fmr - 0.05))
+        print(exp[2] + ' FNMR_20 \t= ' + str(fnmr[index]))
 
-        index = np.argmin(abs(false_match_rate - 0.001))
-        print(exp[2] + ' FNMR_100 \t= ' + str(false_non_match_rate[index]))
+        index = np.argmin(abs(fmr - 0.001))
+        print(exp[2] + ' FNMR_100 \t= ' + str(fnmr[index]))
 
-        index = np.argmin(abs(false_match_rate - 0.0001))
-        print(exp[2] + ' FNMR_1000 \t= ' + str(false_non_match_rate[index]))
+        index = np.argmin(abs(fmr - 0.0001))
+        print(exp[2] + ' FNMR_1000 \t= ' + str(fnmr[index]))
 
         print('Ploting Curves...')
 
-        # Plotting FMR and FNMR curves
-        eer_plot.plot(thresholds, false_match_rate, label=exp[2] + '(FMR)',
-                      linewidth=line_width)
-        eer_plot.plot(thresholds, false_non_match_rate, linewidth=line_width,
-                      label=exp[2] + '(FNMR)')
+        # Plotting fmr and fnmr curves
+        eer_plot.plot(thrs, fmr, linewidth=line_width,
+                      label=exp[2] + ' (FMR)')
+        eer_plot.plot(thrs, fnmr, linewidth=line_width,
+                      label=exp[2] + ' (FNMR)')
 
         # Plotting DET Curves
-        det_plot.plot(false_match_rate, false_non_match_rate, label=exp[2],
-                      linewidth=line_width)
+        det_plot.plot(fmr, fnmr, label=exp[2], linewidth=line_width)
 
         # Plotting ROC Curves
-        roc_plot.plot(false_match_rate, 1 - false_non_match_rate,
-                      label=exp[2], linewidth=line_width)
+        roc_plot.plot(fmr, 1 - fnmr, label=exp[2], linewidth=line_width)
 
     # Finalizing plots
     eer_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
