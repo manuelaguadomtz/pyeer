@@ -32,10 +32,6 @@ def get_eer_info():
                     help="Genuine exp file names separated by comma")
     ap.add_argument("-e", "--experiment_ids", required=True,
                     help="Experiment names separated by comma")
-    ap.add_argument("-lw", "--line_width", required=False, default=3,
-                    help="The width of the plotted curves (default=5)")
-    ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
-                    help="The size of the legend font (default=20)")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
                          "histogram format")
@@ -58,6 +54,12 @@ def get_eer_info():
                     help="The value in which increase the threshold at each"
                          " step, if 0 (default) we will use the scores as"
                          " thrs")
+    ap.add_argument("-lw", "--line_width", required=False, default=3,
+                    help="The width of the plotted curves (default=5)")
+    ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
+                    help="The size of the legend font (default=20)")
+    ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
+                    help="The number of bins to compute scores distribution")
     args = ap.parse_args()
 
     # Parsing arguments
@@ -66,7 +68,10 @@ def get_eer_info():
     experiment_ids = [e.strip() for e in args.experiment_ids.split(',')]
     experiments = zip(gscores_files, iscores_files, experiment_ids)
     line_width = int(args.line_width)
-    legend_font = int(args.legend_font_size)
+    lgf_size = int(args.legend_font_size)
+    dpi = None if args.save_dpi is None else int(args.save_dpi)
+    ext = '.' + args.save_format
+    bins = int(args.distribution_bins)
 
     # Preparing plots
     eer_fig = plt.figure()
@@ -100,11 +105,11 @@ def get_eer_info():
         # Loading scores
         print('Loading genuine scores file...')
         with open(join(args.path, exp[0])) as tf:
-            genuine_match = [__get_score(line) for line in tf]
+            gen_scores = [__get_score(line) for line in tf]
 
         print('Loading impostor scores file...')
         with open(join(args.path, exp[1])) as tf:
-            impostor_match = [__get_score(line) for line in tf]
+            imp_scores = [__get_score(line) for line in tf]
 
         print('Calculating probabilities...')
         if args.thr_step != 0 or args.hist:
@@ -113,12 +118,12 @@ def get_eer_info():
                         else float(args.thr_step))
 
             # Calculating probabilities step by step
-            roc_info = calculate_eer_step_by_step(genuine_match,
-                                                  impostor_match,
+            roc_info = calculate_eer_step_by_step(gen_scores,
+                                                  imp_scores,
                                                   thr_step, args.hist)
         else:
             # Calculating probabilities using scores as thrs
-            roc_info = calculate_eer(genuine_match, impostor_match)
+            roc_info = calculate_eer(gen_scores, imp_scores)
 
         # Unboxing probability rates and info
         (thrs, fmr, fnmr, eer) = roc_info
@@ -146,30 +151,42 @@ def get_eer_info():
 
         print('Ploting Curves...')
 
-        # Plotting fmr and fnmr curves
-        eer_plot.plot(thrs, fmr, linewidth=line_width,
-                      label=exp[2] + ' (FMR)')
+        # Plotting score distributions
+        dist_fig = plt.figure()
+        dist_plot = dist_fig.add_subplot(111)
+        dist_plot.grid(False)
+        dist_plot.set_ylabel('Frequency')
+        dist_plot.set_xlabel('Scores')
+        dist_plot.set_title('Score distributions expeeriment: ' + exp[2])
+        dist_plot.hist(gen_scores, bins=bins, color='b',
+                       label='Genuine distribution')
+        dist_plot.hist(imp_scores, bins=bins, alpha=0.5, color='r',
+                       label='Impostor distribution')
+        dist_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
+
+        if args.save_plots:
+            fig_name = 'Distributions (%s)' % exp[2] + ext
+            dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
+
+        # Plotting FMR and FNMR curves
+        eer_plot.plot(thrs, fmr, linewidth=line_width, label=exp[2] + ' (FMR)')
         eer_plot.plot(thrs, fnmr, linewidth=line_width,
                       label=exp[2] + ' (FNMR)')
 
-        # Plotting DET Curves
+        # Plotting DET Curve
         det_plot.plot(fmr, fnmr, label=exp[2], linewidth=line_width)
 
-        # Plotting ROC Curves
+        # Plotting ROC Curve
         roc_plot.plot(fmr, 1 - fnmr, label=exp[2], linewidth=line_width)
 
     # Finalizing plots
-    eer_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
-    det_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
-    roc_plot.legend(loc='best', prop=font.FontProperties(size=legend_font))
+    eer_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
+    det_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
+    roc_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
 
     # Showing plots or saving plots
     if args.save_plots:
-        # Parsing dpi
-        dpi = None if args.save_dpi is None else int(args.save_dpi)
-
         # saving plots
-        ext = '.' + args.save_format
         eer_fig.savefig(join(args.save_path, 'EER' + ext), dpi=dpi)
         det_fig.savefig(join(args.save_path, 'DET' + ext), dpi=dpi)
         roc_fig.savefig(join(args.save_path, 'ROC' + ext), dpi=dpi)
