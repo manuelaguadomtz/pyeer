@@ -22,7 +22,7 @@ def calculate_eer_hist(gscores, iscores):
     # TODO Improve the efficiency of this algorithm using numpy array from
     # the beginning for error lists
 
-    match_thr = 1
+    match_thr = 0
     maximum_thr = max(max(gscores), len(iscores))
 
     gscores_number = float(len(gscores))
@@ -34,15 +34,17 @@ def calculate_eer_hist(gscores, iscores):
     fnm_rates = []
 
     while match_thr <= maximum_thr:
-        if match_thr < len(iscores):
-            false_match = iscores_number - iscores[match_thr]
+        if 0 < match_thr < len(iscores):
+            false_match = iscores_number - iscores[match_thr - 1]
+        elif match_thr == 0:
+            false_match = iscores_number  # Accepting everyone
         else:
             false_match = 0
 
         fm_rates.append(false_match / iscores_number)
 
         # List convertion for Python3 compatibility
-        fnm = len(list(filter(lambda s: s <= match_thr, gscores)))
+        fnm = len(list(filter(lambda s: s < match_thr, gscores)))
         fnm_rates.append(fnm / gscores_number)
 
         thresholds.append(match_thr)
