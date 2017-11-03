@@ -88,7 +88,7 @@ def calculate_eer(gscores, iscores):
     thresholds, u_indices = np.unique(scores[:, 0], return_index=True)
 
     # Calculating FNM and FM distributions
-    fnm = cumul[u_indices] - scores[u_indices][:, 1]  # s < t
+    fnm = cumul[u_indices] - scores[u_indices][:, 1]  # rejecting s < t
     fm = iscores_number - (u_indices - fnm)
 
     # Calculating FMR and FNMR
