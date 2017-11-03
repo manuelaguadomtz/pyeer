@@ -123,23 +123,23 @@ def get_eer_info():
         eer = abs(fnmr[index] + fmr[index]) / 2.0
         print(exp[2] + ' EER \t= ' + str(eer))
 
+        index = np.argmin(abs(fnmr - 0))
+        print(exp[2] + ' FNMR_0 \t= ' + str(fmr[index]))
+
+        index = np.argmin(abs(fnmr - 0.001))
+        print(exp[2] + ' FNMR_1000 \t= ' + str(fmr[index]))
+
+        index = np.argmin(abs(fnmr - 0.01))
+        print(exp[2] + ' FNMR_100 \t= ' + str(fmr[index]))
+
         index = np.argmin(abs(fmr - 0))
-        print(exp[2] + ' FNMR_0 \t= ' + str(fnmr[index]))
-
-        index = np.argmin(abs(fmr - 0.2))
-        print(exp[2] + ' FNMR_5 \t= ' + str(fnmr[index]))
-
-        index = np.argmin(abs(fmr - 0.1))
-        print(exp[2] + ' FNMR_10 \t= ' + str(fnmr[index]))
-
-        index = np.argmin(abs(fmr - 0.05))
-        print(exp[2] + ' FNMR_20 \t= ' + str(fnmr[index]))
+        print(exp[2] + ' FMR_0 \t= ' + str(fnmr[index]))
 
         index = np.argmin(abs(fmr - 0.001))
-        print(exp[2] + ' FNMR_100 \t= ' + str(fnmr[index]))
+        print(exp[2] + ' FMR_1000 \t= ' + str(fnmr[index]))
 
-        index = np.argmin(abs(fmr - 0.0001))
-        print(exp[2] + ' FNMR_1000 \t= ' + str(fnmr[index]))
+        index = np.argmin(abs(fmr - 0.01))
+        print(exp[2] + ' FMR_100 \t= ' + str(fnmr[index]))
 
         print('Ploting Curves...')
 
