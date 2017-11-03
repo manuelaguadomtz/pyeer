@@ -71,7 +71,6 @@ def calculate_eer(gscores, iscores):
     """
     gscores_number = len(gscores)
     iscores_number = len(iscores)
-    scores_number = gscores_number + iscores_number
 
     # Labeling genuine scores as 1 and impostor scores as 0
     gscores = zip(gscores, [1] * gscores_number)
@@ -83,17 +82,23 @@ def calculate_eer(gscores, iscores):
 
     # Stacking scores
     scores = np.array(sorted(gscores + iscores, key=operator.itemgetter(0)))
+    cumul = np.cumsum(scores[:, 1])
+
+    # Grouping scores
+    thresholds, u_indices = np.unique(scores[:, 0], return_index=True)
+
+    # Taking indices of last repeated score instead of the first
+    indices = np.zeros_like(u_indices)
+    indices[:-1] = u_indices[1:] - 1
+    indices[-1] = scores.shape[0] - 1
 
     # Calculating FNM and FM distributions
-    fnm = np.cumsum(scores[:, 1])
-    fm = iscores_number - (np.arange(0, scores_number) - fnm)
+    fnm = cumul[indices]
+    fm = iscores_number - (indices + 1 - fnm)
 
     # Calculating FMR and FNMR
     fnm_rates = fnm / gscores_number
     fm_rates = fm / iscores_number
-
-    # Obtaining thresholds
-    thresholds = scores[:, 0]
 
     # Computing EER
     index = np.argmin(abs(fm_rates - fnm_rates))
