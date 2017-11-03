@@ -135,13 +135,18 @@ def get_eer_info():
         print('FMR_100   = ' + str(fnmr[index]))
         print('........................')
 
-        index = np.argmin(abs(fnmr - 0))
+        min_val = np.min(fnmr)
+        index = np.where(fnmr == min_val)[0][-1]
         print('FNMR_0    = ' + str(fmr[index]))
 
-        index = np.argmin(abs(fnmr - 0.001))
+        temp = abs(fnmr - 0.001)
+        min_val = np.min(temp)
+        index = np.where(temp == min_val)[0][-1]
         print('FNMR_1000 = ' + str(fmr[index]))
 
-        index = np.argmin(abs(fnmr - 0.01))
+        temp = abs(fnmr - 0.01)
+        min_val = np.min(temp)
+        index = np.where(temp == min_val)[0][-1]
         print('FNMR_100  = ' + str(fmr[index]))
         print('........................')
 
