@@ -87,14 +87,9 @@ def calculate_eer(gscores, iscores):
     # Grouping scores
     thresholds, u_indices = np.unique(scores[:, 0], return_index=True)
 
-    # Taking indices of last repeated score instead of the first
-    indices = np.zeros_like(u_indices)
-    indices[:-1] = u_indices[1:] - 1
-    indices[-1] = scores.shape[0] - 1
-
     # Calculating FNM and FM distributions
-    fnm = cumul[indices]
-    fm = iscores_number - (indices + 1 - fnm)
+    fnm = cumul[u_indices] - scores[u_indices][:, 1]  # s < t
+    fm = iscores_number - (u_indices - fnm)
 
     # Calculating FMR and FNMR
     fnm_rates = fnm / gscores_number
