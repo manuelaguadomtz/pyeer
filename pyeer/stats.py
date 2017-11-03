@@ -8,20 +8,17 @@ __copyright__ = 'Copyright 2016'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
-def calculate_eer_hist(gscores, iscores):
-    """Calculates FMR, FNMR and EER for impostor scores in histogram format
+def calculate_roc_hist(gscores, iscores):
+    """Calculates FMR, FNMR for impostor scores in histogram format
 
     @param gscores: Genuine matching scores
     @type gscores: list
     @param iscores: Impostor matching scores
     @type giscores: list
 
-    @return: (thresholds, FMR, FNMR, EER)
+    @return: (thresholds, FMR, FNMR)
     @rtype: tuple
     """
-    # TODO Improve the efficiency of this algorithm using numpy array from
-    # the beginning for error lists
-
     match_thr = 0
     maximum_thr = max(max(gscores), len(iscores))
 
@@ -52,21 +49,19 @@ def calculate_eer_hist(gscores, iscores):
 
     fm_rates = np.array(fm_rates)
     fnm_rates = np.array(fnm_rates)
-    index = np.argmin(abs(fm_rates - fnm_rates))
-    eer = abs(fnm_rates[index] + fm_rates[index]) / 2.0
 
-    return thresholds, fm_rates, fnm_rates, eer
+    return thresholds, fm_rates, fnm_rates
 
 
-def calculate_eer(gscores, iscores):
-    """Calculates FMR, FNMR and EER
+def calculate_roc(gscores, iscores):
+    """Calculates FMR, FNMR
 
     @param gscores: Genuine matching scores
     @type gscores: list
     @param iscores: Impostor matching scores
     @type giscores: list
 
-    @return: (thresholds, FMR, FNMR, EER)
+    @return: (thresholds, FMR, FNMR)
     @rtype: tuple
     """
     gscores_number = len(gscores)
@@ -95,8 +90,4 @@ def calculate_eer(gscores, iscores):
     fnm_rates = fnm / gscores_number
     fm_rates = fm / iscores_number
 
-    # Computing EER
-    index = np.argmin(abs(fm_rates - fnm_rates))
-    eer = abs(fnm_rates[index] + fm_rates[index]) / 2.0
-
-    return thresholds, fm_rates, fnm_rates, eer
+    return thresholds, fm_rates, fnm_rates

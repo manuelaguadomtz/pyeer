@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import numpy as np
 
-from stats import calculate_eer, calculate_eer_hist
+from stats import calculate_roc, calculate_roc_hist
 
 __copyright__ = 'Copyright 2016'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -110,15 +110,17 @@ def get_eer_info():
         print('Calculating probabilities...')
         if args.hist:
             # Calculating probabilities histogram format
-            roc_info = calculate_eer_hist(gen_scores, imp_scores)
+            roc_info = calculate_roc_hist(gen_scores, imp_scores)
         else:
             # Calculating probabilities using scores as thrs
-            roc_info = calculate_eer(gen_scores, imp_scores)
+            roc_info = calculate_roc(gen_scores, imp_scores)
 
         # Unboxing probability rates and info
-        (thrs, fmr, fnmr, eer) = roc_info
+        thrs, fmr, fnmr = roc_info
 
         # Printing EER and operation points values
+        index = np.argmin(abs(fmr - fnmr))
+        eer = abs(fnmr[index] + fmr[index]) / 2.0
         print(exp[2] + ' EER \t= ' + str(eer))
 
         index = np.argmin(abs(fmr - 0))
