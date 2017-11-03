@@ -4,10 +4,10 @@ import argparse
 from os.path import join
 
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as font
+from matplotlib.font_manager import FontProperties
 import numpy as np
 
-from stats import calculate_eer, calculate_eer_step_by_step
+from stats import calculate_eer, calculate_eer_hist
 
 __copyright__ = 'Copyright 2016'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -50,10 +50,6 @@ def get_eer_info():
                          " where the option -s was specified. If not given"
                          " it will default to the value savefig.dpi in the"
                          " matplotlibrc file")
-    ap.add_argument("-ts", "--thr_step", required=False, default=0,
-                    help="The value in which increase the threshold at each"
-                         " step, if 0 (default) we will use the scores as"
-                         " thrs")
     ap.add_argument("-lw", "--line_width", required=False, default=3,
                     help="The width of the plotted curves (default=5)")
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
@@ -112,15 +108,9 @@ def get_eer_info():
             imp_scores = [__get_score(line) for line in tf]
 
         print('Calculating probabilities...')
-        if args.thr_step != 0 or args.hist:
-            # Setting threshold step for step by step calculation
-            thr_step = (1 if args.hist and args.thr_step == 0
-                        else float(args.thr_step))
-
-            # Calculating probabilities step by step
-            roc_info = calculate_eer_step_by_step(gen_scores,
-                                                  imp_scores,
-                                                  thr_step, args.hist)
+        if args.hist:
+            # Calculating probabilities histogram format
+            roc_info = calculate_eer_hist(gen_scores, imp_scores)
         else:
             # Calculating probabilities using scores as thrs
             roc_info = calculate_eer(gen_scores, imp_scores)
@@ -152,21 +142,22 @@ def get_eer_info():
         print('Ploting Curves...')
 
         # Plotting score distributions
-        dist_fig = plt.figure()
-        dist_plot = dist_fig.add_subplot(111)
-        dist_plot.grid(False)
-        dist_plot.set_ylabel('Frequency')
-        dist_plot.set_xlabel('Scores')
-        dist_plot.set_title('Score distributions expeeriment: ' + exp[2])
-        dist_plot.hist(gen_scores, bins=bins, color='b',
-                       label='Genuine distribution')
-        dist_plot.hist(imp_scores, bins=bins, alpha=0.5, color='r',
-                       label='Impostor distribution')
-        dist_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
+        if not args.hist:
+            dist_fig = plt.figure()
+            dist_plot = dist_fig.add_subplot(111)
+            dist_plot.grid(False)
+            dist_plot.set_ylabel('Frequency')
+            dist_plot.set_xlabel('Scores')
+            dist_plot.set_title('Score distributions experiment: ' + exp[2])
+            dist_plot.hist(gen_scores, bins=bins, color='b',
+                           label='Genuine distribution')
+            dist_plot.hist(imp_scores, bins=bins, alpha=0.5, color='r',
+                           label='Impostor distribution')
+            dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
-        if args.save_plots:
-            fig_name = 'Distributions (%s)' % exp[2] + ext
-            dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
+            if args.save_plots:
+                fig_name = 'Distributions (%s)' % exp[2] + ext
+                dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
 
         # Plotting FMR and FNMR curves
         eer_plot.plot(thrs, fmr, linewidth=line_width, label=exp[2] + ' (FMR)')
@@ -180,9 +171,9 @@ def get_eer_info():
         roc_plot.plot(fmr, 1 - fnmr, label=exp[2], linewidth=line_width)
 
     # Finalizing plots
-    eer_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
-    det_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
-    roc_plot.legend(loc='best', prop=font.FontProperties(size=lgf_size))
+    eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
+    det_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
+    roc_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
     # Showing plots or saving plots
     if args.save_plots:
