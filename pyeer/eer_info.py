@@ -118,28 +118,32 @@ def get_eer_info():
         # Unboxing probability rates and info
         thrs, fmr, fnmr = roc_info
 
-        # Printing EER and operation points values
+        # Estimating EER and operation points values
         index = np.argmin(abs(fmr - fnmr))
         eer = abs(fnmr[index] + fmr[index]) / 2.0
-        print(exp[2] + ' EER \t= ' + str(eer))
-
-        index = np.argmin(abs(fnmr - 0))
-        print(exp[2] + ' FNMR_0 \t= ' + str(fmr[index]))
-
-        index = np.argmin(abs(fnmr - 0.001))
-        print(exp[2] + ' FNMR_1000 \t= ' + str(fmr[index]))
-
-        index = np.argmin(abs(fnmr - 0.01))
-        print(exp[2] + ' FNMR_100 \t= ' + str(fmr[index]))
+        print('........................')
+        print('EER       = ' + str(eer))
+        print('........................')
 
         index = np.argmin(abs(fmr - 0))
-        print(exp[2] + ' FMR_0 \t= ' + str(fnmr[index]))
+        print('FMR_0     = ' + str(fnmr[index]))
 
         index = np.argmin(abs(fmr - 0.001))
-        print(exp[2] + ' FMR_1000 \t= ' + str(fnmr[index]))
+        print('FMR_1000  = ' + str(fnmr[index]))
 
         index = np.argmin(abs(fmr - 0.01))
-        print(exp[2] + ' FMR_100 \t= ' + str(fnmr[index]))
+        print('FMR_100   = ' + str(fnmr[index]))
+        print('........................')
+
+        index = np.argmin(abs(fnmr - 0))
+        print('FNMR_0    = ' + str(fmr[index]))
+
+        index = np.argmin(abs(fnmr - 0.001))
+        print('FNMR_1000 = ' + str(fmr[index]))
+
+        index = np.argmin(abs(fnmr - 0.01))
+        print('FNMR_100  = ' + str(fmr[index]))
+        print('........................')
 
         print('Ploting Curves...')
 
