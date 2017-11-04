@@ -16,11 +16,60 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 def __get_score(line):
     """Get the score value from an input score file line
 
-    Keyword Arguments:
-    line -- An input score file line
+    @param line: An input score file line
+    @type line: str
+
+    @returns: The parsed score
+    @rtype: float
     """
     sline = line.strip().split(' ')
     return float(sline[-1])
+
+
+def __get_fnmr_op(fmr, fnmr, op):
+    """Returns the value of the given FNMR operation point
+
+    Definition:
+    ZeroFNMR: is defined as the lowest FMR at which no non-false matches occur.
+
+    Others FNMR operation points are defined in a similar way.
+
+    @param fmr: False Match Rates
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates
+    @type fnmr: ndarray
+    @param op: Operation point
+    @type op: float
+
+    @returns: The lowest FMR at which the probability of FNMR == op
+    @rtype: float
+    """
+    temp = abs(fnmr - op)
+    min_val = np.min(temp)
+    index = np.where(temp == min_val)[0][-1]
+    return fmr[index]
+
+
+def __get_fmr_op(fmr, fnmr, op):
+    """Returns the value of the given FMR operation point
+
+    Definition:
+    ZeroFMR: is defined as the lowest FNMR at which no false matches occur.
+
+    Others FMR operation points are defined in a similar way.
+
+    @param fmr: False Match Rates
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates
+    @type fnmr: ndarray
+    @param op: Operation point
+    @type op: float
+
+    @returns: The lowest FNMR at which the probability of FMR == op
+    @rtype: float
+    """
+    index = np.argmin(abs(fmr - op))
+    return fnmr[index]
 
 
 def get_eer_info():
@@ -111,37 +160,38 @@ def get_eer_info():
         # Unboxing probability rates and info
         thrs, fmr, fnmr = roc_info
 
-        # Estimating EER and operation points values
+        # Estimating EER
+        print('...............................')
+
         index = np.argmin(abs(fmr - fnmr))
         eer = abs(fnmr[index] + fmr[index]) / 2.0
-        print('........................')
         print('EER       = ' + str(eer))
-        print('........................')
 
-        index = np.argmin(abs(fmr - 0))
-        print('FMR_0     = ' + str(fnmr[index]))
+        print('..............................')
 
-        index = np.argmin(abs(fmr - 0.001))
-        print('FMR_1000  = ' + str(fnmr[index]))
+        # Estimating FMR operation points
+        op = __get_fmr_op(fmr, fnmr, 0)
+        print('FMR_0     = ' + str(op))
 
-        index = np.argmin(abs(fmr - 0.01))
-        print('FMR_100   = ' + str(fnmr[index]))
-        print('........................')
+        op = __get_fmr_op(fmr, fnmr, 0.001)
+        print('FMR_1000  = ' + str(op))
 
-        min_val = np.min(fnmr)
-        index = np.where(fnmr == min_val)[0][-1]
-        print('FNMR_0    = ' + str(fmr[index]))
+        op = __get_fmr_op(fmr, fnmr, 0.01)
+        print('FMR_100   = ' + str(op))
 
-        temp = abs(fnmr - 0.001)
-        min_val = np.min(temp)
-        index = np.where(temp == min_val)[0][-1]
-        print('FNMR_1000 = ' + str(fmr[index]))
+        print('...............................')
 
-        temp = abs(fnmr - 0.01)
-        min_val = np.min(temp)
-        index = np.where(temp == min_val)[0][-1]
-        print('FNMR_100  = ' + str(fmr[index]))
-        print('........................')
+        # Estimating FNMR operation points
+        op = __get_fnmr_op(fmr, fnmr, 0)
+        print('FNMR_0    = ' + str(op))
+
+        op = __get_fnmr_op(fmr, fnmr, 0.001)
+        print('FNMR_1000 = ' + str(op))
+
+        op = __get_fnmr_op(fmr, fnmr, 0.01)
+        print('FNMR_100  = ' + str(op))
+
+        print('...............................')
 
         print('Ploting Curves...')
 
