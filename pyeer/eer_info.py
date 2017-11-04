@@ -10,7 +10,7 @@ import numpy as np
 from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op
 
-__copyright__ = 'Copyright 2016'
+__copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
@@ -104,7 +104,7 @@ def get_eer_info():
         with open(join(args.path, exp[1])) as tf:
             imp_scores = [__get_score(line) for line in tf]
 
-        print('Calculating probabilities...')
+        print('Calculating stats...')
         if args.hist:
             # Calculating probabilities histogram format
             roc_info = calculate_roc_hist(gen_scores, imp_scores)
