@@ -136,9 +136,9 @@ def get_eer_info():
 
     for exp in experiments:
         # Printing experiment log header
-        print(''.join(['=' for _ in xrange(len(exp[2]) + 12)]))
+        print('=' * (len(exp[2]) + 12))
         print('Experiment: ' + exp[2])
-        print(''.join(['=' for _ in xrange(len(exp[2]) + 12)]))
+        print('=' * (len(exp[2]) + 12))
 
         # Loading scores
         print('Loading genuine scores file...')
@@ -231,8 +231,13 @@ def get_eer_info():
         # Plotting DET Curve
         det_plot.plot(fmr, fnmr, label=exp[2], linewidth=line_width)
 
-        # Plotting ROC Curve
+        # Calculating area under the ROC curve
         auc = calculate_roc_auc(fmr, fnmr)
+        print('...............................')
+        print('AUC = %f' % auc)
+        print('...............................')
+
+        # Plotting ROC Curve
         label = exp[2] + ' AUC = %f' % auc
         roc_plot.plot(fmr, 1 - fnmr, label=label, linewidth=line_width)
 
