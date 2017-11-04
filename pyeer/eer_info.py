@@ -132,5 +132,6 @@ def get_eer_info():
     generate_report(stats, join(args.save_path, 'pyeer_report.csv'))
 
     print('Plotting...')
+
     plot_stats(stats, line_width, not args.hist, bins, lgf_size,
                args.save_plots, dpi, args.save_path, ext)
