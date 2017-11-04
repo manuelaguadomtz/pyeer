@@ -131,7 +131,7 @@ def get_eer_info():
     # Generating reports
     print('Generating report...')
 
-    generate_report(stats, join(args.save_path, 'report.csv'))
+    generate_report(stats, join(args.save_path, 'pyeer_report.csv'))
 
     print('Plotting...')
 
