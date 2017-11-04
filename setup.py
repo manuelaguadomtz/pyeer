@@ -47,6 +47,6 @@ setup(
 
     long_description=readme,
 
-    keywords=['Equal Error Rate', 'False Matching Rate', 'ROC', 'DET',
-              'False Non-matching rate', 'EER', 'FMR', 'FNMR'],
+    keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
+              'False Non-Match Rate', 'EER', 'FMR', 'FNMR'],
 )
