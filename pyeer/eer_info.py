@@ -26,7 +26,7 @@ def __get_score(line):
     return float(sline[-1])
 
 
-def __get_fnmr_op(fmr, fnmr, op):
+def get_fnmr_op(fmr, fnmr, op):
     """Returns the value of the given FNMR operation point
 
     Definition:
@@ -50,7 +50,7 @@ def __get_fnmr_op(fmr, fnmr, op):
     return fmr[index]
 
 
-def __get_fmr_op(fmr, fnmr, op):
+def get_fmr_op(fmr, fnmr, op):
     """Returns the value of the given FMR operation point
 
     Definition:
@@ -170,25 +170,25 @@ def get_eer_info():
         print('..............................')
 
         # Estimating FMR operation points
-        op = __get_fmr_op(fmr, fnmr, 0)
+        op = get_fmr_op(fmr, fnmr, 0)
         print('FMR_0     = ' + str(op))
 
-        op = __get_fmr_op(fmr, fnmr, 0.001)
+        op = get_fmr_op(fmr, fnmr, 0.001)
         print('FMR_1000  = ' + str(op))
 
-        op = __get_fmr_op(fmr, fnmr, 0.01)
+        op = get_fmr_op(fmr, fnmr, 0.01)
         print('FMR_100   = ' + str(op))
 
         print('...............................')
 
         # Estimating FNMR operation points
-        op = __get_fnmr_op(fmr, fnmr, 0)
+        op = get_fnmr_op(fmr, fnmr, 0)
         print('FNMR_0    = ' + str(op))
 
-        op = __get_fnmr_op(fmr, fnmr, 0.001)
+        op = get_fnmr_op(fmr, fnmr, 0.001)
         print('FNMR_1000 = ' + str(op))
 
-        op = __get_fnmr_op(fmr, fnmr, 0.01)
+        op = get_fnmr_op(fmr, fnmr, 0.01)
         print('FNMR_100  = ' + str(op))
 
         print('...............................')
