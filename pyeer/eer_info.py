@@ -70,13 +70,6 @@ def get_eer_info():
     bins = int(args.distribution_bins)
 
     # Preparing plots
-    eer_fig = plt.figure()
-    eer_plot = eer_fig.add_subplot(111)
-    eer_plot.grid(True)
-    eer_plot.set_ylabel('Error')
-    eer_plot.set_xlabel('Matching Scores')
-    eer_plot.set_title('FMR and FNMR Curves')
-
     det_fig = plt.figure()
     det_plot = det_fig.add_subplot(111)
     det_plot.set_title('DET Curves')
@@ -171,9 +164,19 @@ def get_eer_info():
                 dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
 
         # Plotting FMR and FNMR curves
+        eer_fig = plt.figure()
+        eer_plot = eer_fig.add_subplot(111)
+        eer_plot.grid(True)
+        eer_plot.set_ylabel('Error')
+        eer_plot.set_xlabel('Matching Scores')
+        eer_plot.set_title('FMR and FNMR Curves')
         eer_plot.plot(thrs, fmr, linewidth=line_width, label=exp[2] + ' (FMR)')
         eer_plot.plot(thrs, fnmr, linewidth=line_width,
                       label=exp[2] + ' (FNMR)')
+
+        if args.save_plots:
+            fig_name = 'FMR and FNMR curves of experiment: (%s)' % exp[2] + ext
+            eer_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
 
         # Plotting DET Curve
         det_plot.plot(fmr, fnmr, label=exp[2], linewidth=line_width)
