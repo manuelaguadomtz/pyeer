@@ -2,6 +2,7 @@
 
 import argparse
 from os.path import join
+from collections import namedtuple
 
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
@@ -12,6 +13,11 @@ from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
+
+
+Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
+                             'fmr1000', 'fmr100', 'fnmr0', 'fnmr1000',
+                             'fnmr100', 'gen_scores', 'imp_scores'])
 
 
 def __get_score(line):
@@ -73,6 +79,60 @@ def get_eer_info():
     ext = '.' + args.save_format
     bins = int(args.distribution_bins)
 
+    # Experiment stats
+    stats = []
+
+    for exp in experiments:
+        # Loading scores
+        print('%s: Loading genuine scores file...' % exp[2])
+        with open(join(args.path, exp[0])) as tf:
+            gen_scores = [__get_score(line) for line in tf]
+
+        print('%s: Loading impostor scores file...' % exp[2])
+        with open(join(args.path, exp[1])) as tf:
+            imp_scores = [__get_score(line) for line in tf]
+
+        print('%s: Calculating stats...' % exp[2])
+        if args.hist:
+            # Calculating probabilities histogram format
+            roc_info = calculate_roc_hist(gen_scores, imp_scores)
+        else:
+            # Calculating probabilities using scores as thrs
+            roc_info = calculate_roc(gen_scores, imp_scores)
+
+        # Unboxing probability rates and info
+        thrs, fmr, fnmr = roc_info
+
+        # Estimating EER
+        index = np.argmin(abs(fmr - fnmr))
+        eer = abs(fnmr[index] + fmr[index]) / 2.0
+
+        # Estimating FMR operation points
+        fmr0 = get_fmr_op(fmr, fnmr, 0)
+        fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
+        fmr100 = get_fmr_op(fmr, fnmr, 0.01)
+
+        # Estimating FNMR operation points
+        fnmr0 = get_fnmr_op(fmr, fnmr, 0)
+        fnmr1000 = get_fnmr_op(fmr, fnmr, 0.001)
+        fnmr100 = get_fnmr_op(fmr, fnmr, 0.01)
+
+        # Calculating area under the ROC curve
+        auc = calculate_roc_auc(fmr, fnmr)
+
+        # Stacking stats
+        stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
+                           fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
+                           fnmr0=fnmr0, fnmr100=fnmr100, fnmr1000=fnmr1000,
+                           gen_scores=gen_scores, imp_scores=imp_scores))
+
+    # Generating reports
+    print('Generating report...')
+
+    # TODO generating CSV
+
+    print('Plotting...')
+
     # Preparing plots
     det_fig = plt.figure()
     det_plot = det_fig.add_subplot(111)
@@ -89,83 +149,26 @@ def get_eer_info():
     roc_plot.set_xlabel('FMR')
     roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
-    for exp in experiments:
-        # Printing experiment log header
-        print('=' * (len(exp[2]) + 12))
-        print('Experiment: ' + exp[2])
-        print('=' * (len(exp[2]) + 12))
-
-        # Loading scores
-        print('Loading genuine scores file...')
-        with open(join(args.path, exp[0])) as tf:
-            gen_scores = [__get_score(line) for line in tf]
-
-        print('Loading impostor scores file...')
-        with open(join(args.path, exp[1])) as tf:
-            imp_scores = [__get_score(line) for line in tf]
-
-        print('Calculating stats...')
-        if args.hist:
-            # Calculating probabilities histogram format
-            roc_info = calculate_roc_hist(gen_scores, imp_scores)
-        else:
-            # Calculating probabilities using scores as thrs
-            roc_info = calculate_roc(gen_scores, imp_scores)
-
-        # Unboxing probability rates and info
-        thrs, fmr, fnmr = roc_info
-
-        # Estimating EER
-        print('...............................')
-
-        index = np.argmin(abs(fmr - fnmr))
-        eer = abs(fnmr[index] + fmr[index]) / 2.0
-        print('EER       = ' + str(eer))
-
-        print('..............................')
-
-        # Estimating FMR operation points
-        op = get_fmr_op(fmr, fnmr, 0)
-        print('FMR_0     = ' + str(op))
-
-        op = get_fmr_op(fmr, fnmr, 0.001)
-        print('FMR_1000  = ' + str(op))
-
-        op = get_fmr_op(fmr, fnmr, 0.01)
-        print('FMR_100   = ' + str(op))
-
-        print('...............................')
-
-        # Estimating FNMR operation points
-        op = get_fnmr_op(fmr, fnmr, 0)
-        print('FNMR_0    = ' + str(op))
-
-        op = get_fnmr_op(fmr, fnmr, 0.001)
-        print('FNMR_1000 = ' + str(op))
-
-        op = get_fnmr_op(fmr, fnmr, 0.01)
-        print('FNMR_100  = ' + str(op))
-
-        print('...............................')
-
-        print('Ploting Curves...')
+    for i, st in enumerate(stats):
+        exp_id = experiments[i][2]
 
         # Plotting score distributions
         if not args.hist:
+            title = 'Score distributions experiment: ' + exp_id
             dist_fig = plt.figure()
             dist_plot = dist_fig.add_subplot(111)
             dist_plot.grid(False)
             dist_plot.set_ylabel('Frequency')
             dist_plot.set_xlabel('Scores')
-            dist_plot.set_title('Score distributions experiment: ' + exp[2])
-            dist_plot.hist(gen_scores, bins=bins, color='b',
+            dist_plot.set_title(title)
+            dist_plot.hist(st.gen_scores, bins=bins, color='b',
                            label='Genuine distribution')
-            dist_plot.hist(imp_scores, bins=bins, alpha=0.5, color='r',
+            dist_plot.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
                            label='Impostor distribution')
             dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
             if args.save_plots:
-                fig_name = 'Distributions (%s)' % exp[2] + ext
+                fig_name = 'Distributions (%s)' % exp_id + ext
                 dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
 
         # Plotting FMR and FNMR curves
@@ -175,29 +178,24 @@ def get_eer_info():
         eer_plot.set_ylabel('Error')
         eer_plot.set_xlabel('Matching Scores')
         eer_plot.set_title('FMR and FNMR Curves')
-        eer_plot.plot(thrs, fmr, linewidth=line_width, label=exp[2] + ' (FMR)')
-        eer_plot.plot(thrs, fnmr, linewidth=line_width,
-                      label=exp[2] + ' (FNMR)')
+        eer_plot.plot(st.thrs, st.fmr, linewidth=line_width,
+                      label=exp_id + ' (FMR)')
+        eer_plot.plot(st.thrs, st.fnmr, linewidth=line_width,
+                      label=exp_id + ' (FNMR)')
+        eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
         if args.save_plots:
-            fig_name = 'FMR and FNMR curves of experiment: (%s)' % exp[2] + ext
+            fig_name = 'FMR and FNMR curves of experiment: (%s)' % exp_id + ext
             eer_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
 
         # Plotting DET Curve
-        det_plot.plot(fmr, fnmr, label=exp[2], linewidth=line_width)
-
-        # Calculating area under the ROC curve
-        auc = calculate_roc_auc(fmr, fnmr)
-        print('...............................')
-        print('AUC = %f' % auc)
-        print('...............................')
+        det_plot.plot(st.fmr, st.fnmr, label=exp_id, linewidth=line_width)
 
         # Plotting ROC Curve
-        label = exp[2] + ' AUC = %f' % auc
-        roc_plot.plot(fmr, 1 - fnmr, label=label, linewidth=line_width)
+        label = exp_id + ' AUC = %f' % st.auc
+        roc_plot.plot(st.fmr, 1 - st.fnmr, label=label, linewidth=line_width)
 
     # Finalizing plots
-    eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
     det_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
     roc_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
