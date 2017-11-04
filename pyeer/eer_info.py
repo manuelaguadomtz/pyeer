@@ -17,7 +17,7 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 
 Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
                              'fmr1000', 'fmr100', 'fnmr0', 'fnmr1000',
-                             'fnmr100', 'gen_scores', 'imp_scores'])
+                             'fnmr100', 'gen_scores', 'imp_scores', 'exp_id'])
 
 
 def __get_score(line):
@@ -49,8 +49,8 @@ def get_eer_info():
                     help="Indicates whether to save the plots instead of"
                          " showing them")
     ap.add_argument("-sp", "--save_path", required=False, default='',
-                    help="Path to save the plots in the cases where the option"
-                         " -s was specified")
+                    help="Path to save the plots (if -s was specified)"
+                         " and stats report")
     ap.add_argument("-sf", "--save_format", required=False, default='png',
                     help="Format to save the plots in the cases where the"
                          " option -s was specified. Valid formats are: "
@@ -124,7 +124,8 @@ def get_eer_info():
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
                            fnmr0=fnmr0, fnmr100=fnmr100, fnmr1000=fnmr1000,
-                           gen_scores=gen_scores, imp_scores=imp_scores))
+                           gen_scores=gen_scores, imp_scores=imp_scores,
+                           exp_id=exp[2]))
 
     # Generating reports
     print('Generating report...')
@@ -150,11 +151,9 @@ def get_eer_info():
     roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
     for i, st in enumerate(stats):
-        exp_id = experiments[i][2]
-
         # Plotting score distributions
         if not args.hist:
-            title = 'Score distributions experiment: ' + exp_id
+            title = 'Score distributions experiment: ' + st.exp_id
             dist_fig = plt.figure()
             dist_plot = dist_fig.add_subplot(111)
             dist_plot.grid(False)
@@ -168,7 +167,7 @@ def get_eer_info():
             dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
             if args.save_plots:
-                fig_name = 'Distributions (%s)' % exp_id + ext
+                fig_name = 'Distributions (%s)' % st.exp_id + ext
                 dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
 
         # Plotting FMR and FNMR curves
@@ -179,20 +178,20 @@ def get_eer_info():
         eer_plot.set_xlabel('Matching Scores')
         eer_plot.set_title('FMR and FNMR Curves')
         eer_plot.plot(st.thrs, st.fmr, linewidth=line_width,
-                      label=exp_id + ' (FMR)')
+                      label=st.exp_id + ' (FMR)')
         eer_plot.plot(st.thrs, st.fnmr, linewidth=line_width,
-                      label=exp_id + ' (FNMR)')
+                      label=st.exp_id + ' (FNMR)')
         eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
         if args.save_plots:
-            fig_name = 'FMR and FNMR curves of experiment: (%s)' % exp_id + ext
-            eer_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
+            fname = 'FMR and FNMR curves of experiment: (%s)' % st.exp_id + ext
+            eer_fig.savefig(join(args.save_path, fname), dpi=dpi)
 
         # Plotting DET Curve
-        det_plot.plot(st.fmr, st.fnmr, label=exp_id, linewidth=line_width)
+        det_plot.plot(st.fmr, st.fnmr, label=st.exp_id, linewidth=line_width)
 
         # Plotting ROC Curve
-        label = exp_id + ' AUC = %f' % st.auc
+        label = st.exp_id + ' AUC = %f' % st.auc
         roc_plot.plot(st.fmr, 1 - st.fnmr, label=label, linewidth=line_width)
 
     # Finalizing plots
