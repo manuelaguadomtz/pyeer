@@ -4,13 +4,11 @@ import argparse
 from os.path import join
 from collections import namedtuple
 
-import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
 import numpy as np
 
 from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op
-from reports import generate_report
+from reports import generate_report, plot_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -62,9 +60,9 @@ def get_eer_info():
                          " it will default to the value savefig.dpi in the"
                          " matplotlibrc file")
     ap.add_argument("-lw", "--line_width", required=False, default=3,
-                    help="The width of the plotted curves (default=5)")
+                    help="The width of the plotted curves (default=3)")
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
-                    help="The size of the legend font (default=20)")
+                    help="The size of the legend font (default=15)")
     ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
                     help="The number of bins to compute scores distribution")
     args = ap.parse_args()
@@ -134,79 +132,5 @@ def get_eer_info():
     generate_report(stats, join(args.save_path, 'pyeer_report.csv'))
 
     print('Plotting...')
-
-    # Preparing plots
-    det_fig = plt.figure()
-    det_plot = det_fig.add_subplot(111)
-    det_plot.set_title('DET Curves')
-    det_plot.grid(True)
-    det_plot.set_ylabel('FNMR')
-    det_plot.set_xlabel('FMR')
-
-    roc_fig = plt.figure()
-    roc_plot = roc_fig.add_subplot(111)
-    roc_plot.set_title('ROC Curves')
-    roc_plot.grid(True)
-    roc_plot.set_ylabel('1 - FNMR')
-    roc_plot.set_xlabel('FMR')
-    roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
-
-    for i, st in enumerate(stats):
-        # Plotting score distributions
-        if not args.hist:
-            title = 'Score distributions experiment: ' + st.exp_id
-            dist_fig = plt.figure()
-            dist_plot = dist_fig.add_subplot(111)
-            dist_plot.grid(False)
-            dist_plot.set_ylabel('Frequency')
-            dist_plot.set_xlabel('Scores')
-            dist_plot.set_title(title)
-            dist_plot.hist(st.gen_scores, bins=bins, color='b',
-                           label='Genuine distribution')
-            dist_plot.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
-                           label='Impostor distribution')
-            dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
-
-            if args.save_plots:
-                fig_name = 'Distributions (%s)' % st.exp_id + ext
-                dist_fig.savefig(join(args.save_path, fig_name), dpi=dpi)
-
-        # Plotting FMR and FNMR curves
-        eer_fig = plt.figure()
-        eer_plot = eer_fig.add_subplot(111)
-        eer_plot.grid(True)
-        eer_plot.set_ylabel('Error')
-        eer_plot.set_xlabel('Matching Scores')
-        eer_plot.set_title('FMR and FNMR Curves')
-        eer_plot.plot(st.thrs, st.fmr, linewidth=line_width,
-                      label=st.exp_id + ' (FMR)')
-        eer_plot.plot(st.thrs, st.fnmr, linewidth=line_width,
-                      label=st.exp_id + ' (FNMR)')
-        eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
-
-        if args.save_plots:
-            fname = 'FMR and FNMR curves of experiment: (%s)' % st.exp_id + ext
-            eer_fig.savefig(join(args.save_path, fname), dpi=dpi)
-
-        # Plotting DET Curve
-        det_plot.plot(st.fmr, st.fnmr, label=st.exp_id, linewidth=line_width)
-
-        # Plotting ROC Curve
-        label = st.exp_id + ' AUC = %f' % st.auc
-        roc_plot.plot(st.fmr, 1 - st.fnmr, label=label, linewidth=line_width)
-
-    # Finalizing plots
-    det_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
-    roc_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
-
-    # Showing plots or saving plots
-    if args.save_plots:
-        # saving plots
-        eer_fig.savefig(join(args.save_path, 'EER' + ext), dpi=dpi)
-        det_fig.savefig(join(args.save_path, 'DET' + ext), dpi=dpi)
-        roc_fig.savefig(join(args.save_path, 'ROC' + ext), dpi=dpi)
-
-        # closing plots
-        plt.close()
-    else:
-        plt.show()
+    plot_stats(stats, line_width, not args.hist, bins, lgf_size,
+               args.save_plots, dpi, args.save_path, ext)
