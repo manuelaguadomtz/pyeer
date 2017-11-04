@@ -91,3 +91,24 @@ def calculate_roc(gscores, iscores):
     fm_rates = fm / iscores_number
 
     return thresholds, fm_rates, fnm_rates
+
+
+def calculate_roc_auc(fmr, fnmr):
+    """Calculates the area under a ROC curve
+
+    @param fmr: False Match Rates
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates
+    @type fnmr: ndarray
+
+    @returns: Area under the ROC curve
+    @rtype: float
+    """
+    x1 = fmr[:-1]
+    x2 = fmr[1:]
+
+    tpr = 1 - fnmr
+    y1 = tpr[:-1]
+    y2 = tpr[1:]
+
+    return ((x1 - x2) * (y1 + (y2 - y1) / 2)).sum()

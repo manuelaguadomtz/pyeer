@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import numpy as np
 
-from stats import calculate_roc, calculate_roc_hist
+from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc
 
 __copyright__ = 'Copyright 2016'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -232,7 +232,9 @@ def get_eer_info():
         det_plot.plot(fmr, fnmr, label=exp[2], linewidth=line_width)
 
         # Plotting ROC Curve
-        roc_plot.plot(fmr, 1 - fnmr, label=exp[2], linewidth=line_width)
+        auc = calculate_roc_auc(fmr, fnmr)
+        label = exp[2] + ' AUC = %f' % auc
+        roc_plot.plot(fmr, 1 - fnmr, label=label, linewidth=line_width)
 
     # Finalizing plots
     eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
