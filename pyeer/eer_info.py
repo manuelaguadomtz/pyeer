@@ -10,6 +10,7 @@ import numpy as np
 
 from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op
+from reports import generate_report
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -123,14 +124,14 @@ def get_eer_info():
         # Stacking stats
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
-                           fnmr0=fnmr0, fnmr100=fnmr100, fnmr1000=fnmr1000,
+                           fnmr0=fnmr0, fnmr1000=fnmr1000, fnmr100=fnmr100,
                            gen_scores=gen_scores, imp_scores=imp_scores,
                            exp_id=exp[2]))
 
     # Generating reports
     print('Generating report...')
 
-    # TODO generating CSV
+    generate_report(stats, join(args.save_path, 'report.csv'))
 
     print('Plotting...')
 
