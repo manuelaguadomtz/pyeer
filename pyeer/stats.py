@@ -112,3 +112,49 @@ def calculate_roc_auc(fmr, fnmr):
     y2 = tpr[1:]
 
     return ((x1 - x2) * (y1 + (y2 - y1) / 2)).sum()
+
+
+def get_fnmr_op(fmr, fnmr, op):
+    """Returns the value of the given FNMR operation point
+
+    Definition:
+    ZeroFNMR: is defined as the lowest FMR at which no non-false matches occur.
+
+    Others FNMR operation points are defined in a similar way.
+
+    @param fmr: False Match Rates
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates
+    @type fnmr: ndarray
+    @param op: Operation point
+    @type op: float
+
+    @returns: The lowest FMR at which the probability of FNMR == op
+    @rtype: float
+    """
+    temp = abs(fnmr - op)
+    min_val = np.min(temp)
+    index = np.where(temp == min_val)[0][-1]
+    return fmr[index]
+
+
+def get_fmr_op(fmr, fnmr, op):
+    """Returns the value of the given FMR operation point
+
+    Definition:
+    ZeroFMR: is defined as the lowest FNMR at which no false matches occur.
+
+    Others FMR operation points are defined in a similar way.
+
+    @param fmr: False Match Rates
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates
+    @type fnmr: ndarray
+    @param op: Operation point
+    @type op: float
+
+    @returns: The lowest FNMR at which the probability of FMR == op
+    @rtype: float
+    """
+    index = np.argmin(abs(fmr - op))
+    return fnmr[index]

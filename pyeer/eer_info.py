@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import numpy as np
 
-from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc
+from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
+    get_fmr_op, get_fnmr_op
 
 __copyright__ = 'Copyright 2016'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -24,52 +25,6 @@ def __get_score(line):
     """
     sline = line.strip().split(' ')
     return float(sline[-1])
-
-
-def get_fnmr_op(fmr, fnmr, op):
-    """Returns the value of the given FNMR operation point
-
-    Definition:
-    ZeroFNMR: is defined as the lowest FMR at which no non-false matches occur.
-
-    Others FNMR operation points are defined in a similar way.
-
-    @param fmr: False Match Rates
-    @type fmr: ndarray
-    @param fnmr: False Non-Match Rates
-    @type fnmr: ndarray
-    @param op: Operation point
-    @type op: float
-
-    @returns: The lowest FMR at which the probability of FNMR == op
-    @rtype: float
-    """
-    temp = abs(fnmr - op)
-    min_val = np.min(temp)
-    index = np.where(temp == min_val)[0][-1]
-    return fmr[index]
-
-
-def get_fmr_op(fmr, fnmr, op):
-    """Returns the value of the given FMR operation point
-
-    Definition:
-    ZeroFMR: is defined as the lowest FNMR at which no false matches occur.
-
-    Others FMR operation points are defined in a similar way.
-
-    @param fmr: False Match Rates
-    @type fmr: ndarray
-    @param fnmr: False Non-Match Rates
-    @type fnmr: ndarray
-    @param op: Operation point
-    @type op: float
-
-    @returns: The lowest FNMR at which the probability of FMR == op
-    @rtype: float
-    """
-    index = np.argmin(abs(fmr - op))
-    return fnmr[index]
 
 
 def get_eer_info():
