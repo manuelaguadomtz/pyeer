@@ -5,6 +5,13 @@ PyEER
 plotting, scores distribution plotting, EER and operating points estimation. It can be also used to evaluate binary
 classification systems.
 
+The program provided within this package receive two files holding genuine match scores and impostor match scores [1].
+Genuine match scores are obtained by matching feature sets of the same class (same person) while impostor matching
+scores are obtained by matching feature sets of different classes (different persons). Using this scores the program plots
+ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system scores provided.
+The program follows the guidelines established by ISO/IEC 19795-2 (2007).
+
+
 Installing
 ----------
 
