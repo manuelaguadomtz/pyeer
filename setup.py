@@ -48,5 +48,5 @@ setup(
 
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
               'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
-              'ZeroFMR', 'Biometrics Systems'],
+              'ZeroFMR', 'Biometric Systems'],
 )
