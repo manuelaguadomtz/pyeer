@@ -22,8 +22,8 @@ def generate_report(stats, save_file):
 
         # Writing headers
         writer = csv.writer(sf)
-        row = ['Experiment ID', 'AUC', 'EER', 'FMR0', 'FMR1000',
-               'FMR100', 'FNMR0', 'FNMR1000', 'FNMR100']
+        row = ['Experiment ID', 'AUC', 'EER', 'FMR=0', 'FMR=0.001',
+               'FMR=0.01', 'FNMR=0', 'FNMR=0.001', 'FNMR=0.01']
         writer.writerow(row)
 
         for st in stats:
