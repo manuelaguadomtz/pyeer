@@ -17,8 +17,7 @@ Input file formats
 
 On this epigraph the two different input file formats supported will be described.
 
-Histogram format
-................
+####Histogram format
 
 **Restrictions:** Only integer scores are supported
 
@@ -41,8 +40,7 @@ equals to 2, 321 scores equals to 3 and so on.
 
 **Note:** Only impostor scores file can mimic this format.
 
-Non-Histogram format
-....................
+####Non-Histogram format
 
 **Restrictions:** None. Integer and float scores are both supported.
 
@@ -53,8 +51,8 @@ Usage
 
 **console cmd:** geteerinf
 
-Examples:
-.........
+####Examples:
+
 
 **To print the script help**
 
