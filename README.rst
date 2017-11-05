@@ -9,8 +9,7 @@ The program provided within this package receive two files holding genuine match
 Genuine match scores are obtained by matching feature sets of the same class (same person) while impostor matching
 scores are obtained by matching feature sets of different classes (different persons). Using this scores the program plots
 ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system scores provided.
-The program follows the guidelines established by ISO/IEC 19795-2 (2007).
-
+All computations are made following the guidelines established in ISO/IEC 19795-2 (2007).
 
 Installing
 ----------
@@ -21,8 +20,8 @@ Installing
 
 Input file formats
 ------------------
-
-On this epigraph the two different input file formats supported will be described.
+Genuine match scores must be provided in a file with one score per line. Each line can have any number of columns but
+the score must be in the last column. For impostor match scores the program can handle two different formats:
 
 ####Histogram format
 
@@ -43,7 +42,7 @@ On this epigraph the two different input file formats supported will be describe
 The above file example indicates that there are 123 scores equals to 0, 12 scores equals to 1, 212 scores
 equals to 2, 321 scores equals to 3 and so on.
 
-**Recommendations:** Use this format for very large experiments.
+**Recommendations:** Use this format for very large experiments (millions of scores).
 
 **Note:** Only impostor scores file can mimic this format.
 
@@ -51,7 +50,7 @@ equals to 2, 321 scores equals to 3 and so on.
 
 **Restrictions:** None. Integer and float scores are both supported.
 
-**File format:** All the scores one by line
+**File format:** All the scores one by line, just as the genuine match scores file format
 
 Usage
 -----
