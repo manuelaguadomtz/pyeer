@@ -41,12 +41,12 @@ setup(
                       'matplotlib'],
 
     # Package description
-    description='A python package with utilities to calculate Equal Error'
-                ' Values, operation points and to plot the probability'
-                ' error curves.',
+    description='A python package for biometric and binary classification '
+                'systems performance evaluation',
 
     long_description=readme,
 
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
-              'False Non-Match Rate', 'EER', 'FMR', 'FNMR'],
+              'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
+              'ZeroFMR', 'Biometrics Systems'],
 )

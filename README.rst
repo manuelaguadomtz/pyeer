@@ -1,8 +1,9 @@
 PyEER
 =====
 
-**PyEER** is a python package with utilities to calculate Equal Error Values, operation points
-and to plot the probability error curves.
+**PyEER** is a python package for biometric systems performance evaluation. Includes ROC, DET, FNMR and FMR curves
+plotting, scores distribution plotting, EER and operating points estimation. It can be also used to evaluate binary
+classification systems.
 
 Installing
 ----------
