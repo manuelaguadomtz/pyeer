@@ -75,7 +75,7 @@ Usage
 
 .. code:: sh
 
-    geteerinf -p "example_files/non_hist/" -i "exp1_false.txt" -g "exp1_true.txt" -e "exp1"
+    geteerinf -p "example_files/non_hist/" -i "exp3_false.txt" -g "exp3_true.txt" -e "exp3"
 
 **More than one experiment (Non-histogram format):**
 
