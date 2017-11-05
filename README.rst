@@ -11,6 +11,11 @@ scores are obtained by matching feature sets of different classes (different per
 ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system scores provided.
 All computations are made following the guidelines established in ISO/IEC 19795-2 (2007).
 
+Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
+
+This package has been developed with the idea of providing researchers and the scientific community in general with a 
+tool to correctly report their results and comparing them against others.
+
 Installing
 ----------
 
@@ -93,3 +98,8 @@ Contributing
 Do you find **PyEER** useful? You can collaborate with us:
 
 `Link Gitlab <https://gitlab.com/manuelaguadomtz/pyeer>`_
+
+References
+----------
+
+[1] D. Maltoni et al., Handbook of Fingerprint Recognition, Springer-Verlag London Limited 2009
