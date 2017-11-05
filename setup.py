@@ -22,7 +22,6 @@ setup(
     include_package_data=True,
 
     package_data={
-        # If any package contains *.txt or *.rst files, include them:
         'pyeer': ['example_files/hist/*.txt', 'example_files/non_hist/*.txt'],
     },
 
