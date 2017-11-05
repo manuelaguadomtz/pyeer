@@ -14,7 +14,7 @@ All computations are made following the guidelines established in ISO/IEC 19795-
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
 This package has been developed with the idea of providing researchers and the scientific community in general with a 
-tool to correctly report their results and comparing them against others.
+tool to correctly evaluate and report the performance of their systems.
 
 Installing
 ----------
@@ -26,7 +26,7 @@ Installing
 Input file formats
 ------------------
 Genuine match scores must be provided in a file with one score per line. Each line can have any number of columns but
-the score must be in the last column. For impostor match scores the program can handle two different formats:
+the scores must be in the last column. For impostor match scores the program can handle two different formats:
 
 ####Histogram format
 
