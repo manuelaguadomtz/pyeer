@@ -89,7 +89,11 @@ Usage
 
     geteerinf -p "example_files/hist/" -i "exp1_false.txt" -g "exp1_true.txt" -e "exp1" -ht
 
-**Note:** To run the above examples you can download the example files from the project site
+For all the above examples a CSV file will be generated in the directory where the program was invoked. The file contains
+a summary with the values of EER, operating points and area under the ROC curve for each experiment. To specify the directory
+where to saved it, you can use the "-sp" option.
+
+**Note:** To run the above examples you can download the score files from the project site
 on Gitlab or extract them from inside the package installation
 
 Contributing
