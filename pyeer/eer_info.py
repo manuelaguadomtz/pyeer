@@ -15,7 +15,8 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
-                             'fmr1000', 'fmr100', 'fnmr0', 'fnmr1000',
+                             'fmr100000', 'fmr10000', 'fmr1000', 'fmr100',
+                             'fnmr0', 'fnmr100000', 'fnmr10000', 'fnmr1000',
                              'fnmr100', 'gen_scores', 'imp_scores', 'exp_id'])
 
 
@@ -108,11 +109,15 @@ def get_eer_info():
 
         # Estimating FMR operation points
         fmr0 = get_fmr_op(fmr, fnmr, 0)
+        fmr100000 = get_fmr_op(fmr, fnmr, 0.00001)
+        fmr10000 = get_fmr_op(fmr, fnmr, 0.0001)
         fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
         fmr100 = get_fmr_op(fmr, fnmr, 0.01)
 
         # Estimating FNMR operation points
         fnmr0 = get_fnmr_op(fmr, fnmr, 0)
+        fnmr100000 = get_fnmr_op(fmr, fnmr, 0.00001)
+        fnmr10000 = get_fnmr_op(fmr, fnmr, 0.0001)
         fnmr1000 = get_fnmr_op(fmr, fnmr, 0.001)
         fnmr100 = get_fnmr_op(fmr, fnmr, 0.01)
 
@@ -124,7 +129,9 @@ def get_eer_info():
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
                            fnmr0=fnmr0, fnmr1000=fnmr1000, fnmr100=fnmr100,
                            gen_scores=gen_scores, imp_scores=imp_scores,
-                           exp_id=exp[2]))
+                           exp_id=exp[2], fmr10000=fmr10000,
+                           fnmr10000=fnmr10000, fmr100000=fmr100000,
+                           fnmr100000=fnmr100000))
 
     # Generating reports
     print('Generating report...')
