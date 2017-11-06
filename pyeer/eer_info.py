@@ -7,7 +7,7 @@ from collections import namedtuple
 import numpy as np
 
 from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
-    get_fmr_op, get_fnmr_op
+    get_fmr_op, get_fnmr_op, get_eer_values
 from reports import generate_report, plot_stats
 
 __copyright__ = 'Copyright 2017'
@@ -18,7 +18,8 @@ Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
                              'fmr100000', 'fmr10000', 'fmr1000', 'fmr100',
                              'fnmr0', 'fnmr100000', 'fnmr10000', 'fnmr1000',
                              'fnmr100', 'gen_scores', 'imp_scores', 'gmean',
-                             'gvar', 'imean', 'ivar', 'exp_id'])
+                             'gvar', 'imean', 'ivar', 'exp_id', 'eer_low',
+                             'eer_high'])
 
 
 def __get_score(line):
@@ -105,8 +106,7 @@ def get_eer_info():
         thrs, fmr, fnmr = roc_info
 
         # Estimating EER
-        index = np.argmin(abs(fmr - fnmr))
-        eer = abs(fnmr[index] + fmr[index]) / 2.0
+        eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
 
         # Estimating FMR operation points
         fmr0 = get_fmr_op(fmr, fnmr, 0)
@@ -140,7 +140,8 @@ def get_eer_info():
                            exp_id=exp[2], fmr10000=fmr10000,
                            fnmr10000=fnmr10000, fmr100000=fmr100000,
                            fnmr100000=fnmr100000, gmean=gmean, gvar=gvar,
-                           imean=imean, ivar=ivar))
+                           imean=imean, ivar=ivar, eer_low=eer_low,
+                           eer_high=eer_high))
 
     # Generating reports
     print('Generating report...')

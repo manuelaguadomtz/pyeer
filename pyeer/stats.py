@@ -158,3 +158,32 @@ def get_fmr_op(fmr, fnmr, op):
     """
     index = np.argmin(abs(fmr - op))
     return fnmr[index]
+
+
+def get_eer_values(fmr, fnmr):
+    """Returns the value of the Equal Error Rate
+
+    Equal Error Rate (EER): is the point where FNMR(t) = FMR(t).
+    In practice the score distribution are not continuous so and interval
+    is returned instead. The EER value will be set as the midpoint of
+    this interval.
+
+    The interval will be defined as:
+    [EERlow, EERhigh] = min(fnmr[t], fmr[t]), max(fnmr[t], fmr[t])
+    where t = argmin(abs(fnmr - fmr))
+
+    The EER value is computed as (EERlow + EERhigh) / 2
+
+    @param fmr: False Match Rates (FMR)
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates (FNMR)
+    @type fnmr: ndarray
+    @param op: Operation point
+    @type op: float
+
+    @returns: EERlow, EERhigh, EER
+    @rtype: tuple
+    """
+    index = np.argmin(abs(fmr - fnmr))
+    eer = np.abs(fnmr[index] + fmr[index]) / 2.0
+    return min(fnmr[index], fmr[index]), max(fnmr[index], fmr[index]), eer
