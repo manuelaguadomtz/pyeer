@@ -174,6 +174,8 @@ def get_eer_values(fmr, fnmr):
 
     The EER value is computed as (EERlow + EERhigh) / 2
 
+    Reference:
+
     @param fmr: False Match Rates (FMR)
     @type fmr: ndarray
     @param fnmr: False Non-Match Rates (FNMR)

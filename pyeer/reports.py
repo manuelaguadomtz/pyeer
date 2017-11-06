@@ -106,10 +106,10 @@ def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
             dist_plot.set_ylabel('Frequency')
             dist_plot.set_xlabel('Scores')
             dist_plot.set_title(title)
-            dist_plot.hist(st.gen_scores, bins=bins, color='b',
-                           label='Genuine scores')
+            dist_plot.hist(st.gen_scores, bins=bins, color='g',
+                           label='Genuine scores %d' % len(st.gen_scores))
             dist_plot.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
-                           label='Impostor scores')
+                           label='Impostor scores %d' % len(st.imp_scores))
             dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
             if save_plots:
