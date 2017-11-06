@@ -22,9 +22,8 @@ def generate_report(stats, save_file):
 
         # Writing headers
         writer = csv.writer(sf)
-        row = ['Experiment ID', 'Genuine scores mean',
-               'Genuine scores variance', 'Impostor scores mean',
-               'Impostor scores variance', 'AUC', 'EER', 'FMR=0', 'FMR=10^-5',
+        row = ['Experiment ID', 'GMean', 'GVariance', 'IMean',
+               'IVariance', 'AUC', 'EER', 'FMR=0', 'FMR=10^-5',
                'FMR=10^-4', 'FMR=10^-3', 'FMR=10^-2', 'FNMR=0',
                'FNMR=10^⁻5', 'FNMR=10^⁻4', 'FNMR=10^⁻3', 'FNMR=10^⁻2']
         writer.writerow(row)
@@ -37,6 +36,18 @@ def generate_report(stats, save_file):
                    st.fnmr0, st.fnmr100000, st.fnmr10000, st.fnmr1000,
                    st.fnmr100]
             writer.writerow(row)
+
+        # Writing legend
+        writer.writerow([])
+        writer.writerow(['Legend:'])
+        writer.writerow(['GMean: Genuine scores distribution mean'])
+        writer.writerow(['GVariance: Genuine scores distribution variance'])
+        writer.writerow(['IMean: Impostor scores distribution mean'])
+        writer.writerow(['IVariance: Impostor scores distribution variance'])
+        writer.writerow(['AUC: Area under the ROC curve'])
+        writer.writerow(['EER: Equal Error Rate'])
+        writer.writerow(['FMR: False Match Rate'])
+        writer.writerow(['FNMR: False Non-Match Rate'])
 
 
 def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
@@ -95,9 +106,9 @@ def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
             dist_plot.set_xlabel('Scores')
             dist_plot.set_title(title)
             dist_plot.hist(st.gen_scores, bins=bins, color='b',
-                           label='Genuine distribution')
+                           label='Genuine scores')
             dist_plot.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
-                           label='Impostor distribution')
+                           label='Impostor scores')
             dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
             if save_plots:
