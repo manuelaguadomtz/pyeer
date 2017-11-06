@@ -147,7 +147,6 @@ def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
     # Showing plots or saving plots
     if save_plots:
         # saving plots
-        eer_fig.savefig(join(save_path, 'EER' + ext), dpi=dpi)
         det_fig.savefig(join(save_path, 'DET' + ext), dpi=dpi)
         roc_fig.savefig(join(save_path, 'ROC' + ext), dpi=dpi)
 
