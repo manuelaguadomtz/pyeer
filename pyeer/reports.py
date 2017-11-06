@@ -22,14 +22,17 @@ def generate_report(stats, save_file):
 
         # Writing headers
         writer = csv.writer(sf)
-        row = ['Experiment ID', 'AUC', 'EER', 'FMR=0', 'FMR=10^-5',
+        row = ['Experiment ID', 'Genuine scores mean',
+               'Genuine scores variance', 'Impostor scores mean',
+               'Impostor scores variance', 'AUC', 'EER', 'FMR=0', 'FMR=10^-5',
                'FMR=10^-4', 'FMR=10^-3', 'FMR=10^-2', 'FNMR=0',
                'FNMR=10^⁻5', 'FNMR=10^⁻4', 'FNMR=10^⁻3', 'FNMR=10^⁻2']
         writer.writerow(row)
 
         for st in stats:
             # Writing stats
-            row = [st.exp_id.encode("utf-8"), st.auc, st.eer, st.fmr0,
+            row = [st.exp_id.encode("utf-8"), st.gmean, st.gvar,
+                   st.imean, st.ivar, st.auc, st.eer, st.fmr0,
                    st.fmr100000, st.fmr10000, st.fmr1000, st.fmr100,
                    st.fnmr0, st.fnmr100000, st.fnmr10000, st.fnmr1000,
                    st.fnmr100]

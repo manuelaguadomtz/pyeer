@@ -17,7 +17,8 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
                              'fmr100000', 'fmr10000', 'fmr1000', 'fmr100',
                              'fnmr0', 'fnmr100000', 'fnmr10000', 'fnmr1000',
-                             'fnmr100', 'gen_scores', 'imp_scores', 'exp_id'])
+                             'fnmr100', 'gen_scores', 'imp_scores', 'gmean',
+                             'gvar', 'imean', 'ivar', 'exp_id'])
 
 
 def __get_score(line):
@@ -121,6 +122,13 @@ def get_eer_info():
         fnmr1000 = get_fnmr_op(fmr, fnmr, 0.001)
         fnmr100 = get_fnmr_op(fmr, fnmr, 0.01)
 
+        # Calculating distributions mean and variance
+        gmean = np.mean(gen_scores)
+        gvar = np.var(gen_scores)
+
+        imean = np.mean(imp_scores)
+        ivar = np.var(imp_scores)
+
         # Calculating area under the ROC curve
         auc = calculate_roc_auc(fmr, fnmr)
 
@@ -131,7 +139,8 @@ def get_eer_info():
                            gen_scores=gen_scores, imp_scores=imp_scores,
                            exp_id=exp[2], fmr10000=fmr10000,
                            fnmr10000=fnmr10000, fmr100000=fmr100000,
-                           fnmr100000=fnmr100000))
+                           fnmr100000=fnmr100000, gmean=gmean, gvar=gvar,
+                           imean=imean, ivar=ivar))
 
     # Generating reports
     print('Generating report...')
