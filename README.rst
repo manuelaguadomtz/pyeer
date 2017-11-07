@@ -9,11 +9,11 @@ The program provided within this package receive two files holding genuine match
 Genuine match scores are obtained by matching feature sets of the same class (same person) while impostor matching
 scores are obtained by matching feature sets of different classes (different persons). Using this scores the program plots
 ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system scores provided.
-All computations are made following the guidelines established in ISO/IEC 19795-2 (2007).
+EER values are reported as specified in [2]
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
-This package has been developed with the idea of providing researchers and the scientific community in general with a 
+PyEER has been developed with the idea of providing researchers and the scientific community in general with a 
 tool to correctly evaluate and report the performance of their systems.
 
 Installing
@@ -29,6 +29,10 @@ Genuine match scores must be provided in a file with one score per line. Each li
 the scores must be in the last column. For impostor match scores the program can handle two different formats:
 
 ####Histogram format
+
+Although the vast majority of the systems report scores normalized between 0 and 1 there are some that report
+integer scores [3]. When computing a lot of impostor scores (millions of them) it can be computationally 
+expensive to read all those scores from a file. Therefore, in those cases may be worth it to use this format.
 
 **Restrictions:** Only integer scores are supported
 
@@ -107,3 +111,6 @@ References
 ----------
 
 [1] D. Maltoni et al., Handbook of Fingerprint Recognition, Springer-Verlag London Limited 2009
+
+[2] Maio D., Maltoni D., Cappelli R., Wayman J.L. and Jain A.K., “FVC2000: Fingerprint verification
+competition,” IEEE Transactions on Pattern Analysis Machine Intelligence, vol. 24, no. 3, pp. 402–412, 2002
