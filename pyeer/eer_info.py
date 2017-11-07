@@ -126,8 +126,16 @@ def get_eer_info():
         gmean = np.mean(gen_scores)
         gvar = np.var(gen_scores)
 
-        imean = np.mean(imp_scores)
-        ivar = np.var(imp_scores)
+        if args.hist:
+            nscores = sum(imp_scores)
+            nscores_prob = np.array(imp_scores) / nscores
+            scores = np.arange(len(imp_scores))
+
+            imean = (scores * nscores_prob).sum()
+            ivar = ((scores - imean) ** 2 * nscores_prob).sum()
+        else:
+            imean = np.mean(imp_scores)
+            ivar = np.var(imp_scores)
 
         # Calculating area under the ROC curve
         auc = calculate_roc_auc(fmr, fnmr)
