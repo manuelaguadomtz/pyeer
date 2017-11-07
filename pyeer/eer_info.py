@@ -15,11 +15,9 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
-                             'fmr100000', 'fmr10000', 'fmr1000', 'fmr100',
-                             'fnmr0', 'fnmr100000', 'fnmr10000', 'fnmr1000',
-                             'fnmr100', 'gen_scores', 'imp_scores', 'gmean',
-                             'gvar', 'imean', 'ivar', 'exp_id', 'eer_low',
-                             'eer_high'])
+                             'fmr1000', 'fmr100', 'fnmr0', 'gen_scores',
+                             'imp_scores', 'gmean', 'gvar', 'imean', 'ivar',
+                             'exp_id', 'eer_low', 'eer_high'])
 
 
 def __get_score(line):
@@ -109,19 +107,13 @@ def get_eer_info():
         # Estimating EER
         eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
 
-        # Estimating FMR operation points
+        # Estimating FMR operating points
         fmr0 = get_fmr_op(fmr, fnmr, 0)
-        fmr100000 = get_fmr_op(fmr, fnmr, 0.00001)
-        fmr10000 = get_fmr_op(fmr, fnmr, 0.0001)
         fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
         fmr100 = get_fmr_op(fmr, fnmr, 0.01)
 
-        # Estimating FNMR operation points
+        # Estimating FNMR operating points
         fnmr0 = get_fnmr_op(fmr, fnmr, 0)
-        fnmr100000 = get_fnmr_op(fmr, fnmr, 0.00001)
-        fnmr10000 = get_fnmr_op(fmr, fnmr, 0.0001)
-        fnmr1000 = get_fnmr_op(fmr, fnmr, 0.001)
-        fnmr100 = get_fnmr_op(fmr, fnmr, 0.01)
 
         # Calculating distributions mean and variance
         gmean = np.mean(gen_scores)
@@ -144,11 +136,8 @@ def get_eer_info():
         # Stacking stats
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
-                           fnmr0=fnmr0, fnmr1000=fnmr1000, fnmr100=fnmr100,
-                           gen_scores=gen_scores, imp_scores=imp_scores,
-                           exp_id=exp[2], fmr10000=fmr10000,
-                           fnmr10000=fnmr10000, fmr100000=fmr100000,
-                           fnmr100000=fnmr100000, gmean=gmean, gvar=gvar,
+                           fnmr0=fnmr0, gen_scores=gen_scores, exp_id=exp[2],
+                           imp_scores=imp_scores, gmean=gmean, gvar=gvar,
                            imean=imean, ivar=ivar, eer_low=eer_low,
                            eer_high=eer_high))
 
