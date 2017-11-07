@@ -4,6 +4,7 @@ from os.path import join
 import csv
 
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.font_manager import FontProperties
 
 __copyright__ = 'Copyright 2017'
@@ -51,7 +52,7 @@ def generate_report(stats, save_file):
         writer.writerow(['FNMR: False Non-Match Rate'])
 
 
-def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
+def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,
                save_plots=False, dpi=None, save_path='', ext='.png'):
     """Plot a series of graphs from the given stats
 
@@ -59,8 +60,9 @@ def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
     @type stats: iterable
     @param line_width: The width of the plotted curves (default=3)
     @type line_width: int
-    @param plot_dist: Indicates whether to plot the scores distribution graph
-    @type plot_dist: bool
+    @param hist_format: Indicates whether the impostor scores are in
+                        histogram format
+    @type hist_format: bool
     @param bins: The number of bins to compute scores distribution
     @type bins: int
     @param lgf_size: The size of the legend font (default=15)
@@ -98,23 +100,35 @@ def plot_stats(stats, line_width=3, plot_dist=True, bins=100, lgf_size=15,
 
     for st in stats:
         # Plotting score distributions
-        if plot_dist:
-            title = 'Score distributions experiment: ' + st.exp_id
-            dist_fig = plt.figure()
-            dist_plot = dist_fig.add_subplot(111)
-            dist_plot.grid(False)
-            dist_plot.set_ylabel('Frequency')
-            dist_plot.set_xlabel('Scores')
-            dist_plot.set_title(title)
+        title = 'Score distributions experiment: ' + st.exp_id
+        dist_fig = plt.figure()
+        dist_plot = dist_fig.add_subplot(111)
+        dist_plot.grid(False)
+        dist_plot.set_ylabel('Frequency')
+        dist_plot.set_xlabel('Scores')
+        dist_plot.set_title(title)
+
+        if hist_format:
+            m = max(st.gen_scores)
+            x = np.arange(m)
+            ghist = np.histogram(st.gen_scores, bins=np.arange(m + 1))[0]
+            dist_plot.plot(x, ghist, color='g',
+                           label='Genuine scores %d' % len(st.gen_scores))
+
+            x = np.arange(len(st.imp_scores))
+            dist_plot.plot(x, st.imp_scores, color='r',
+                           label='Impostor scores %d' % sum(st.imp_scores))
+        else:
             dist_plot.hist(st.gen_scores, bins=bins, color='g',
                            label='Genuine scores %d' % len(st.gen_scores))
             dist_plot.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
                            label='Impostor scores %d' % len(st.imp_scores))
-            dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
-            if save_plots:
-                fig_name = 'Distributions (%s)' % st.exp_id + ext
-                dist_fig.savefig(join(save_path, fig_name), dpi=dpi)
+        dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
+
+        if save_plots:
+            fig_name = 'Distributions (%s)' % st.exp_id + ext
+            dist_fig.savefig(join(save_path, fig_name), dpi=dpi)
 
         # Plotting FMR and FNMR curves
         eer_fig = plt.figure()

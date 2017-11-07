@@ -158,5 +158,5 @@ def get_eer_info():
 
     print('Plotting...')
 
-    plot_stats(stats, line_width, not args.hist, bins, lgf_size,
+    plot_stats(stats, line_width, args.hist, bins, lgf_size,
                args.save_plots, dpi, args.save_path, ext)
