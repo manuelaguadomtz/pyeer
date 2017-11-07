@@ -13,7 +13,7 @@ EER values are reported as specified in [2]
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
-PyEER has been developed with the idea of providing researchers and the scientific community in general with a 
+**PyEER** has been developed with the idea of providing researchers and the scientific community in general with a 
 tool to correctly evaluate and report the performance of their systems.
 
 Installing
@@ -114,3 +114,7 @@ References
 
 [2] Maio D., Maltoni D., Cappelli R., Wayman J.L. and Jain A.K., “FVC2000: Fingerprint verification
 competition,” IEEE Transactions on Pattern Analysis Machine Intelligence, vol. 24, no. 3, pp. 402–412, 2002
+
+[3] Hernandez-Palancar, J., Munoz-Briseno, A., & Gago-Alonso, A. (2014). Using a
+triangular matching approach for latent fingerprint and palmprint identifica-
+tion. International Journal of Pattern Recognition and Artificial Intelligence, 28, 1460004.
