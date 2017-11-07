@@ -1,3 +1,4 @@
+=====
 PyEER
 =====
 
@@ -16,18 +17,19 @@ Utilities provided within this package can also be used to develop other scripts
 tool to correctly evaluate and report the performance of their systems.
 
 Installing
-----------
+==========
 
 .. code:: sh
 
     pip install pyeer
 
 Input file formats
-------------------
+==================
 Genuine match scores must be provided in a file with one score per line. Each line can have any number of columns but
 the scores must be in the last column. For impostor match scores the program can handle two different formats:
 
-####Histogram format
+Histogram format
+----------------
 
 Although the vast majority of the systems report scores normalized between 0 and 1, there are some that report
 integer scores [3]. When computing a lot of impostor scores, millions of them, it can be computationally 
@@ -54,18 +56,20 @@ equals to 2, 321 scores equals to 3 and so on.
 
 **Note:** Only impostor scores file can mimic this format.
 
-####Non-Histogram format
+Non-Histogram format
+--------------------
 
 **Restrictions:** None. Integer and float scores are both supported.
 
 **File format:** All the scores one by line, just as the genuine match scores file format
 
 Usage
------
+=====
 
 **console cmd:** geteerinf
 
-####Examples:
+Examples:
+---------
 
 
 **To print the script help**
@@ -100,14 +104,14 @@ directory where to saved it, you can use the "-sp" option.
 on Gitlab or extract them from inside the package installation
 
 Contributing
-------------
+============
 
 Do you find **PyEER** useful? You can collaborate with us:
 
 `Link Gitlab <https://gitlab.com/manuelaguadomtz/pyeer>`_
 
 References
-----------
+==========
 
 [1] D. Maltoni et al., Handbook of Fingerprint Recognition, Springer-Verlag London Limited 2009
 
