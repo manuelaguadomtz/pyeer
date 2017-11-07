@@ -158,7 +158,6 @@ def get_fmr_op(fmr, fnmr, op):
     """
     index = np.argmin(abs(fmr - op))
     return fnmr[index]
-    # return np.interp(op, fmr, 1 - fnmr)
 
 
 def get_eer_values(fmr, fnmr):
