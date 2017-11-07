@@ -6,10 +6,9 @@ plotting, scores distribution plotting, EER and operating points estimation. It 
 classification systems.
 
 The program provided within this package receive two files holding genuine match scores and impostor match scores [1].
-Genuine match scores are obtained by matching feature sets of the same class (same person) while impostor matching
-scores are obtained by matching feature sets of different classes (different persons). Using this scores the program plots
-ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system scores provided.
-EER values are reported as specified in [2]
+Genuine match scores are obtained by matching feature sets of the same class (same person), while impostor matching
+scores are obtained by matching feature sets of different classes (different persons). Using this scores the program 
+plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER values are reported as specified in [2]
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
@@ -30,8 +29,8 @@ the scores must be in the last column. For impostor match scores the program can
 
 ####Histogram format
 
-Although the vast majority of the systems report scores normalized between 0 and 1 there are some that report
-integer scores [3]. When computing a lot of impostor scores (millions of them) it can be computationally 
+Although the vast majority of the systems report scores normalized between 0 and 1, there are some that report
+integer scores [3]. When computing a lot of impostor scores, millions of them, it can be computationally 
 expensive to read all those scores from a file. Therefore, in those cases may be worth it to use this format.
 
 **Restrictions:** Only integer scores are supported
@@ -94,8 +93,8 @@ Usage
     geteerinf -p "example_files/hist/" -i "exp1_false.txt" -g "exp1_true.txt" -e "exp1" -ht
 
 For all the above examples a CSV file will be generated in the directory where the program was invoked. The file contains
-a summary with the values of EER, operating points and area under the ROC curve for each experiment. To specify the directory
-where to saved it, you can use the "-sp" option.
+a summary with the values of EER, operating points and area under the ROC curve for each experiment. To specify the 
+directory where to saved it, you can use the "-sp" option.
 
 **Note:** To run the above examples you can download the score files from the project site
 on Gitlab or extract them from inside the package installation
