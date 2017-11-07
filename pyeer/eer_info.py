@@ -67,7 +67,8 @@ def get_eer_info():
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
                     help="The size of the legend font (default=15)")
     ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
-                    help="The number of bins to compute scores distribution")
+                    help="The number of bins to compute scores distribution."
+                         "Will be ignored if -ht is passed as parameter")
     args = ap.parse_args()
 
     # Parsing arguments

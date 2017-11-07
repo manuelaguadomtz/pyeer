@@ -64,6 +64,7 @@ def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,
                         histogram format
     @type hist_format: bool
     @param bins: The number of bins to compute scores distribution
+                 It will be ignored if the hist_format=True
     @type bins: int
     @param lgf_size: The size of the legend font (default=15)
     @type lgf_size: int

@@ -115,18 +115,18 @@ def calculate_roc_auc(fmr, fnmr):
 
 
 def get_fnmr_op(fmr, fnmr, op):
-    """Returns the value of the given FNMR operation point
+    """Returns the value of the given FNMR operating point
 
     Definition:
     ZeroFNMR: is defined as the lowest FMR at which no non-false matches occur.
 
-    Others FNMR operation points are defined in a similar way.
+    Others FNMR operating points are defined in a similar way.
 
     @param fmr: False Match Rates
     @type fmr: ndarray
     @param fnmr: False Non-Match Rates
     @type fnmr: ndarray
-    @param op: Operation point
+    @param op: Operating point
     @type op: float
 
     @returns: The lowest FMR at which the probability of FNMR == op
@@ -139,18 +139,18 @@ def get_fnmr_op(fmr, fnmr, op):
 
 
 def get_fmr_op(fmr, fnmr, op):
-    """Returns the value of the given FMR operation point
+    """Returns the value of the given FMR operating point
 
     Definition:
     ZeroFMR: is defined as the lowest FNMR at which no false matches occur.
 
-    Others FMR operation points are defined in a similar way.
+    Others FMR operating points are defined in a similar way.
 
     @param fmr: False Match Rates
     @type fmr: ndarray
     @param fnmr: False Non-Match Rates
     @type fnmr: ndarray
-    @param op: Operation point
+    @param op: Operating point
     @type op: float
 
     @returns: The lowest FNMR at which the probability of FMR == op
@@ -158,6 +158,7 @@ def get_fmr_op(fmr, fnmr, op):
     """
     index = np.argmin(abs(fmr - op))
     return fnmr[index]
+    # return np.interp(op, fmr, 1 - fnmr)
 
 
 def get_eer_values(fmr, fnmr):
