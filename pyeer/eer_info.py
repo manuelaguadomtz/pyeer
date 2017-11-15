@@ -68,6 +68,9 @@ def get_eer_info():
     ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
                     help="The number of bins to compute scores distribution."
                          "Will be ignored if -ht is passed as parameter")
+    ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
+                    help="Indicates whether to plot the DET curves in a "
+                         "log-log scale")
     args = ap.parse_args()
 
     # Parsing arguments
@@ -153,4 +156,4 @@ def get_eer_info():
     print('Plotting...')
 
     plot_stats(stats, line_width, args.hist, bins, lgf_size,
-               args.save_plots, dpi, args.save_path, ext)
+               args.log_plt, args.save_plots, dpi, args.save_path, ext)

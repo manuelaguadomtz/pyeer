@@ -51,7 +51,8 @@ def generate_report(stats, save_file):
 
 
 def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,
-               save_plots=False, dpi=None, save_path='', ext='.png'):
+               log_plot=True, save_plots=False, dpi=None, save_path='',
+               ext='.png'):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -66,6 +67,9 @@ def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,
     @type bins: int
     @param lgf_size: The size of the legend font (default=15)
     @type lgf_size: int
+    @param log_plot: Indicates whether to plot the DET curves in a
+                     log-log scale
+    @type log_plot: bool
     @param save_plots: Indicates whether to save the plots instead
                        of showing them
     @type save_plots: bool
@@ -85,9 +89,15 @@ def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,
     det_fig = plt.figure()
     det_plot = det_fig.add_subplot(111)
     det_plot.set_title('DET Curves')
-    det_plot.grid(True)
     det_plot.set_ylabel('FNMR')
     det_plot.set_xlabel('FMR')
+
+    if log_plot:
+        det_plot.set_yscale('log')
+        det_plot.set_xscale('log')
+        det_plot.grid(True, which='both', ls='--')
+    else:
+        det_plot.grid(True)
 
     roc_fig = plt.figure()
     roc_plot = roc_fig.add_subplot(111)
