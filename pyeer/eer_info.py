@@ -36,7 +36,8 @@ def __get_score(line):
 
 def get_eer_info():
     ap = argparse.ArgumentParser()
-    ap.add_argument("-p", "--path", required=True, help="path to exp files")
+    ap.add_argument("-p", "--path", required=False, default='.',
+                    help="Path to scores files.")
     ap.add_argument("-i", "--iscores_files", required=True,
                     help="Impostor exp file names separated by comma")
     ap.add_argument("-g", "--gscores_files", required=True,
