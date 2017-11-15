@@ -15,9 +15,10 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
-                             'fmr1000', 'fmr100', 'fnmr0', 'gen_scores',
-                             'imp_scores', 'gmean', 'gvar', 'imean', 'ivar',
-                             'exp_id', 'eer_low', 'eer_high'])
+                             'fmr1000', 'fmr100', 'fmr20', 'fmr10',
+                             'fnmr0', 'gen_scores', 'imp_scores', 'gmean',
+                             'gvar', 'imean', 'ivar', 'exp_id', 'eer_low',
+                             'eer_high'])
 
 
 def __get_score(line):
@@ -111,6 +112,8 @@ def get_eer_info():
         fmr0 = get_fmr_op(fmr, fnmr, 0)
         fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
         fmr100 = get_fmr_op(fmr, fnmr, 0.01)
+        fmr20 = get_fmr_op(fmr, fnmr, 0.05)
+        fmr10 = get_fmr_op(fmr, fnmr, 0.1)
 
         # Estimating FNMR operating points
         fnmr0 = get_fnmr_op(fmr, fnmr, 0)
@@ -136,7 +139,8 @@ def get_eer_info():
         # Stacking stats
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
-                           fnmr0=fnmr0, gen_scores=gen_scores, exp_id=exp[2],
+                           fmr20=fmr20, fmr10=fmr10, fnmr0=fnmr0,
+                           gen_scores=gen_scores, exp_id=exp[2],
                            imp_scores=imp_scores, gmean=gmean, gvar=gvar,
                            imean=imean, ivar=ivar, eer_low=eer_low,
                            eer_high=eer_high))
