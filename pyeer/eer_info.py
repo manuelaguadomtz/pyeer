@@ -17,7 +17,7 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
                              'fmr1000', 'fmr100', 'fmr20', 'fmr10',
                              'fnmr0', 'gen_scores', 'imp_scores', 'gmean',
-                             'gvar', 'imean', 'ivar', 'exp_id', 'eer_low',
+                             'gstd', 'imean', 'istd', 'exp_id', 'eer_low',
                              'eer_high'])
 
 
@@ -124,7 +124,7 @@ def get_eer_info():
 
         # Calculating distributions mean and variance
         gmean = np.mean(gen_scores)
-        gvar = np.var(gen_scores)
+        gstd = np.std(gen_scores)
 
         if args.hist:
             nscores = sum(imp_scores)
@@ -132,10 +132,10 @@ def get_eer_info():
             scores = np.arange(len(imp_scores))
 
             imean = (scores * nscores_prob).sum()
-            ivar = ((scores - imean) ** 2 * nscores_prob).sum()
+            istd = np.sqrt(((scores - imean) ** 2 * nscores_prob).sum())
         else:
             imean = np.mean(imp_scores)
-            ivar = np.var(imp_scores)
+            istd = np.std(imp_scores)
 
         # Calculating area under the ROC curve
         auc = calculate_roc_auc(fmr, fnmr)
@@ -145,8 +145,8 @@ def get_eer_info():
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
                            fmr20=fmr20, fmr10=fmr10, fnmr0=fnmr0,
                            gen_scores=gen_scores, exp_id=exp[2],
-                           imp_scores=imp_scores, gmean=gmean, gvar=gvar,
-                           imean=imean, ivar=ivar, eer_low=eer_low,
+                           imp_scores=imp_scores, gmean=gmean, gstd=gstd,
+                           imean=imean, istd=istd, eer_low=eer_low,
                            eer_high=eer_high))
 
     # Generating reports

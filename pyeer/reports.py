@@ -23,16 +23,16 @@ def generate_report(stats, save_file):
 
         # Writing headers
         writer = csv.writer(sf)
-        row = ['Experiment ID', 'GMean', 'GVariance', 'IMean',
-               'IVariance', 'AUC', 'EERlow', 'EERhigh', 'EER',
+        row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
+               'ISTD', 'AUC', 'EERlow', 'EERhigh', 'EER',
                'FMR=0', 'FMR1000', 'FMR100', 'FMR20', 'FMR10',
                'FNMR0']
         writer.writerow(row)
 
         for st in stats:
             # Writing stats
-            row = [st.exp_id.encode("utf-8"), st.gmean, st.gvar,
-                   st.imean, st.ivar, st.auc, st.eer_low, st.eer_high,
+            row = [st.exp_id.encode("utf-8"), st.gmean, st.gstd,
+                   st.imean, st.istd, st.auc, st.eer_low, st.eer_high,
                    st.eer, st.fmr0, st.fmr1000, st.fmr100, st.fmr20,
                    st.fmr10, st.fnmr0]
             writer.writerow(row)
@@ -41,9 +41,11 @@ def generate_report(stats, save_file):
         writer.writerow([])
         writer.writerow(['Legend:'])
         writer.writerow(['GMean: Genuine scores distribution mean'])
-        writer.writerow(['GVariance: Genuine scores distribution variance'])
+        writer.writerow(['GSTD: Genuine scores distribution '
+                         'standard deviation'])
         writer.writerow(['IMean: Impostor scores distribution mean'])
-        writer.writerow(['IVariance: Impostor scores distribution variance'])
+        writer.writerow(['IVariance: Impostor scores distribution '
+                         'standard deviation'])
         writer.writerow(['AUC: Area under the ROC curve'])
         writer.writerow(['EER: Equal Error Rate'])
         writer.writerow(['FMR: False Match Rate'])
