@@ -11,18 +11,20 @@ setup(
     name='pyeer',
 
     # Package version
-    version='0.3.3',
+    version='0.4.0',
 
     entry_points={
         'console_scripts': [
             'geteerinf = pyeer.eer_info:get_eer_info',
+            'getcmcinf = pyeer.cmc_info:get_cmc_info',
         ],
     },
 
     include_package_data=True,
 
     package_data={
-        'pyeer': ['example_files/hist/*.txt', 'example_files/non_hist/*.txt'],
+        'pyeer': ['example_files/hist/*.txt', 'example_files/non_hist/*.txt',
+                  'example_files/cmc/*.txt'],
     },
 
     # Included packages
@@ -47,5 +49,5 @@ setup(
 
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
               'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
-              'ZeroFMR', 'Biometric Systems'],
+              'ZeroFMR', 'CMC', 'Biometric Systems'],
 )
