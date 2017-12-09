@@ -120,7 +120,7 @@ Examples:
 
 .. code:: sh
 
-    getcmcinf -p "example_files/cmc/" -s "exp1_scores.txt,exp2_scores.txt" -t "exp1_tp.txt,exp2_tp.txt" -e "Exp1,Exp2"
+    getcmcinf -p "example_files/cmc/" -ms "exp1_scores.txt,exp2_scores.txt" -t "exp1_tp.txt,exp2_tp.txt" -e "Exp1,Exp2"
 
 
 For all the above examples a CSV file will be generated in the directory where the program was invoked. The file contains
