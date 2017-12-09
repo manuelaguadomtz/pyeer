@@ -2,14 +2,20 @@
 PyEER
 =====
 
-**PyEER** is a python package for biometric systems performance evaluation. Includes ROC, DET, FNMR and FMR curves
+**PyEER** is a python package for biometric systems performance evaluation. Includes ROC, DET, FNMR, FMR and CMC curves
 plotting, scores distribution plotting, EER and operating points estimation. It can be also used to evaluate binary
 classification systems.
 
-The program provided within this package receive two files holding genuine match scores and impostor match scores [1].
+Two programs are provided within this package:
+
+**geteerinf:** Receive two files holding genuine match scores and impostor match scores [1].
 Genuine match scores are obtained by matching feature sets of the same class (same person), while impostor matching
 scores are obtained by matching feature sets of different classes (different persons). Using this scores the program 
-plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER values are reported as specified in [2]
+plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER values are 
+reported as specified in [2]
+
+**getcmcinf:** Receive two files holding match scores and genuine query-template pairs [1]. This program is provided to evaluate
+biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each algorithm are reported.
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
@@ -23,8 +29,8 @@ Installing
 
     pip install pyeer
 
-Input file formats
-==================
+geteerinf input file formats
+============================
 Genuine match scores must be provided in a file with one score per line. Each line can have any number of columns but
 the scores must be in the last column. For impostor match scores the program can handle two different formats:
 
@@ -63,10 +69,24 @@ Non-Histogram format
 
 **File format:** All the scores one by line, just as the genuine match scores file format
 
+getcmcinf input file formats
+============================
+
+Scores file
+-----------
+
+Each line must have the following format: (query template score)
+
+Genuine query-template pairs
+----------------------------
+
+Each line must have the following format: (query corresponding_template)
+
 Usage
 =====
 
 **console cmd:** geteerinf
+**console cmd:** getcmcinf
 
 Examples:
 ---------
@@ -104,11 +124,11 @@ Examples:
 
 
 For all the above examples a CSV file will be generated in the directory where the program was invoked. The file contains
-a summary with the values of EER, operating points and area under the ROC curve for each experiment. To specify the 
-directory where to saved it, you can use the "-sp" option.
+a summary with the values of EER, operating points and area under the ROC curve for each experiment or rank values depending the 
+program invoked. To specify the directory where to saved it, you can use the "-sp" option.
 
-**Note:** To run the above examples you can download the score files from the project site
-on Gitlab or extract them from inside the package installation
+**Note:** To run the above examples you can download the score files from the project site on Gitlab or extract them from inside the 
+package installation
 
 Contributing
 ============
