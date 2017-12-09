@@ -1,2 +1,3 @@
 include pyeer/example_files/hist/*.txt
 include pyeer/example_files/non_hist/*.txt
+include pyeer/example_files/cmc/*.txt
