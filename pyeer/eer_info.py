@@ -8,7 +8,7 @@ import numpy as np
 
 from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op, get_eer_values
-from reports import generate_report, plot_stats
+from reports import generate_eer_report, plot_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -152,7 +152,7 @@ def get_eer_info():
     # Generating reports
     print('Generating report...')
 
-    generate_report(stats, join(args.save_path, 'pyeer_report.csv'))
+    generate_eer_report(stats, join(args.save_path, 'pyeer_report.csv'))
 
     print('Plotting...')
 

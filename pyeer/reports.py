@@ -11,7 +11,7 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
-def generate_report(stats, save_file):
+def generate_eer_report(stats, save_file):
     """ Generate a CSV file with the given statistics
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -50,6 +50,29 @@ def generate_report(stats, save_file):
         writer.writerow(['EER: Equal Error Rate'])
         writer.writerow(['FMR: False Match Rate'])
         writer.writerow(['FNMR: False Non-Match Rate'])
+
+
+def generate_cmc_report(exps_cmc, max_rank, save_file):
+    """ Generate a CSV file with the given CMC rank values
+
+    @param exps_cmc: An dictionary with the rank values of each experiment:
+        (key=experiment id, value=CMC curve)
+    @type exps_cmc: dict
+    @param max_rank: The maximum rank of the CMC curves
+    @type max_rank: int
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    with open(save_file, 'w') as sf:
+
+        # Writing headers
+        writer = csv.writer(sf)
+        row = ['Rank-' + str(i) for i in range(1, max_rank + 1)]
+        writer.writerow(['Experiment ID'] + row)
+
+        for key, value in exps_cmc.items():
+            # Writing rank values
+            writer.writerow([key] + value)
 
 
 def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,

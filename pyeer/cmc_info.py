@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 
 from .cmc_stats import load_scores_from_file, get_cmc_curve
+from .reports import generate_cmc_report
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Manuel Aguado Martínez'
@@ -67,15 +68,17 @@ def get_cmc_info():
     plt.xticks(range(1, rank))
 
     # Calculating CMC values for each experiment and plotting them
+    stats = {}
     for exp in experiments:
         s_filename = join(args.path, exp[0])
         tp_filename = join(args.path, exp[1])
         experiment_name = exp[2]
 
         scores = load_scores_from_file(s_filename, tp_filename)
-        ranks_values = get_cmc_curve(scores, rank)
+        rank_values = get_cmc_curve(scores, rank)
+        stats[experiment_name] = rank_values
 
-        plt.plot(range(1, len(ranks_values) + 1), ranks_values,
+        plt.plot(range(1, len(rank_values) + 1), rank_values,
                  label=experiment_name, linewidth=line_width)
 
     # Finalizing plots
@@ -90,3 +93,5 @@ def get_cmc_info():
         plt.close()
     else:
         plt.show()
+
+    generate_cmc_report(stats, rank, join(args.save_path, 'pyeer_report.csv'))
