@@ -2,8 +2,8 @@
 
 import operator
 
-__copyright__ = 'Copyright 2016'
-__author__ = u'Lic. Manuel Aguado Martínez'
+__copyright__ = 'Copyright 2017'
+__author__ = u'Manuel Aguado Martínez'
 
 TEMPLATE_POS = 0
 SCORE_POS = 1
