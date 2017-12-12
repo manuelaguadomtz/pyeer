@@ -21,7 +21,8 @@ def get_cmc_info():
     ap.add_argument("-ms", "--scores_filenames", required=True,
                     help="Match scores file names separated by comma")
     ap.add_argument("-t", "--true_pairs_file_names", required=True,
-                    help="True templates file names separated by comma")
+                    help="True templates file names separated by comma. "
+                         "Or a single filename if all the files are the same")
     ap.add_argument("-e", "--experiment_names", required=True,
                     help="Experiment names separated by comma")
     ap.add_argument("-r", "--maximum_rank", required=False, default=20,
@@ -51,6 +52,8 @@ def get_cmc_info():
     # Parsing script arguments
     score_filenames = args.scores_filenames.split(',')
     true_pairs_filenames = args.true_pairs_file_names.split(',')
+    if len(true_pairs_filenames) == 1:
+        true_pairs_filenames *= len(score_filenames)
     experiment_names = args.experiment_names.split(',')
     experiments = zip(score_filenames, true_pairs_filenames, experiment_names)
     rank = int(args.maximum_rank)
@@ -84,6 +87,8 @@ def get_cmc_info():
     # Finalizing plots
     plt.legend(loc='best', prop=font_manager.FontProperties(size=legend_font))
 
+    generate_cmc_report(stats, rank, join(args.save_path, 'pyeer_report.csv'))
+
     # Showing plots or saving plots
     if args.save_plots:
         # saving plots
@@ -93,5 +98,3 @@ def get_cmc_info():
         plt.close()
     else:
         plt.show()
-
-    generate_cmc_report(stats, rank, join(args.save_path, 'pyeer_report.csv'))
