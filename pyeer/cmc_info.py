@@ -14,6 +14,11 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Manuel Aguado Martínez'
 
 
+STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
+          '3--', '4--', '.--', 'p--', '*--', 'h--', 'H--', '+--', 'x--'
+          'd--', '|--', '---']
+
+
 def get_cmc_info():
     # Setting script arguments
     ap = argparse.ArgumentParser()
@@ -28,10 +33,10 @@ def get_cmc_info():
     ap.add_argument("-r", "--maximum_rank", required=False, default=20,
                     help="The maximum rank to calculate the penetration"
                          " coefficient. (default=20)")
-    ap.add_argument("-lw", "--line_width", required=False, default=5,
-                    help="The width of the plotted curves (default=5)")
-    ap.add_argument("-lf", "--legend_font", required=False, default=20,
-                    help="The size of the legend font (default=20)")
+    ap.add_argument("-lw", "--line_width", required=False, default=2,
+                    help="The width of the plotted curves (default=2)")
+    ap.add_argument("-lf", "--legend_font", required=False, default=12,
+                    help="The size of the legend font (default=12)")
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
                     help="Indicates whether to save the plots instead of"
                          " showing them")
@@ -72,7 +77,7 @@ def get_cmc_info():
 
     # Calculating CMC values for each experiment and plotting them
     stats = {}
-    for exp in experiments:
+    for i, exp in enumerate(experiments):
         s_filename = join(args.path, exp[0])
         tp_filename = join(args.path, exp[1])
         experiment_name = exp[2]
@@ -81,7 +86,7 @@ def get_cmc_info():
         rank_values = get_cmc_curve(scores, rank)
         stats[experiment_name] = rank_values
 
-        plt.plot(range(1, len(rank_values) + 1), rank_values,
+        plt.plot(range(1, len(rank_values) + 1), rank_values, STYLES[i],
                  label=experiment_name, linewidth=line_width)
 
     # Finalizing plots
