@@ -64,6 +64,9 @@ def calculate_roc(gscores, iscores):
     @return: (thresholds, FMR, FNMR)
     @rtype: tuple
     """
+    # gscores = np.array(gscores) * -1
+    # iscores = np.array(iscores) * -1
+
     gscores_number = len(gscores)
     iscores_number = len(iscores)
 
@@ -90,6 +93,7 @@ def calculate_roc(gscores, iscores):
     fnm_rates = fnm / gscores_number
     fm_rates = fm / iscores_number
 
+    # return thresholds * -1, fm_rates, fnm_rates
     return thresholds, fm_rates, fnm_rates
 
 
