@@ -22,7 +22,8 @@ STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
 def get_cmc_info():
     # Setting script arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument("-p", "--path", required=True, help="path to match files")
+    ap.add_argument("-p", "--path", required=False, default='.',
+                    help="path to match files")
     ap.add_argument("-ms", "--scores_filenames", required=True,
                     help="Match scores file names separated by comma")
     ap.add_argument("-t", "--true_pairs_file_names", required=True,
