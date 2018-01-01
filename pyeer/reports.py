@@ -130,7 +130,16 @@ def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
     roc_plot.grid(True)
     roc_plot.set_ylabel('1 - FNMR')
     roc_plot.set_xlabel('FMR')
-    roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
+
+    if log_plot:
+        # roc_plot.set_yscale('log')
+        roc_plot.set_xscale('log')
+        roc_plot.grid(True, which='minor', ls='--')
+    else:
+        roc_plot.grid(True)
+
+    if not log_plot:
+        roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
     for st in stats:
         # Plotting score distributions
