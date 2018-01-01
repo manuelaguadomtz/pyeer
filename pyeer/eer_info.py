@@ -2,23 +2,15 @@
 
 import argparse
 from os.path import join
-from collections import namedtuple
 
 import numpy as np
 
-from stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
-    get_fmr_op, get_fnmr_op, get_eer_values
+from eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
+    get_fmr_op, get_fnmr_op, get_eer_values, Stats
 from reports import generate_eer_report, plot_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
-
-
-Stats = namedtuple('Stats', ['thrs', 'fmr', 'fnmr', 'auc', 'eer', 'fmr0',
-                             'fmr1000', 'fmr100', 'fmr20', 'fmr10',
-                             'fnmr0', 'gen_scores', 'imp_scores', 'gmean',
-                             'gstd', 'imean', 'istd', 'exp_id', 'eer_low',
-                             'eer_high'])
 
 
 def __get_score(line):

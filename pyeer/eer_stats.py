@@ -2,10 +2,44 @@
 
 import operator
 
+from collections import namedtuple
+
 import numpy as np
+
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
+
+
+Stats = namedtuple('Stats', ['exp_id',  # Exp id
+
+                             # Rate curves
+                             'thrs',  # Thresholds
+                             'fmr',  # False match rates
+                             'fnmr',  # False non-match rates
+                             'auc',  # Area under the ROC curve
+
+                             # Operation points
+                             'fmr0',  # Zero false math rate
+                             'fmr1000',  # 1000 false match rate
+                             'fmr100',  # 100 false match rate
+                             'fmr20',  # 20 false match rate
+                             'fmr10',  # 10 false match rate
+                             'fnmr0',  # 0 false non-match rate
+
+                             # Scores distributions
+                             'gen_scores',  # Genuine scores
+                             'imp_scores',  # Impostor scores
+                             'gmean',  # Genuine scores mean
+                             'gstd',  # Genuine scores standard deviation
+                             'imean',  # Impostor scores mean
+                             'istd',  # Impostor scores standard deviation
+
+                             # Values of EER
+                             'eer',  # Equal error rate
+                             'eer_low',  # Equal error rate (low)
+                             'eer_high'  # Equal error rate (high)
+                             ])
 
 
 def calculate_roc_hist(gscores, iscores):

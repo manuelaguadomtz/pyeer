@@ -11,3 +11,6 @@
 pyeer.egg-info/
 build/
 dist/
+
+# Ignoring CSV files
+*.csv
