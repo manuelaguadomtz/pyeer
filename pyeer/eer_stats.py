@@ -87,19 +87,23 @@ def calculate_roc_hist(gscores, iscores):
     return thresholds, fm_rates, fnm_rates
 
 
-def calculate_roc(gscores, iscores):
+def calculate_roc(gscores, iscores, ds_scores=False):
     """Calculates FMR, FNMR
 
     @param gscores: Genuine matching scores
     @type gscores: list
     @param iscores: Impostor matching scores
     @type giscores: list
+    @param ds_scores: Indicates whether input scores are
+        dissimilarity scores
+    @type ds_scores: bool
 
     @return: (thresholds, FMR, FNMR)
     @rtype: tuple
     """
-    # gscores = np.array(gscores) * -1
-    # iscores = np.array(iscores) * -1
+    if ds_scores:
+        gscores = np.array(gscores) * -1
+        iscores = np.array(iscores) * -1
 
     gscores_number = len(gscores)
     iscores_number = len(iscores)
@@ -127,7 +131,9 @@ def calculate_roc(gscores, iscores):
     fnm_rates = fnm / gscores_number
     fm_rates = fm / iscores_number
 
-    # return thresholds * -1, fm_rates, fnm_rates
+    if ds_scores:
+        return thresholds * -1, fm_rates, fnm_rates
+
     return thresholds, fm_rates, fnm_rates
 
 

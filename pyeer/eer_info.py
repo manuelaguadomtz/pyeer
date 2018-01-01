@@ -64,6 +64,9 @@ def get_eer_info():
     ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
                     help="Indicates whether to plot the DET curves in a "
                          "log-log scale")
+    ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
+                    help='Indicates whether the input scores are dissimilarity'
+                         'scores')
     args = ap.parse_args()
 
     # Parsing arguments
@@ -96,7 +99,7 @@ def get_eer_info():
             roc_info = calculate_roc_hist(gen_scores, imp_scores)
         else:
             # Calculating probabilities using scores as thrs
-            roc_info = calculate_roc(gen_scores, imp_scores)
+            roc_info = calculate_roc(gen_scores, imp_scores, args.ds_scores)
 
         # Unboxing probability rates and info
         thrs, fmr, fnmr = roc_info
