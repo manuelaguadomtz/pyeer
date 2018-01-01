@@ -75,9 +75,9 @@ def generate_cmc_report(exps_cmc, max_rank, save_file):
             writer.writerow([key] + value)
 
 
-def plot_stats(stats, line_width=3, hist_format=True, bins=100, lgf_size=15,
-               log_plot=True, save_plots=False, dpi=None, save_path='',
-               ext='.png'):
+def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
+                   lgf_size=15, log_plot=True, save_plots=False,
+                   dpi=None, save_path='', ext='.png'):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple Stats

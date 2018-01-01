@@ -7,7 +7,7 @@ import numpy as np
 
 from eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op, get_eer_values, Stats
-from reports import generate_eer_report, plot_stats
+from reports import generate_eer_report, plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
@@ -148,5 +148,5 @@ def get_eer_info():
 
     print('Plotting...')
 
-    plot_stats(stats, line_width, args.hist, bins, lgf_size,
-               args.log_plt, args.save_plots, dpi, args.save_path, ext)
+    plot_eer_stats(stats, line_width, args.hist, bins, lgf_size,
+                   args.log_plt, args.save_plots, dpi, args.save_path, ext)
