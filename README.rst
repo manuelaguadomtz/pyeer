@@ -123,9 +123,8 @@ Examples:
     getcmcinf -p "example_files/cmc/" -ms "exp1_scores.txt,exp2_scores.txt" -t "exp1_tp.txt,exp2_tp.txt" -e "Exp1,Exp2"
 
 
-For all the above examples a CSV file will be generated in the directory where the program was invoked. The file contains
-a summary with the values of EER, operating points and area under the ROC curve for each experiment or rank values depending the 
-program invoked. To specify the directory where to saved it, you can use the "-sp" option.
+For all the above examples a CSV file will be generated in the directory where the program was invoked. The CSV file will include all 
+the calculated stats. To specify the directory where to saved it, you can use the "-sp" option.
 
 **Note:** To run the above examples you can download the score files from the project site on Gitlab or extract them from inside the 
 package installation
