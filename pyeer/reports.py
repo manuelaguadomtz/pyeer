@@ -51,6 +51,31 @@ def generate_eer_report(stats, save_file):
         writer.writerow(['FMR: False Match Rate'])
         writer.writerow(['FNMR: False Non-Match Rate'])
 
+        writer.writerow([])
+
+        # Writing rates header
+        headers = []
+        max_nthrs = -1
+        for st in stats:
+            # Writing rate cruves
+            headers += [' ', st.exp_id.encode("utf-8") + ' (FMR)',
+                        st.exp_id.encode("utf-8") + ' (FNMR)']
+
+            nthrs = len(st.thrs)
+            if nthrs > max_nthrs:
+                max_nthrs = nthrs
+        writer.writerow(headers)
+
+        # Writing rates
+        for i in range(max_nthrs):
+            row = []
+            for st in stats:
+                if i < len(st.thrs):
+                    row += [' ', st.fmr[i], st.fnmr[i]]
+                else:
+                    row += [' ', ' ', ' ']
+            writer.writerow(row)
+
 
 def generate_cmc_report(exps_cmc, max_rank, save_file):
     """ Generate a CSV file with the given CMC rank values
