@@ -61,17 +61,16 @@ def get_cmc_curve(scores, max_rank):
     @return: A list with the rank values.
     @rtype: list
     """
-    ranks_values = [0.0] * max_rank
+    ranks_values = [0.0] * (max_rank + 1)
     queries_total = len(scores)
 
     for r in range(max_rank):
         in_rank = 0.0
         for query_match_info in scores.values():
-            valid_matches = query_match_info[SCORE_POS][:r + 1]
+            match = query_match_info[SCORE_POS][r]
             true_template = query_match_info[TEMPLATE_POS].strip()
-            if filter(lambda m: m[TEMPLATE_POS] == true_template,
-                      valid_matches):
+            if match[TEMPLATE_POS] == true_template:
                 in_rank += 1
-        ranks_values[r] = in_rank / queries_total
+        ranks_values[r + 1] = in_rank / queries_total + ranks_values[r]
 
-    return ranks_values
+    return ranks_values[1:]
