@@ -67,12 +67,20 @@ def get_cmc_info():
         tp_filename = join(args.path, exp[1])
         experiment_name = exp[2]
 
+        print('%s: Loading scores file...' % experiment_name)
         scores = load_scores_from_file(s_filename, tp_filename)
+
+        print('%s: Calculating CMC cruve...' % experiment_name)
         rank_values = get_cmc_curve(scores, rank)
 
         stats.append(CMCstats(exp_id=experiment_name, ranks=rank_values))
 
+    # Generating reports
+    print('Generating report...')
+
     generate_cmc_report(stats, rank, join(args.save_path, 'pyeer_report.csv'))
+
+    print('Plotting...')
 
     plot_cmc_stats(stats, rank, line_width, lgf_size, args.save_plots,
                    dpi, args.save_path, ext)
