@@ -4,19 +4,11 @@ import argparse
 
 from os.path import join
 
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as font_manager
-
 from .cmc_stats import load_scores_from_file, get_cmc_curve, CMCstats
-from .reports import generate_cmc_report
+from .reports import generate_cmc_report, plot_cmc_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Manuel Aguado Martínez'
-
-
-STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
-          '3--', '4--', '.--', 'p--', '*--', 'h--', 'H--', '+--', 'x--'
-          'd--', '|--', '---']
 
 
 def get_cmc_info():
@@ -64,17 +56,9 @@ def get_cmc_info():
     experiments = zip(score_filenames, true_pairs_filenames, experiment_names)
     rank = int(args.maximum_rank)
     line_width = int(args.line_width)
-    legend_font = int(args.legend_font)
+    lgf_size = int(args.legend_font)
     ext = '.' + args.save_format
     dpi = None if args.save_dpi is None else int(args.save_dpi)
-
-    # Preparing plots
-    plt.title('CMC Curves')
-    plt.ylabel('Accuracy')
-    plt.xlabel('Rank')
-    plt.grid(True)
-    plt.axis(xmin=1, xmax=rank)
-    plt.xticks(range(1, rank))
 
     # Calculating CMC values for each experiment and plotting them
     stats = []
@@ -88,20 +72,7 @@ def get_cmc_info():
 
         stats.append(CMCstats(exp_id=experiment_name, ranks=rank_values))
 
-        plt.plot(range(1, len(rank_values) + 1), rank_values, STYLES[i],
-                 label=experiment_name, linewidth=line_width)
-
-    # Finalizing plots
-    plt.legend(loc='best', prop=font_manager.FontProperties(size=legend_font))
-
     generate_cmc_report(stats, rank, join(args.save_path, 'pyeer_report.csv'))
 
-    # Showing plots or saving plots
-    if args.save_plots:
-        # saving plots
-        plt.savefig(join(args.save_path, 'CMC' + ext), dpi=dpi)
-
-        # closing plots
-        plt.close()
-    else:
-        plt.show()
+    plot_cmc_stats(stats, rank, line_width, lgf_size, args.save_plots,
+                   dpi, args.save_path, ext)

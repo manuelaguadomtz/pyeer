@@ -11,6 +11,11 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
+STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
+          '3--', '4--', '.--', 'p--', '*--', 'h--', 'H--', '+--', 'x--'
+          'd--', '|--', '---']
+
+
 def generate_eer_report(stats, save_file):
     """ Generate a CSV file with the given statistics
 
@@ -230,6 +235,59 @@ def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
         # saving plots
         det_fig.savefig(join(save_path, 'DET' + ext), dpi=dpi)
         roc_fig.savefig(join(save_path, 'ROC' + ext), dpi=dpi)
+
+        # closing plots
+        plt.close()
+    else:
+        plt.show()
+
+
+def plot_cmc_stats(stats, max_rank, line_width=3, lgf_size=15,
+                   save_plots=False, dpi=None, save_path='', ext='.png'):
+    """Plot a series of graphs from the given stats
+
+    @param stats: An iterable with instances of the named tuple CMCstats
+    @type stats: iterable
+    @param max_rank: The maximum rank of the CMC curves
+    @type max_rank: int
+    @param line_width: The width of the plotted curves (default=3)
+    @type line_width: int
+    @param lgf_size: The size of the legend font (default=15)
+    @type lgf_size: int
+    @param save_plots: Indicates whether to save the plots instead
+                       of showing them
+    @type save_plots: bool
+    @param dpi: Plots resolution (dots per inch) used when save_plots=True.
+                If not given it will default to the value of savefig.dpi
+                in the matplotlibrc file
+    @type dpi: int
+    @param save_path: Path to save the plots (if save_plots=True)
+                      and stats report
+    @type save_path: str
+    @param ext: Format to save the plots if save_plots=True. Valid
+                formats are: (.png, .pdf, .ps, .eps and .svg)
+                (default='.png')
+    @type ext: str
+    """
+    # Preparing plots
+    plt.title('CMC Curves')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Rank')
+    plt.grid(True)
+    plt.axis(xmin=1, xmax=max_rank)
+    plt.xticks(range(1, max_rank))
+
+    for i, st in enumerate(stats):
+        plt.plot(range(1, len(st.ranks) + 1), st.ranks, STYLES[i],
+                 label=st.exp_id, linewidth=line_width)
+
+    # Finalizing plots
+    plt.legend(loc='best', prop=FontProperties(size=lgf_size))
+
+    # Showing plots or saving plots
+    if save_plots:
+        # saving plots
+        plt.savefig(join(save_path, 'CMC' + ext), dpi=dpi)
 
         # closing plots
         plt.close()
