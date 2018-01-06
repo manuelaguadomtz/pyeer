@@ -7,7 +7,7 @@ from os.path import join
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 
-from .cmc_stats import load_scores_from_file, get_cmc_curve
+from .cmc_stats import load_scores_from_file, get_cmc_curve, CMCstats
 from .reports import generate_cmc_report
 
 __copyright__ = 'Copyright 2017'
@@ -77,7 +77,7 @@ def get_cmc_info():
     plt.xticks(range(1, rank))
 
     # Calculating CMC values for each experiment and plotting them
-    stats = {}
+    stats = []
     for i, exp in enumerate(experiments):
         s_filename = join(args.path, exp[0])
         tp_filename = join(args.path, exp[1])
@@ -85,7 +85,8 @@ def get_cmc_info():
 
         scores = load_scores_from_file(s_filename, tp_filename)
         rank_values = get_cmc_curve(scores, rank)
-        stats[experiment_name] = rank_values
+
+        stats.append(CMCstats(exp_id=experiment_name, ranks=rank_values))
 
         plt.plot(range(1, len(rank_values) + 1), rank_values, STYLES[i],
                  label=experiment_name, linewidth=line_width)

@@ -2,11 +2,18 @@
 
 import operator
 
+from collections import namedtuple
+
 __copyright__ = 'Copyright 2017'
 __author__ = u'Manuel Aguado Martínez'
 
 TEMPLATE_POS = 0
 SCORE_POS = 1
+
+
+CMCstats = namedtuple('CMCstats', ['exp_id',  # Exp id
+                                   'ranks',  # Rank values
+                                   ])
 
 
 def load_scores_from_file(scores_filename, true_pairs_filename):

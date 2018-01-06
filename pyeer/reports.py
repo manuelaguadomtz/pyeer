@@ -77,12 +77,11 @@ def generate_eer_report(stats, save_file):
             writer.writerow(row)
 
 
-def generate_cmc_report(exps_cmc, max_rank, save_file):
+def generate_cmc_report(stats, max_rank, save_file):
     """ Generate a CSV file with the given CMC rank values
 
-    @param exps_cmc: An dictionary with the rank values of each experiment:
-        (key=experiment id, value=CMC curve)
-    @type exps_cmc: dict
+    @param exps_cmc: A list of CMCstats instances
+    @type exps_cmc: list
     @param max_rank: The maximum rank of the CMC curves
     @type max_rank: int
     @param save_file: The filename used to save the report
@@ -95,9 +94,9 @@ def generate_cmc_report(exps_cmc, max_rank, save_file):
         row = ['Rank-' + str(i) for i in range(1, max_rank + 1)]
         writer.writerow(['Experiment ID'] + row)
 
-        for key, value in exps_cmc.items():
+        for st in stats:
             # Writing rank values
-            writer.writerow([key] + value)
+            writer.writerow([st.exp_id] + st.ranks)
 
 
 def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
