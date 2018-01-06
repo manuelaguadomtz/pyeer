@@ -63,8 +63,8 @@ def get_eer_info():
                     help="The number of bins to compute scores distribution."
                          "Will be ignored if -ht is passed as parameter")
     ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
-                    help="Indicates whether to plot the DET curves in a "
-                         "log-log scale")
+                    help="Indicates whether to plot the DET and ROC curves "
+                         "in logarithmic scale")
     ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
                     help='Indicates whether the input scores are dissimilarity'
                          'scores')
