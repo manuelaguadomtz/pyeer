@@ -35,7 +35,8 @@ setup(
 
     author_email='manuelaguadomtz@gmail.com',
 
-    url='https://www.researchgate.net/profile/Manuel_Aguado_Martinez2',
+    url='https://www.researchgate.net/project/Python-package'
+        '-to-calculate-EER-values-and-probability-curves',
 
     # Package requirements
     install_requires=['numpy',
