@@ -10,12 +10,12 @@ Two programs are provided within this package:
 
 **geteerinf:** Receive two files holding genuine match scores and impostor match scores [1].
 Genuine match scores are obtained by matching feature sets of the same class (same person), while impostor matching
-scores are obtained by matching feature sets of different classes (different persons). Using this scores the program 
+scores are obtained by matching feature sets of different classes (different persons). Using these scores the program 
 plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER values are 
 reported as specified in [2]
 
 **getcmcinf:** Receive two files holding match scores and genuine query-template pairs [1]. This program is provided to evaluate
-biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each algorithm are reported.
+biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each score file are reported.
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
