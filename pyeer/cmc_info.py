@@ -45,6 +45,9 @@ def get_cmc_info():
                          " where the option -s was specified. If not given"
                          " it will default to the value savefig.dpi in the"
                          " matplotlibrc file")
+    ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
+                    help='Indicates whether the input scores are dissimilarity'
+                         'scores')
     args = ap.parse_args()
 
     # Parsing script arguments
@@ -68,7 +71,7 @@ def get_cmc_info():
         experiment_name = exp[2]
 
         print('%s: Loading scores file...' % experiment_name)
-        scores = load_scores_from_file(s_filename, tp_filename)
+        scores = load_scores_from_file(s_filename, tp_filename, args.ds_scores)
 
         print('%s: Calculating CMC cruve...' % experiment_name)
         rank_values = get_cmc_curve(scores, rank)

@@ -16,7 +16,8 @@ CMCstats = namedtuple('CMCstats', ['exp_id',  # Exp id
                                    ])
 
 
-def load_scores_from_file(scores_filename, true_pairs_filename):
+def load_scores_from_file(scores_filename, true_pairs_filename,
+                          ds_scores=False):
     """Loads the match information from the files.
 
     @param scores_filename: The scores file address. One score per
@@ -26,6 +27,9 @@ def load_scores_from_file(scores_filename, true_pairs_filename):
         indicates the corresponding template of each query. Must have
         the following format: (query true_template)
     @type true_pairs_filename: str
+    @param ds_scores: Indicates whether te input scores are dissimilarity
+        scores.
+    @type ds_scores: bool
 
     @returns: A dictionary {key=query, value=QueryMatchInfo}
     @rtype: dict
@@ -44,7 +48,7 @@ def load_scores_from_file(scores_filename, true_pairs_filename):
 
     for query_match_info in matching_scores.values():
         query_match_info[SCORE_POS].sort(key=operator.itemgetter(SCORE_POS),
-                                         reverse=True)
+                                         reverse=not ds_scores)
 
     return matching_scores
 
