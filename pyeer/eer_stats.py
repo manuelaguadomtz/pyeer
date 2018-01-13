@@ -42,19 +42,23 @@ Stats = namedtuple('Stats', ['exp_id',  # Exp id
                              ])
 
 
-def calculate_roc_hist(gscores, iscores):
+def calculate_roc_hist(gscores, iscores, ds_scores=False):
     """Calculates FMR, FNMR for impostor scores in histogram format
 
     @param gscores: Genuine matching scores
     @type gscores: list
     @param iscores: Impostor matching scores
     @type giscores: list
+    @param ds_scores: Indicates whether input scores are
+        dissimilarity scores
+    @type ds_scores: bool
 
     @return: (thresholds, FMR, FNMR)
     @rtype: tuple
     """
     match_thr = 0
-    maximum_thr = max(max(gscores), len(iscores))
+    maximum_thr = max([max(gscores), len(gscores),
+                       max(iscores), len(iscores)])
 
     gscores_number = float(len(gscores))
     iscores_number = float(sum(iscores))
@@ -66,16 +70,28 @@ def calculate_roc_hist(gscores, iscores):
 
     while match_thr <= maximum_thr:
         if 0 < match_thr < len(iscores):
-            false_match = iscores_number - iscores[match_thr - 1]
+            if ds_scores:
+                false_match = iscores[match_thr - 1]
+            else:
+                false_match = iscores_number - iscores[match_thr - 1]
         elif match_thr == 0:
-            false_match = iscores_number  # Accepting everyone
+            if ds_scores:
+                false_match = 0
+            else:
+                false_match = iscores_number  # Accepting everyone
         else:
-            false_match = 0
+            if ds_scores:
+                false_match = iscores_number
+            else:
+                false_match = 0
 
         fm_rates.append(false_match / iscores_number)
 
         # List convertion for Python3 compatibility
-        fnm = len(list(filter(lambda s: s < match_thr, gscores)))
+        if ds_scores:
+            fnm = len(list(filter(lambda s: s > match_thr, gscores)))
+        else:
+            fnm = len(list(filter(lambda s: s < match_thr, gscores)))
         fnm_rates.append(fnm / gscores_number)
 
         thresholds.append(match_thr)

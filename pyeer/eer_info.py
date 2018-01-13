@@ -97,7 +97,8 @@ def get_eer_info():
         print('%s: Calculating stats...' % exp[2])
         if args.hist:
             # Calculating probabilities histogram format
-            roc_info = calculate_roc_hist(gen_scores, imp_scores)
+            roc_info = calculate_roc_hist(gen_scores, imp_scores,
+                                          args.ds_scores)
         else:
             # Calculating probabilities using scores as thrs
             roc_info = calculate_roc(gen_scores, imp_scores, args.ds_scores)
