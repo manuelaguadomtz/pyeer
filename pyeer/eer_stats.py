@@ -253,7 +253,7 @@ def get_eer_values(fmr, fnmr):
     if fmr[t1] + fnmr[t1] <= fmr[t2] + fnmr[t2]:
         return fnmr[t1], fmr[t1], (fnmr[t1] + fmr[t1]) / 2
     else:
-        return fnmr[t2], fmr[t2], (fnmr[t2] + fmr[t2]) / 2
+        return fmr[t2], fnmr[t2], (fnmr[t2] + fmr[t2]) / 2
 
     # index = np.argmin(abs(fmr - fnmr))
     # eer = np.abs(fnmr[index] + fmr[index]) / 2.0
