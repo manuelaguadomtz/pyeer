@@ -72,6 +72,9 @@ Non-Histogram format
 getcmcinf input file formats
 ============================
 
+An scores file for each experiment must be provided. Also, the relation of true correspondences must be specified in
+order to calculate the CMC curve.
+
 Scores file
 -----------
 
