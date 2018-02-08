@@ -14,3 +14,6 @@ dist/
 
 # Ignoring CSV files
 *.csv
+
+# Ignoring TODO file
+TODO.txt
