@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
 
-from os.path import join
 import csv
+import pkg_resources
+
+from os.path import join
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,6 +30,11 @@ def generate_eer_report(stats, save_file):
 
         # Writing headers
         writer = csv.writer(sf)
+
+        # Writing package version
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        writer.writerow(['Generated using PyEER ' + pkg_version])
+
         row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
                'ISTD', 'AUC', 'EERlow', 'EERhigh', 'EER',
                'FMR=0', 'FMR1000', 'FMR100', 'FMR20', 'FMR10',
