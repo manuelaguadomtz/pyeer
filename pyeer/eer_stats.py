@@ -235,7 +235,10 @@ def get_eer_values(fmr, fnmr):
 
     The EER value is computed as (EERlow + EERhigh) / 2
 
-    Reference: 
+    Reference:
+    Maio, D., Maltoni, D., Cappelli, R., Wayman, J. L., & Jain, A. K. (2002).
+    FVC2000: Fingerprint verification competition. IEEE Transactions on
+    Pattern Analysis and Machine Intelligence, 24(3), 402-412.
 
     @param fmr: False Match Rates (FMR)
     @type fmr: ndarray
