@@ -34,6 +34,7 @@ Stats = namedtuple('Stats', ['exp_id',  # Exp id
                              'gstd',  # Genuine scores standard deviation
                              'imean',  # Impostor scores mean
                              'istd',  # Impostor scores standard deviation
+                             'decidability',  # Decidability score
 
                              # Values of EER
                              'eer',  # Equal error rate
@@ -234,7 +235,7 @@ def get_eer_values(fmr, fnmr):
 
     The EER value is computed as (EERlow + EERhigh) / 2
 
-    Reference:
+    Reference: 
 
     @param fmr: False Match Rates (FMR)
     @type fmr: ndarray
@@ -258,3 +259,24 @@ def get_eer_values(fmr, fnmr):
     # index = np.argmin(abs(fmr - fnmr))
     # eer = np.abs(fnmr[index] + fmr[index]) / 2.0
     # return min(fnmr[index], fmr[index]), max(fnmr[index], fmr[index]), eer
+
+
+def get_decidability_value(gmean, gstd, imean, istd):
+    """ The decidability score (d') or decision-making powerused in NICE:II
+    evauation protocol for iris, it is a measure of the separation between
+    genuine and impostor distributions. Higher d' values indicate better
+    separation
+
+    @param gmean: The mean value of the genuine scores
+    @type gmean: float
+    @param imean: The mean value of the impostor scores
+    @type imean: float
+    @param gstd: The standard deviation value of the genuine scores
+    @type gstd: float
+    @param istd: The standard deviation value of the impostor scores
+    @type istd: float
+
+    @returns: The decidability value
+    @rtype: float
+    """
+    return abs(gmean - imean) / np.sqrt(0.5 * (gstd ** 2 + istd ** 2))

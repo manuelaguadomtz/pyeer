@@ -7,7 +7,7 @@ from os.path import join
 import numpy as np
 
 from eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
-    get_fmr_op, get_fnmr_op, get_eer_values, Stats
+    get_fmr_op, get_fnmr_op, get_eer_values, Stats, get_decidability_value
 from reports import generate_eer_report, plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
@@ -134,6 +134,8 @@ def get_eer_info():
             imean = np.mean(imp_scores)
             istd = np.std(imp_scores)
 
+        dec = get_decidability_value(gmean, gstd, imean, istd)
+
         # Calculating area under the ROC curve
         auc = calculate_roc_auc(fmr, fnmr)
 
@@ -144,7 +146,7 @@ def get_eer_info():
                            gen_scores=gen_scores, exp_id=exp[2],
                            imp_scores=imp_scores, gmean=gmean, gstd=gstd,
                            imean=imean, istd=istd, eer_low=eer_low,
-                           eer_high=eer_high))
+                           eer_high=eer_high, decidability=dec))
 
     # Generating reports
     print('Generating report...')
