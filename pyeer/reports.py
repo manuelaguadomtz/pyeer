@@ -61,6 +61,7 @@ def generate_eer_report(stats, save_file):
         writer.writerow(['Decidability: See NICE:II protocol evaluation'])
         writer.writerow(['AUC: Area under the ROC curve'])
         writer.writerow(['EER: Equal Error Rate'])
+        writer.writerow(['EERlow, EERhigh: See FVC2000 protocol evaluation'])
         writer.writerow(['FMR: False Match Rate'])
         writer.writerow(['FNMR: False Non-Match Rate'])
 
