@@ -7,7 +7,8 @@ from os.path import join
 import numpy as np
 
 from eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
-    get_fmr_op, get_fnmr_op, get_eer_values, Stats, get_decidability_value
+    get_fmr_op, get_fnmr_op, get_eer_values, Stats, get_decidability_value,\
+    get_youden_index
 from reports import generate_eer_report, plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
@@ -139,6 +140,8 @@ def get_eer_info():
         # Calculating area under the ROC curve
         auc = calculate_roc_auc(fmr, fnmr)
 
+        j_index, j_index_th = get_youden_index(fmr, fnmr)
+
         # Stacking stats
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
@@ -146,7 +149,8 @@ def get_eer_info():
                            gen_scores=gen_scores, exp_id=exp[2],
                            imp_scores=imp_scores, gmean=gmean, gstd=gstd,
                            imean=imean, istd=istd, eer_low=eer_low,
-                           eer_high=eer_high, decidability=dec))
+                           eer_high=eer_high, decidability=dec,
+                           j_index=j_index, j_index_th=j_index_th))
 
     # Generating reports
     print('Generating report...')

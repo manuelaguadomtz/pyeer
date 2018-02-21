@@ -18,6 +18,8 @@ Stats = namedtuple('Stats', ['exp_id',  # Exp id
                              'fmr',  # False match rates
                              'fnmr',  # False non-match rates
                              'auc',  # Area under the ROC curve
+                             'j_index',  # Youden's index
+                             'j_index_th',  # Youden's index threshold
 
                              # Operation points
                              'fmr0',  # Zero false math rate
@@ -265,10 +267,10 @@ def get_eer_values(fmr, fnmr):
 
 
 def get_decidability_value(gmean, gstd, imean, istd):
-    """ The decidability score (d') or decision-making powerused in NICE:II
+    """ The decidability score (d') or decision-making power used in NICE:II
     evauation protocol for iris, it is a measure of the separation between
     genuine and impostor distributions. Higher d' values indicate better
-    separation
+    separation. It is also called the sensitivity index.
 
     @param gmean: The mean value of the genuine scores
     @type gmean: float
@@ -283,3 +285,29 @@ def get_decidability_value(gmean, gstd, imean, istd):
     @rtype: float
     """
     return abs(gmean - imean) / np.sqrt(0.5 * (gstd ** 2 + istd ** 2))
+
+
+def get_youden_index(fmr, fnmr):
+    """Computes the Youden's index and the corresponding threshold
+
+    Reference:
+    Youden, W. J. (1950). "Index of rating diagnostic tests". Cancer. 3: 32-35
+
+    @param fmr: False Match Rates (FMR)
+    @type fmr: ndarray
+    @param fnmr: False Non-Match Rates (FNMR)
+    @type fnmr: ndarray
+    @param op: Operation point
+    @type op: float
+
+    @returns: Youden's Index, threshold
+    @rtype: tuple
+    """
+    # J = sensitivity + specificity -1
+    # sensitivity = 1 - fnmr
+    # specificity = 1 - fmr
+    # J = 1 - fnmr + 1 - fmr - 1
+    # J = 1 - fnmr - fmr
+    j = 1 - fnmr - fmr
+    th = np.argmax(j)
+    return j[th], th
