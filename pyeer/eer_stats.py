@@ -20,6 +20,7 @@ Stats = namedtuple('Stats', ['exp_id',  # Exp id
                              'auc',  # Area under the ROC curve
                              'j_index',  # Youden's index
                              'j_index_th',  # Youden's index threshold
+                             'mccoef',  # Matthew correlation coefficient
 
                              # Operation points
                              'fmr0',  # Zero false math rate
@@ -311,3 +312,8 @@ def get_youden_index(fmr, fnmr):
     j = 1 - fnmr - fmr
     th = np.argmax(j)
     return j[th], th
+
+
+def get_matthews_correlation_coefficient():
+    """"""
+    pass
