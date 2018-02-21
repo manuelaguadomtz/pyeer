@@ -95,18 +95,19 @@ def get_eer_info():
         with open(join(args.path, exp[1])) as tf:
             imp_scores = [__get_score(line) for line in tf]
 
-        gnumber = len(gen_scores)
-        inumber = len(imp_scores)
-
         print('%s: Calculating stats...' % exp[2])
         if args.hist:
             # Calculating probabilities histogram format
             roc_info = calculate_roc_hist(gen_scores, imp_scores,
                                           args.ds_scores, rates=False)
+            gnumber = float(len(gen_scores))
+            inumber = float(sum(imp_scores))
         else:
             # Calculating probabilities using scores as thrs
             roc_info = calculate_roc(gen_scores, imp_scores,
                                      args.ds_scores, rates=False)
+            gnumber = len(gen_scores)
+            inumber = len(imp_scores)
 
         # Unboxing probability rates and info
         thrs, fm, fnm = roc_info
