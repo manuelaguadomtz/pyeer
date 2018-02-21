@@ -8,7 +8,7 @@ import numpy as np
 
 from eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op, get_eer_values, Stats, get_decidability_value,\
-    get_youden_index
+    get_youden_index, get_matthews_ccoef
 from reports import generate_eer_report, plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
@@ -95,17 +95,23 @@ def get_eer_info():
         with open(join(args.path, exp[1])) as tf:
             imp_scores = [__get_score(line) for line in tf]
 
+        gnumber = len(gen_scores)
+        inumber = len(imp_scores)
+
         print('%s: Calculating stats...' % exp[2])
         if args.hist:
             # Calculating probabilities histogram format
             roc_info = calculate_roc_hist(gen_scores, imp_scores,
-                                          args.ds_scores)
+                                          args.ds_scores, rates=False)
         else:
             # Calculating probabilities using scores as thrs
-            roc_info = calculate_roc(gen_scores, imp_scores, args.ds_scores)
+            roc_info = calculate_roc(gen_scores, imp_scores,
+                                     args.ds_scores, rates=False)
 
         # Unboxing probability rates and info
-        thrs, fmr, fnmr = roc_info
+        thrs, fm, fnm = roc_info
+        fmr = fm / inumber
+        fnmr = fnm / gnumber
 
         # Estimating EER
         eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
@@ -142,6 +148,8 @@ def get_eer_info():
 
         j_index, j_index_th = get_youden_index(fmr, fnmr)
 
+        mccoef, mccoef_th = get_matthews_ccoef(fm, fnm, gnumber, inumber)
+
         # Stacking stats
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
                            fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
@@ -150,7 +158,8 @@ def get_eer_info():
                            imp_scores=imp_scores, gmean=gmean, gstd=gstd,
                            imean=imean, istd=istd, eer_low=eer_low,
                            eer_high=eer_high, decidability=dec,
-                           j_index=j_index, j_index_th=j_index_th))
+                           j_index=j_index, j_index_th=j_index_th,
+                           mccoef=mccoef, mccoef_th=mccoef_th))
 
     # Generating reports
     print('Generating report...')

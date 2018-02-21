@@ -21,6 +21,8 @@ Stats = namedtuple('Stats', ['exp_id',  # Exp id
                              'j_index',  # Youden's index
                              'j_index_th',  # Youden's index threshold
                              'mccoef',  # Matthew correlation coefficient
+                             'mccoef_th',  # Matthew correlation coefficient
+                                           # threshold
 
                              # Operation points
                              'fmr0',  # Zero false math rate
@@ -46,7 +48,7 @@ Stats = namedtuple('Stats', ['exp_id',  # Exp id
                              ])
 
 
-def calculate_roc_hist(gscores, iscores, ds_scores=False):
+def calculate_roc_hist(gscores, iscores, ds_scores=False, rates=True):
     """Calculates FMR, FNMR for impostor scores in histogram format
 
     @param gscores: Genuine matching scores
@@ -56,8 +58,11 @@ def calculate_roc_hist(gscores, iscores, ds_scores=False):
     @param ds_scores: Indicates whether input scores are
         dissimilarity scores
     @type ds_scores: bool
+    @param rates: Indicates whether to return error rates instead
+        of error values
+    @type rates: bool
 
-    @return: (thresholds, FMR, FNMR)
+    @return: (thresholds, FMR, FNMR) or (thresholds, FM, FNM)
     @rtype: tuple
     """
     match_thr = 0
@@ -89,25 +94,29 @@ def calculate_roc_hist(gscores, iscores, ds_scores=False):
             else:
                 false_match = 0
 
-        fm_rates.append(false_match / iscores_number)
+        fm_rates.append(false_match)
 
         # List convertion for Python3 compatibility
         if ds_scores:
             fnm = len(list(filter(lambda s: s > match_thr, gscores)))
         else:
             fnm = len(list(filter(lambda s: s < match_thr, gscores)))
-        fnm_rates.append(fnm / gscores_number)
+        fnm_rates.append(fnm)
 
         thresholds.append(match_thr)
         match_thr += 1
 
-    fm_rates = np.array(fm_rates)
-    fnm_rates = np.array(fnm_rates)
+    if rates:
+        fm_rates = np.array(fm_rates) / iscores_number
+        fnm_rates = np.array(fnm_rates) / gscores_number
+    else:
+        fm_rates = np.array(fm_rates)
+        fnm_rates = np.array(fnm_rates)
 
     return thresholds, fm_rates, fnm_rates
 
 
-def calculate_roc(gscores, iscores, ds_scores=False):
+def calculate_roc(gscores, iscores, ds_scores=False, rates=True):
     """Calculates FMR, FNMR
 
     @param gscores: Genuine matching scores
@@ -117,8 +126,11 @@ def calculate_roc(gscores, iscores, ds_scores=False):
     @param ds_scores: Indicates whether input scores are
         dissimilarity scores
     @type ds_scores: bool
+    @param rates: Indicates whether to return error rates instead
+        of error values
+    @type rates: bool
 
-    @return: (thresholds, FMR, FNMR)
+    @return: (thresholds, FMR, FNMR) or (thresholds, FM, FNM)
     @rtype: tuple
     """
     if ds_scores:
@@ -148,8 +160,12 @@ def calculate_roc(gscores, iscores, ds_scores=False):
     fm = iscores_number - (u_indices - fnm)
 
     # Calculating FMR and FNMR
-    fnm_rates = fnm / gscores_number
-    fm_rates = fm / iscores_number
+    if rates:
+        fnm_rates = fnm / gscores_number
+        fm_rates = fm / iscores_number
+    else:
+        fnm_rates = fnm
+        fm_rates = fm
 
     if ds_scores:
         return thresholds * -1, fm_rates, fnm_rates
@@ -298,8 +314,6 @@ def get_youden_index(fmr, fnmr):
     @type fmr: ndarray
     @param fnmr: False Non-Match Rates (FNMR)
     @type fnmr: ndarray
-    @param op: Operation point
-    @type op: float
 
     @returns: Youden's Index, threshold
     @rtype: tuple
@@ -314,6 +328,32 @@ def get_youden_index(fmr, fnmr):
     return j[th], th
 
 
-def get_matthews_correlation_coefficient():
-    """"""
-    pass
+def get_matthews_ccoef(fm, fnm, gnumber, inumber):
+    """Estimate the maximum Matthews Correlation Coefficient
+    given the values of false match (false positives) and false
+    non-match (false negatives) for all possible thresholds
+
+    @param fm: False Positives for all possible thresholds
+    @type fm: ndarray
+    @param fnm: False Negatives for all possible thresholds
+    @type fnm: ndarray
+    @param gnumber: The number of positive samples
+    @type gnumber: int
+    @param inumber: The number of negative samples
+    @type inumber: int
+
+    @returns: (Matthews Correlation Coefficient, threshold)
+    @rtype: tuple
+    """
+    tn = inumber - fm
+    tp = gnumber - fnm
+
+    numerator = tp * tn - fm * fnm
+    denominator = np.sqrt((tp + fm) * (tp + fnm) * (tn + fm) * (tn + fnm))
+
+    denominator[denominator == 0] = 1
+
+    all_mcc = numerator / denominator
+
+    th = np.argmax(all_mcc)
+    return all_mcc[th], th
