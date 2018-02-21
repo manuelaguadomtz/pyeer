@@ -36,9 +36,9 @@ def generate_eer_report(stats, save_file):
         writer.writerow(['Generated using PyEER ' + pkg_version])
 
         row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
-               'ISTD', 'Decidability', 'AUC', 'EERlow', 'EERhigh',
-               'EER', 'FMR=0', 'FMR1000', 'FMR100', 'FMR20',
-               'FMR10', 'FNMR0']
+               'ISTD', "Sensitivity index (d')", 'AUC', 'EERlow',
+               'EERhigh', 'EER', 'FMR=0', 'FMR1000', 'FMR100',
+               'FMR20', 'FMR10', 'FNMR0']
         writer.writerow(row)
 
         for st in stats:
@@ -58,7 +58,8 @@ def generate_eer_report(stats, save_file):
         writer.writerow(['IMean: Impostor scores distribution mean'])
         writer.writerow(['IVariance: Impostor scores distribution '
                          'standard deviation'])
-        writer.writerow(['Decidability: See NICE:II protocol evaluation'])
+        writer.writerow(["Sensitivity index (d'): See NICE:II protocol"
+                         " evaluation"])
         writer.writerow(['AUC: Area under the ROC curve'])
         writer.writerow(['EER: Equal Error Rate'])
         writer.writerow(['EERlow, EERhigh: See FVC2000 protocol evaluation'])

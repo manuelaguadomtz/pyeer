@@ -265,10 +265,10 @@ def get_eer_values(fmr, fnmr):
 
 
 def get_decidability_value(gmean, gstd, imean, istd):
-    """ The decidability score (d') or decision-making powerused in NICE:II
+    """ The decidability score (d') or decision-making power used in NICE:II
     evauation protocol for iris, it is a measure of the separation between
     genuine and impostor distributions. Higher d' values indicate better
-    separation
+    separation. It is also called the sensitivity index.
 
     @param gmean: The mean value of the genuine scores
     @type gmean: float
