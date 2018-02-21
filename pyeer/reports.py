@@ -37,17 +37,18 @@ def generate_eer_report(stats, save_file):
 
         row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
                'ISTD', "Sensitivity index (d')", 'AUC', 'J-Index',
-               'J-Index (Threshold)', 'EERlow', 'EERhigh', 'EER',
-               'FMR=0', 'FMR1000', 'FMR100', 'FMR20', 'FMR10', 'FNMR0']
+               'J-Index (Threshold)', 'MCC', 'MCC (Threshold)', 'EERlow',
+               'EERhigh', 'EER', 'FMR=0', 'FMR1000', 'FMR100', 'FMR20',
+               'FMR10', 'FNMR0']
         writer.writerow(row)
 
         for st in stats:
             # Writing stats
             row = [st.exp_id.encode("utf-8"), st.gmean, st.gstd,
                    st.imean, st.istd, st.decidability, st.auc,
-                   st.j_index, st.j_index_th, st.eer_low,
-                   st.eer_high, st.eer, st.fmr0, st.fmr1000, st.fmr100,
-                   st.fmr20, st.fmr10, st.fnmr0]
+                   st.j_index, st.j_index_th, st.mccoef, st.mccoef_th,
+                   st.eer_low, st.eer_high, st.eer, st.fmr0, st.fmr1000,
+                   st.fmr100, st.fmr20, st.fmr10, st.fnmr0]
             writer.writerow(row)
 
         # Writing legend
@@ -63,6 +64,7 @@ def generate_eer_report(stats, save_file):
                          " evaluation"])
         writer.writerow(['AUC: Area under the ROC curve'])
         writer.writerow(["J-Index: Youden's J statistic (Youden's Index)"])
+        writer.writerow(["MCC: Matthews Correlation Coefficient"])
         writer.writerow(['EER: Equal Error Rate'])
         writer.writerow(['EERlow, EERhigh: See FVC2000 protocol evaluation'])
         writer.writerow(['FMR: False Match Rate'])
