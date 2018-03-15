@@ -148,8 +148,10 @@ def get_eer_info():
         auc = calculate_roc_auc(fmr, fnmr)
 
         j_index, j_index_th = get_youden_index(fmr, fnmr)
+        j_index_th = thrs[j_index_th]
 
         mccoef, mccoef_th = get_matthews_ccoef(fm, fnm, gnumber, inumber)
+        mccoef_th = thrs[mccoef_th]
 
         # Stacking stats
         stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
