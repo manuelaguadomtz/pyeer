@@ -41,8 +41,17 @@ def get_eer_info():
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
                          "histogram format")
+    ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
+                    help='Indicates whether the input scores are dissimilarity'
+                         'scores')
+    ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
+                    help="The number of bins to compute scores distribution."
+                         "Will be ignored if -ht is passed as parameter")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
+    ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
+                    help="Indicates whether to plot the DET and ROC curves "
+                         "in logarithmic scale")
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
                     help="Indicates whether to save the plots instead of"
                          " showing them")
@@ -62,15 +71,6 @@ def get_eer_info():
                     help="The width of the plotted curves (default=3)")
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
                     help="The size of the legend font (default=15)")
-    ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
-                    help="The number of bins to compute scores distribution."
-                         "Will be ignored if -ht is passed as parameter")
-    ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
-                    help="Indicates whether to plot the DET and ROC curves "
-                         "in logarithmic scale")
-    ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
-                    help='Indicates whether the input scores are dissimilarity'
-                         'scores')
     args = ap.parse_args()
 
     # Parsing arguments
