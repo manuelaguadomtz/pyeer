@@ -41,6 +41,8 @@ def get_eer_info():
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
                          "histogram format")
+    ap.add_argument("-np", "--no_plots", required=False, action='store_true',
+                    help="Indicates whether to not plot the results")
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
                     help="Indicates whether to save the plots instead of"
                          " showing them")
@@ -169,7 +171,8 @@ def get_eer_info():
 
     generate_eer_report(stats, join(args.save_path, 'pyeer_report.csv'))
 
-    print('Plotting...')
-
-    plot_eer_stats(stats, line_width, args.hist, bins, lgf_size,
-                   args.log_plt, args.save_plots, dpi, args.save_path, ext)
+    if not args.no_plots:
+        print('Plotting...')
+        plot_eer_stats(stats, line_width, args.hist, bins, lgf_size,
+                       args.log_plt, args.save_plots, dpi, args.save_path,
+                       ext)
