@@ -44,7 +44,7 @@ def generate_eer_report(stats, save_file):
 
         for st in stats:
             # Writing stats
-            row = [st.exp_id.encode("utf-8"), st.gmean, st.gstd,
+            row = [str(st.exp_id.encode("utf-8")), st.gmean, st.gstd,
                    st.imean, st.istd, st.decidability, st.auc,
                    st.j_index, st.j_index_th, st.mccoef, st.mccoef_th,
                    st.eer_low, st.eer_high, st.eer, st.fmr0, st.fmr1000,
