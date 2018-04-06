@@ -31,7 +31,7 @@ def __get_score(line):
 def get_eer_info():
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--path", required=False, default='.',
-                    help="Path to scores files.")
+                    help="Path to scores files. (Default='.')")
     ap.add_argument("-i", "--iscores_files", required=True,
                     help="Impostor exp file names separated by comma")
     ap.add_argument("-g", "--gscores_files", required=True,
@@ -40,7 +40,7 @@ def get_eer_info():
                     help="Experiment names separated by comma")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
-                         "histogram format")
+                         " histogram format")
     ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
                     help='Indicates whether the input scores are dissimilarity'
                          'scores')
