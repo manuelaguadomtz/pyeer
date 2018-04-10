@@ -2,7 +2,8 @@
 
 import argparse
 
-from os.path import join
+from os.path import join, isdir
+from os import listdir
 
 import numpy as np
 
@@ -13,6 +14,21 @@ from .reports import generate_eer_report, plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
+
+
+def __get_files(base_path, arg_val):
+    """ Get the file names from the argument value
+
+    @param base_path: The path where the files are suppose to be
+    @type base_path: str
+    @param arg_val: The argument value of genuine or impostor scores files
+    @type arg_val: str
+    """
+    if isdir(join(base_path, arg_val)):
+        files = sorted(listdir(join(base_path, arg_val)))
+        return [join(arg_val, f) for f in files]
+    else:
+        return [f.strip() for f in arg_val.split(',')]
 
 
 def __get_score(line):
@@ -36,7 +52,7 @@ def get_eer_info_cmd():
                     help="Impostor exp file names separated by comma")
     ap.add_argument("-g", "--gscores_files", required=True,
                     help="Genuine exp file names separated by comma")
-    ap.add_argument("-e", "--experiment_ids", required=True,
+    ap.add_argument("-e", "--experiment_ids", required=False,
                     help="Experiment names separated by comma")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
@@ -74,10 +90,15 @@ def get_eer_info_cmd():
     args = ap.parse_args()
 
     # Parsing arguments
-    gscores_files = [f.strip() for f in args.gscores_files.split(',')]
-    iscores_files = [f.strip() for f in args.iscores_files.split(',')]
-    experiment_ids = [e.strip() for e in args.experiment_ids.split(',')]
+    gscores_files = __get_files(args.path, args.gscores_files)
+    iscores_files = __get_files(args.path, args.iscores_files)
+
+    experiment_ids = ([e.strip() for e in args.experiment_ids.split(',')]
+                      if args.experiment_ids else gscores_files)
+
     experiments = zip(gscores_files, iscores_files, experiment_ids)
+
+    # Plot arguments
     line_width = int(args.line_width)
     lgf_size = int(args.legend_font_size)
     dpi = None if args.save_dpi is None else int(args.save_dpi)
