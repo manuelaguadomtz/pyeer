@@ -2,7 +2,7 @@
 
 import argparse
 
-from os.path import join, isdir
+from os.path import join, isdir, basename
 from os import listdir
 
 import numpy as np
@@ -49,20 +49,37 @@ def get_eer_info_cmd():
     ap.add_argument("-p", "--path", required=False, default='.',
                     help="Path to scores files. (Default='.')")
     ap.add_argument("-i", "--iscores_files", required=True,
-                    help="Impostor exp file names separated by comma")
+                    help="Impostor scores file names. If there is more than "
+                         " one file, the file names must be separated by comma"
+                         ". Additionally, instead of the file names a"
+                         " directory relative to PATH could be specified."
+                         " In the last case, it is hardly encouraged that"
+                         " genuine score files are specified in the same way"
+                         " and corresponding pairs of scores (genuine, "
+                         " impostor) have the same name")
     ap.add_argument("-g", "--gscores_files", required=True,
-                    help="Genuine exp file names separated by comma")
+                    help="Genuine scores file names. If there is more than "
+                         " one file, the file names must be separated by comma"
+                         ". Additionally, instead of the file names a"
+                         " directory relative to PATH could be specified."
+                         " In the last case, it is hardly encouraged that"
+                         " impostor score files are specified in the same way"
+                         " and corresponding pairs of scores (genuine, "
+                         " impostor) have the same name")
     ap.add_argument("-e", "--experiment_ids", required=False,
-                    help="Experiment names separated by comma")
+                    help="Experiment IDs separated by comma. If not"
+                         " specified genuine score file names will be used to"
+                         " identified each experiment")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
                          " histogram format")
     ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
-                    help='Indicates whether the input scores are dissimilarity'
-                         'scores')
+                    help="Indicates whether the input scores are dissimilarity"
+                         " scores")
     ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
                     help="The number of bins to compute scores distribution."
-                         "Will be ignored if -ht is passed as parameter")
+                         " Will be ignored if -ht is passed as parameter"
+                         " (default=100)")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
     ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
@@ -94,7 +111,8 @@ def get_eer_info_cmd():
     iscores_files = __get_files(args.path, args.iscores_files)
 
     experiment_ids = ([e.strip() for e in args.experiment_ids.split(',')]
-                      if args.experiment_ids else gscores_files)
+                      if args.experiment_ids else
+                      [basename(name) for name in gscores_files])
 
     experiments = zip(gscores_files, iscores_files, experiment_ids)
 
