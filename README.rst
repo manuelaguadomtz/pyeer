@@ -132,6 +132,23 @@ the calculated stats. To specify the directory where to saved it, you can use th
 **Note:** To run the above examples you can download the score files from the project site on Gitlab or extract them from inside the 
 package installation
 
+**To use from other scripts**
+
+..code:: python
+
+    from pyeer.eer_info import get_eer_stats
+    from pyeer.reports import generate_eer_report, plot_eer_stats
+
+    # Calculating stats
+    stats = get_eer_stats(gscores, iscores)
+
+    # Generating CSV report
+    generate_eer_report([stats], ['test'], 'report.csv')
+
+    # Plotting
+    plot_eer_stats([stats], '[test'])
+
+
 Contributing
 ============
 
