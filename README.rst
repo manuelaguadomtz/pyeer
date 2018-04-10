@@ -134,7 +134,7 @@ package installation
 
 **To use from other scripts**
 
-..code:: python
+.. code:: python
 
     from pyeer.eer_info import get_eer_stats
     from pyeer.reports import generate_eer_report, plot_eer_stats
