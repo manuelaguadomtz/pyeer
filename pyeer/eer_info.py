@@ -28,7 +28,7 @@ def __get_score(line):
     return float(sline[-1])
 
 
-def get_eer_info():
+def get_eer_info_cmd():
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--path", required=False, default='.',
                     help="Path to scores files. (Default='.')")
@@ -86,6 +86,7 @@ def get_eer_info():
 
     # Experiment stats
     stats = []
+    ids = []
 
     for exp in experiments:
         # Loading scores
@@ -98,81 +99,104 @@ def get_eer_info():
             imp_scores = [__get_score(line) for line in tf]
 
         print('%s: Calculating stats...' % exp[2])
-        if args.hist:
-            # Calculating probabilities histogram format
-            roc_info = calculate_roc_hist(gen_scores, imp_scores,
-                                          args.ds_scores, rates=False)
-            gnumber = float(len(gen_scores))
-            inumber = float(sum(imp_scores))
-        else:
-            # Calculating probabilities using scores as thrs
-            roc_info = calculate_roc(gen_scores, imp_scores,
-                                     args.ds_scores, rates=False)
-            gnumber = len(gen_scores)
-            inumber = len(imp_scores)
-
-        # Unboxing probability rates and info
-        thrs, fm, fnm = roc_info
-        fmr = fm / inumber
-        fnmr = fnm / gnumber
-
-        # Estimating EER
-        eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
-
-        # Estimating FMR operating points
-        fmr0 = get_fmr_op(fmr, fnmr, 0)
-        fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
-        fmr100 = get_fmr_op(fmr, fnmr, 0.01)
-        fmr20 = get_fmr_op(fmr, fnmr, 0.05)
-        fmr10 = get_fmr_op(fmr, fnmr, 0.1)
-
-        # Estimating FNMR operating points
-        fnmr0 = get_fnmr_op(fmr, fnmr, 0)
-
-        # Calculating distributions mean and variance
-        gmean = np.mean(gen_scores)
-        gstd = np.std(gen_scores)
-
-        if args.hist:
-            nscores = sum(imp_scores)
-            nscores_prob = np.array(imp_scores) / nscores
-            scores = np.arange(len(imp_scores))
-
-            imean = (scores * nscores_prob).sum()
-            istd = np.sqrt(((scores - imean) ** 2 * nscores_prob).sum())
-        else:
-            imean = np.mean(imp_scores)
-            istd = np.std(imp_scores)
-
-        dec = get_decidability_value(gmean, gstd, imean, istd)
-
-        # Calculating area under the ROC curve
-        auc = calculate_roc_auc(fmr, fnmr)
-
-        j_index, j_index_th = get_youden_index(fmr, fnmr)
-        j_index_th = thrs[j_index_th]
-
-        mccoef, mccoef_th = get_matthews_ccoef(fm, fnm, gnumber, inumber)
-        mccoef_th = thrs[mccoef_th]
-
-        # Stacking stats
-        stats.append(Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
-                           fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
-                           fmr20=fmr20, fmr10=fmr10, fnmr0=fnmr0,
-                           gen_scores=gen_scores, exp_id=exp[2],
-                           imp_scores=imp_scores, gmean=gmean, gstd=gstd,
-                           imean=imean, istd=istd, eer_low=eer_low,
-                           eer_high=eer_high, decidability=dec,
-                           j_index=j_index, j_index_th=j_index_th,
-                           mccoef=mccoef, mccoef_th=mccoef_th))
+        exp_stats = get_eer_stats(gen_scores, imp_scores,
+                                  args.hist, args.ds_scores)
+        stats.append(exp_stats)
+        ids.append(exp[2])
 
     # Generating reports
     print('Generating report...')
 
-    generate_eer_report(stats, join(args.save_path, 'pyeer_report.csv'))
+    generate_eer_report(stats, ids, join(args.save_path, 'pyeer_report.csv'))
 
     if not args.no_plots:
         print('Plotting...')
-        plot_eer_stats(stats, line_width, args.hist, bins, lgf_size,
+        plot_eer_stats(stats, ids, line_width, args.hist, bins, lgf_size,
                        args.log_plt, args.save_plots, dpi, args.save_path,
                        ext)
+
+
+def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
+    """Calculates EER associated statistics
+
+    Keyword Arguments:
+    @param gen_scores: The genuine scores
+    @type gen_scores: list
+    @param imp_scores: The impostor scores
+    @type imp_scores: list
+    @param id: An id for the experiment
+    @type id: str
+    @param hformat: Indicates whether the impostor scores are in histogram
+        format
+    @type hformat: bool
+    @param ds_scores: Indicates whether the input scores are dissimilarity
+        scores
+    @type ds_scores: bool
+    """
+
+    if hformat:
+        # Calculating probabilities histogram format
+        roc_info = calculate_roc_hist(gen_scores, imp_scores,
+                                      ds_scores, rates=False)
+        gnumber = float(len(gen_scores))
+        inumber = float(sum(imp_scores))
+    else:
+        # Calculating probabilities using scores as thrs
+        roc_info = calculate_roc(gen_scores, imp_scores,
+                                 ds_scores, rates=False)
+        gnumber = len(gen_scores)
+        inumber = len(imp_scores)
+
+    # Unboxing probability rates and info
+    thrs, fm, fnm = roc_info
+    fmr = fm / inumber
+    fnmr = fnm / gnumber
+
+    # Estimating EER
+    eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
+
+    # Estimating FMR operating points
+    fmr0 = get_fmr_op(fmr, fnmr, 0)
+    fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
+    fmr100 = get_fmr_op(fmr, fnmr, 0.01)
+    fmr20 = get_fmr_op(fmr, fnmr, 0.05)
+    fmr10 = get_fmr_op(fmr, fnmr, 0.1)
+
+    # Estimating FNMR operating points
+    fnmr0 = get_fnmr_op(fmr, fnmr, 0)
+
+    # Calculating distributions mean and variance
+    gmean = np.mean(gen_scores)
+    gstd = np.std(gen_scores)
+
+    if hformat:
+        nscores = sum(imp_scores)
+        nscores_prob = np.array(imp_scores) / nscores
+        scores = np.arange(len(imp_scores))
+
+        imean = (scores * nscores_prob).sum()
+        istd = np.sqrt(((scores - imean) ** 2 * nscores_prob).sum())
+    else:
+        imean = np.mean(imp_scores)
+        istd = np.std(imp_scores)
+
+    dec = get_decidability_value(gmean, gstd, imean, istd)
+
+    # Calculating area under the ROC curve
+    auc = calculate_roc_auc(fmr, fnmr)
+
+    j_index, j_index_th = get_youden_index(fmr, fnmr)
+    j_index_th = thrs[j_index_th]
+
+    mccoef, mccoef_th = get_matthews_ccoef(fm, fnm, gnumber, inumber)
+    mccoef_th = thrs[mccoef_th]
+
+    # Stacking stats
+    return Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
+                 fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
+                 fmr20=fmr20, fmr10=fmr10, fnmr0=fnmr0,
+                 gen_scores=gen_scores, imp_scores=imp_scores,
+                 gmean=gmean, gstd=gstd, imean=imean, istd=istd,
+                 eer_low=eer_low, eer_high=eer_high, decidability=dec,
+                 j_index=j_index, j_index_th=j_index_th,
+                 mccoef=mccoef, mccoef_th=mccoef_th)

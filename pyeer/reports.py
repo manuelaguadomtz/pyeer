@@ -18,11 +18,13 @@ STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
           'd--', '|--', '---']
 
 
-def generate_eer_report(stats, save_file):
+def generate_eer_report(stats, ids, save_file):
     """ Generate a CSV file with the given statistics
 
     @param stats: An iterable with instances of the named tuple Stats
     @type stats: iterable
+    @param ids: An iterable with an ID (str) for each stat
+    @type ids: iterable
     @param save_file: The filename used to save the report
     @type save_file: str
     """
@@ -42,9 +44,9 @@ def generate_eer_report(stats, save_file):
                'FMR10', 'FNMR0']
         writer.writerow(row)
 
-        for st in stats:
+        for i, st in enumerate(stats):
             # Writing stats
-            row = [str(st.exp_id.encode("utf-8")), st.gmean, st.gstd,
+            row = [str(ids[i].encode("utf-8")), st.gmean, st.gstd,
                    st.imean, st.istd, st.decidability, st.auc,
                    st.j_index, st.j_index_th, st.mccoef, st.mccoef_th,
                    st.eer_low, st.eer_high, st.eer, st.fmr0, st.fmr1000,
@@ -75,10 +77,9 @@ def generate_eer_report(stats, save_file):
         # Writing rates header
         headers = []
         max_nthrs = -1
-        for st in stats:
-            # Writing rate cruves
-            headers += [' ', st.exp_id.encode("utf-8") + ' (FMR)',
-                        st.exp_id.encode("utf-8") + ' (FNMR)']
+        for i, st in enumerate(stats):
+            headers += [' ', ids[i].encode("utf-8") + ' (FMR)',
+                        ids[i].encode("utf-8") + ' (FNMR)']
 
             nthrs = len(st.thrs)
             if nthrs > max_nthrs:
@@ -118,13 +119,15 @@ def generate_cmc_report(stats, max_rank, save_file):
             writer.writerow([st.exp_id] + st.ranks)
 
 
-def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
-                   lgf_size=15, log_plot=True, save_plots=False,
-                   dpi=None, save_path='', ext='.png'):
+def plot_eer_stats(stats, ids, line_width=3, hist_format=True, bins=100,
+                   lgf_size=15, log_plot=True, save_plots=False, dpi=None,
+                   save_path='', ext='.png'):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple Stats
     @type stats: iterable
+    @param ids: An iterable with an ID (str) for each stat
+    @type ids: iterable
     @param line_width: The width of the plotted curves (default=3)
     @type line_width: int
     @param hist_format: Indicates whether the impostor scores are in
@@ -184,9 +187,9 @@ def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
     if not log_plot:
         roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
 
-    for st in stats:
+    for i, st in enumerate(stats):
         # Plotting score distributions
-        title = 'Score distributions experiment: ' + st.exp_id
+        title = 'Score distributions experiment: ' + ids[i]
         dist_fig = plt.figure()
         dist_plot = dist_fig.add_subplot(111)
         dist_plot.grid(False)
@@ -213,7 +216,7 @@ def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
         dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
         if save_plots:
-            fig_name = 'Distributions (%s)' % st.exp_id + ext
+            fig_name = 'Distributions (%s)' % ids[i] + ext
             dist_fig.savefig(join(save_path, fig_name), dpi=dpi)
 
         # Plotting FMR and FNMR curves
@@ -224,20 +227,20 @@ def plot_eer_stats(stats, line_width=3, hist_format=True, bins=100,
         eer_plot.set_xlabel('Matching Scores')
         eer_plot.set_title('FMR and FNMR Curves')
         eer_plot.plot(st.thrs, st.fmr, linewidth=line_width,
-                      label=st.exp_id + ' (FMR)')
+                      label=ids[i] + ' (FMR)')
         eer_plot.plot(st.thrs, st.fnmr, linewidth=line_width,
-                      label=st.exp_id + ' (FNMR)')
+                      label=ids[i] + ' (FNMR)')
         eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
         if save_plots:
-            fname = 'FMR and FNMR curves of experiment: (%s)' % st.exp_id + ext
+            fname = 'FMR and FNMR curves of experiment: (%s)' % ids[i] + ext
             eer_fig.savefig(join(save_path, fname), dpi=dpi)
 
         # Plotting DET Curve
-        det_plot.plot(st.fmr, st.fnmr, label=st.exp_id, linewidth=line_width)
+        det_plot.plot(st.fmr, st.fnmr, label=ids[i], linewidth=line_width)
 
         # Plotting ROC Curve
-        label = st.exp_id + ' AUC = %f' % st.auc
+        label = ids[i] + ' AUC = %f' % st.auc
         roc_plot.plot(st.fmr, 1 - st.fnmr, label=label, linewidth=line_width)
 
     # Finalizing plots

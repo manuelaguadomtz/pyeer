@@ -15,7 +15,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'geteerinf = pyeer.eer_info:get_eer_info',
+            'geteerinf = pyeer.eer_info:get_eer_info_cmd',
             'getcmcinf = pyeer.cmc_info:get_cmc_info',
         ],
     },
