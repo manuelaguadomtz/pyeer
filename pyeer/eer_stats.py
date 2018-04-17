@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import operator
+import warnings
 
 from collections import namedtuple
 
@@ -271,7 +272,16 @@ def get_eer_values(fmr, fnmr):
     @rtype: tuple
     """
     diff = fmr - fnmr
-    t2 = np.where(diff <= 0)[0][0]
+    t2 = np.where(diff <= 0)[0]
+
+    if len(t2) > 0:
+        t2 = t2[0]
+    else:
+        warnings.warn('It seems that FMR and FNMR curves'
+                      ' do not intercept each other. Did you mean'
+                      ' to use dissimilarity scores?', RuntimeWarning)
+        return 1, 1, 1
+
     t1 = t2 - 1 if diff[t2] != 0 and t2 != 0 else t2
 
     if fmr[t1] + fnmr[t1] <= fmr[t2] + fnmr[t2]:
