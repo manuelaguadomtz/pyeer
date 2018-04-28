@@ -11,11 +11,12 @@ Two programs are provided within this package:
 **geteerinf:** Receive two files holding genuine match scores and impostor match scores [1].
 Genuine match scores are obtained by matching feature sets of the same class (same person), while impostor matching
 scores are obtained by matching feature sets of different classes (different persons). Using these scores the program 
-plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER values are 
-reported as specified in [2]
+plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER 
+values are  reported as specified in [2]
 
-**getcmcinf:** Receive two files holding match scores and genuine query-template pairs [1]. This program is provided to evaluate
-biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each score file are reported.
+**getcmcinf:** Receive two files holding match scores and genuine query-template pairs [1]. This program is provided to 
+evaluate biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each 
+score file are reported.
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
@@ -126,11 +127,11 @@ Examples:
     getcmcinf -p "example_files/cmc/" -ms "exp1_scores.txt,exp2_scores.txt" -t "exp1_tp.txt,exp2_tp.txt" -e "Exp1,Exp2"
 
 
-For all the above examples a CSV file will be generated in the directory where the program was invoked. The CSV file will include all 
-the calculated stats. To specify the directory where to saved it, you can use the "-sp" option.
+For all the above examples a CSV file will be generated in the directory where the program was invoked. The CSV file will 
+include all the calculated stats. To specify the directory where to saved it, you can use the "-sp" option.
 
-**Note:** To run the above examples you can download the score files from the project site on Gitlab or extract them from inside the 
-package installation
+**Note:** To run the above examples you can download the score files from the project site on Gitlab or extract them from 
+inside the package installation
 
 **To use from other scripts**
 
@@ -146,7 +147,7 @@ package installation
     generate_eer_report([stats], ['test'], 'report.csv')
 
     # Plotting
-    plot_eer_stats([stats], '[test'])
+    plot_eer_stats([stats], ['test'])
 
 
 Contributing
@@ -161,9 +162,10 @@ References
 
 [1] D. Maltoni et al., Handbook of Fingerprint Recognition, Springer-Verlag London Limited 2009
 
-[2] Maio D., Maltoni D., Cappelli R., Wayman J.L. and Jain A.K., “FVC2000: Fingerprint verification
-competition,” IEEE Transactions on Pattern Analysis Machine Intelligence, vol. 24, no. 3, pp. 402–412, 2002
+[2] Maio D., Maltoni D., Cappelli R., Wayman J.L. and Jain A.K., "FVC2000: Fingerprint verification
+competition,"" IEEE Transactions on Pattern Analysis Machine Intelligence, vol. 24, no. 3, pp. 402–412,
+2002
 
-[3] Hernandez-Palancar, J., Munoz-Briseno, A., & Gago-Alonso, A. (2014). Using a
-triangular matching approach for latent fingerprint and palmprint identifica-
-tion. International Journal of Pattern Recognition and Artificial Intelligence, 28, 1460004.
+[3] Hernandez-Palancar, J., Munoz-Briseno, A., & Gago-Alonso, A. (2014). Using a triangular matching
+approach for latent fingerprint and palmprint identification. International Journal of Pattern 
+Recognition and Artificial Intelligence, 28, 1460004.
