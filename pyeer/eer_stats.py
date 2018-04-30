@@ -277,8 +277,8 @@ def get_eer_values(fmr, fnmr):
     if len(t2) > 0:
         t2 = t2[0]
     else:
-        warnings.warn('It seems that FMR and FNMR curves'
-                      ' do not intercept each other. Did you mean'
+        warnings.warn('It seems that the FMR and FNMR curves'
+                      ' do not intersect each other. Did you mean'
                       ' to use dissimilarity scores?', RuntimeWarning)
         return 1, 1, 1
 
