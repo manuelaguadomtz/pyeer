@@ -46,7 +46,7 @@ def generate_eer_report(stats, ids, save_file):
 
         for i, st in enumerate(stats):
             # Writing stats
-            row = [str(ids[i].encode("utf-8")), st.gmean, st.gstd,
+            row = [ids[i], st.gmean, st.gstd,
                    st.imean, st.istd, st.decidability, st.auc,
                    st.j_index, st.j_index_th, st.mccoef, st.mccoef_th,
                    st.eer_low, st.eer_high, st.eer, st.fmr0, st.fmr1000,
@@ -78,8 +78,7 @@ def generate_eer_report(stats, ids, save_file):
         headers = []
         max_nthrs = -1
         for i, st in enumerate(stats):
-            headers += [' ', ids[i].encode("utf-8") + ' (FMR)',
-                        ids[i].encode("utf-8") + ' (FNMR)']
+            headers += [' ', ids[i] + ' (FMR)', ids[i] + ' (FNMR)']
 
             nthrs = len(st.thrs)
             if nthrs > max_nthrs:
