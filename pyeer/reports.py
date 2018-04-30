@@ -46,11 +46,11 @@ def generate_eer_report(stats, ids, save_file):
 
         for i, st in enumerate(stats):
             # Writing stats
-            row = [ids[i], st.gmean, st.gstd,
-                   st.imean, st.istd, st.decidability, st.auc,
-                   st.j_index, st.j_index_th, st.mccoef, st.mccoef_th,
-                   st.eer_low, st.eer_high, st.eer, st.fmr0, st.fmr1000,
-                   st.fmr100, st.fmr20, st.fmr10, st.fnmr0]
+            row = [ids[i], st.gmean, st.gstd, st.imean, st.istd,
+                   st.decidability, st.auc, st.j_index, st.j_index_th,
+                   st.mccoef, st.mccoef_th, st.eer_low, st.eer_high,
+                   st.eer, st.fmr0, st.fmr1000, st.fmr100, st.fmr20,
+                   st.fmr10, st.fnmr0]
             writer.writerow(row)
 
         # Writing legend
