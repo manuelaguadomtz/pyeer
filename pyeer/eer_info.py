@@ -172,7 +172,6 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
         scores
     @type ds_scores: bool
     """
-
     if hformat:
         # Calculating probabilities histogram format
         roc_info = calculate_roc_hist(gen_scores, imp_scores,

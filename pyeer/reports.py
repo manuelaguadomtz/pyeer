@@ -118,7 +118,7 @@ def generate_cmc_report(stats, max_rank, save_file):
             writer.writerow([st.exp_id] + st.ranks)
 
 
-def plot_eer_stats(stats, ids, line_width=3, hist_format=True, bins=100,
+def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
                    lgf_size=15, log_plot=True, save_plots=False, dpi=None,
                    save_path='', ext='.png'):
     """Plot a series of graphs from the given stats
@@ -129,9 +129,9 @@ def plot_eer_stats(stats, ids, line_width=3, hist_format=True, bins=100,
     @type ids: iterable
     @param line_width: The width of the plotted curves (default=3)
     @type line_width: int
-    @param hist_format: Indicates whether the impostor scores are in
+    @param hformat: Indicates whether the impostor scores are in
                         histogram format
-    @type hist_format: bool
+    @type hormat: bool
     @param bins: The number of bins to compute scores distribution
                  It will be ignored if the hist_format=True
     @type bins: int
@@ -196,7 +196,7 @@ def plot_eer_stats(stats, ids, line_width=3, hist_format=True, bins=100,
         dist_plot.set_xlabel('Scores')
         dist_plot.set_title(title)
 
-        if hist_format:
+        if hformat:
             m = max(st.gen_scores)
             x = np.arange(m)
             ghist = np.histogram(st.gen_scores, bins=np.arange(m + 1))[0]
