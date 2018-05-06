@@ -232,7 +232,7 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
         eer_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
         if save_plots:
-            fname = 'FMR and FNMR curves of experiment: (%s)' % ids[i] + ext
+            fname = 'FMR and FNMR curves (%s)' % ids[i] + ext
             eer_fig.savefig(join(save_path, fname), dpi=dpi)
 
         # Plotting DET Curve
