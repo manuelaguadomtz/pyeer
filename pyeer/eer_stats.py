@@ -360,7 +360,12 @@ def get_matthews_ccoef(fm, fnm, gnumber, inumber):
     tp = gnumber - fnm
 
     numerator = tp * tn - fm * fnm
-    denominator = np.sqrt((tp + fm) * (tp + fnm) * (tn + fm) * (tn + fnm))
+
+    # Calculating sqrt for each element instead of only once to
+    # all denominator to avoid overflow in some cases
+    denominator_a = np.sqrt((tp + fm)) * np.sqrt((tp + fnm))
+    denominator_b = np.sqrt((tn + fm)) * np.sqrt((tn + fnm))
+    denominator = denominator_a * denominator_b
 
     denominator[denominator == 0] = 1
 
