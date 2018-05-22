@@ -34,6 +34,14 @@ Stats = namedtuple('Stats', [
     'fmr10',  # 10 false match rate
     'fnmr0',  # 0 false non-match rate
 
+    # Operation points thresholds
+    'fmr0_th',  # Zero false math rate threshold
+    'fmr1000_th',  # 1000 false match rate threshold
+    'fmr100_th',  # 100 false match rate threshold
+    'fmr20_th',  # 20 false match rate threshold
+    'fmr10_th',  # 10 false match rate threshold
+    'fnmr0_th',  # 0 false non-match rate threshold
+
     # Scores distributions
     'gen_scores',  # Genuine scores
     'imp_scores',  # Impostor scores
@@ -224,13 +232,13 @@ def get_fnmr_op(fmr, fnmr, op):
     @param op: Operating point
     @type op: float
 
-    @returns: The lowest FMR at which the probability of FNMR == op
+    @returns: Index, The lowest FMR at which the probability of FNMR == op
     @rtype: float
     """
     temp = abs(fnmr - op)
     min_val = np.min(temp)
     index = np.where(temp == min_val)[0][-1]
-    return fmr[index]
+    return index, fmr[index]
 
 
 def get_fmr_op(fmr, fnmr, op):
@@ -248,11 +256,11 @@ def get_fmr_op(fmr, fnmr, op):
     @param op: Operating point
     @type op: float
 
-    @returns: The lowest FNMR at which the probability of FMR == op
+    @returns: Index, The lowest FNMR at which the probability of FMR == op
     @rtype: float
     """
     index = np.argmin(abs(fmr - op))
-    return fnmr[index]
+    return index, fnmr[index]
 
 
 def get_eer_values(fmr, fnmr):

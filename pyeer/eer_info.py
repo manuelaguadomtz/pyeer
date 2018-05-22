@@ -195,14 +195,24 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
     eer_th = thrs[eer_ind]
 
     # Estimating FMR operating points
-    fmr0 = get_fmr_op(fmr, fnmr, 0)
-    fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
-    fmr100 = get_fmr_op(fmr, fnmr, 0.01)
-    fmr20 = get_fmr_op(fmr, fnmr, 0.05)
-    fmr10 = get_fmr_op(fmr, fnmr, 0.1)
+    ind, fmr0 = get_fmr_op(fmr, fnmr, 0)
+    fmr0_th = thrs[ind]
+
+    ind, fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
+    fmr1000_th = thrs[ind]
+
+    ind, fmr100 = get_fmr_op(fmr, fnmr, 0.01)
+    fmr100_th = thrs[ind]
+
+    ind, fmr20 = get_fmr_op(fmr, fnmr, 0.05)
+    fmr20_th = thrs[ind]
+
+    ind, fmr10 = get_fmr_op(fmr, fnmr, 0.1)
+    fmr10_th = thrs[ind]
 
     # Estimating FNMR operating points
-    fnmr0 = get_fnmr_op(fmr, fnmr, 0)
+    ind, fnmr0 = get_fnmr_op(fmr, fnmr, 0)
+    fnmr0_th = thrs[ind]
 
     # Calculating distributions mean and variance
     gmean = np.mean(gen_scores)
@@ -238,4 +248,6 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
                  gmean=gmean, gstd=gstd, imean=imean, istd=istd,
                  eer_low=eer_low, eer_high=eer_high, decidability=dec,
                  j_index=j_index, j_index_th=j_index_th, eer_th=eer_th,
-                 mccoef=mccoef, mccoef_th=mccoef_th)
+                 mccoef=mccoef, mccoef_th=mccoef_th, fmr0_th=fmr0_th,
+                 fmr1000_th=fmr1000_th, fmr100_th=fmr100_th,
+                 fmr20_th=fmr20_th, fmr10_th=fmr10_th, fnmr0_th=fnmr0_th)

@@ -40,8 +40,10 @@ def generate_eer_report(stats, ids, save_file):
         row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
                'ISTD', "Sensitivity index (d')", 'AUC', 'J-Index',
                'J-Index (Threshold)', 'MCC', 'MCC (Threshold)', 'EERlow',
-               'EERhigh', 'EER', 'EER_TH', 'FMR=0', 'FMR1000', 'FMR100',
-               'FMR20', 'FMR10', 'FNMR0']
+               'EERhigh', 'EER', 'ZeroFMR', 'FMR1000', 'FMR100',
+               'FMR20', 'FMR10', 'ZeroFNMR', 'EER_TH', 'ZeroFMR_TH',
+               'FMR1000_TH', 'FMR100_TH', 'FMR20_TH', 'FMR10_TH',
+               'ZeroFNMR_TH']
         writer.writerow(row)
 
         for i, st in enumerate(stats):
@@ -49,8 +51,9 @@ def generate_eer_report(stats, ids, save_file):
             row = [ids[i], st.gmean, st.gstd, st.imean, st.istd,
                    st.decidability, st.auc, st.j_index, st.j_index_th,
                    st.mccoef, st.mccoef_th, st.eer_low, st.eer_high,
-                   st.eer, st.eer_th, st.fmr0, st.fmr1000, st.fmr100,
-                   st.fmr20, st.fmr10, st.fnmr0]
+                   st.eer, st.fmr0, st.fmr1000, st.fmr100, st.fmr20,
+                   st.fmr10, st.fnmr0, st.eer_th, st.fmr0_th, st.fmr1000_th,
+                   st.fmr100_th, st.fmr20_th, st.fmr10_th, st.fnmr0_th]
             writer.writerow(row)
 
         # Writing legend
