@@ -39,7 +39,7 @@ def generate_eer_report(stats, ids, save_file):
 
         row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
                'ISTD', "Sensitivity index (d')", 'AUC', 'J-Index',
-               'J-Index (Threshold)', 'MCC', 'MCC (Threshold)', 'EERlow',
+               'J-Index_TH', 'MCC', 'MCC_TH', 'EERlow',
                'EERhigh', 'EER', 'ZeroFMR', 'FMR1000', 'FMR100',
                'FMR20', 'FMR10', 'ZeroFNMR', 'EER_TH', 'ZeroFMR_TH',
                'FMR1000_TH', 'FMR100_TH', 'FMR20_TH', 'FMR10_TH',
@@ -72,10 +72,11 @@ def generate_eer_report(stats, ids, save_file):
         writer.writerow(["MCC: Matthews Correlation Coefficient"])
         writer.writerow(['EER: Equal Error Rate'])
         writer.writerow(['EERlow, EERhigh: See FVC2000 protocol evaluation'])
-        writer.writerow(['EER_TH: Threshold for which EERlow and EERHigh were'
-                         ' calculated'])
         writer.writerow(['FMR: False Match Rate'])
         writer.writerow(['FNMR: False Non-Match Rate'])
+        writer.writerow(['_TH: Threshold'])
+        writer.writerow(['EER_TH: Threshold for which EERlow and EERHigh were'
+                         ' calculated'])
 
         writer.writerow([])
 
