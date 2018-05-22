@@ -191,7 +191,8 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
     fnmr = fnm / gnumber
 
     # Estimating EER
-    eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
+    eer_ind, eer_low, eer_high, eer = get_eer_values(fmr, fnmr)
+    eer_th = thrs[eer_ind]
 
     # Estimating FMR operating points
     fmr0 = get_fmr_op(fmr, fnmr, 0)
@@ -236,5 +237,5 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
                  gen_scores=gen_scores, imp_scores=imp_scores,
                  gmean=gmean, gstd=gstd, imean=imean, istd=istd,
                  eer_low=eer_low, eer_high=eer_high, decidability=dec,
-                 j_index=j_index, j_index_th=j_index_th,
+                 j_index=j_index, j_index_th=j_index_th, eer_th=eer_th,
                  mccoef=mccoef, mccoef_th=mccoef_th)

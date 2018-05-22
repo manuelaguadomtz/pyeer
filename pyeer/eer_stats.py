@@ -46,7 +46,8 @@ Stats = namedtuple('Stats', [
     # Values of EER
     'eer',  # Equal error rate
     'eer_low',  # Equal error rate (low)
-    'eer_high'  # Equal error rate (high)
+    'eer_high',  # Equal error rate (high)
+    'eer_th'  # The threshold for which eer_low and eer_high were calculated
 ])
 
 
@@ -280,7 +281,7 @@ def get_eer_values(fmr, fnmr):
     @param op: Operation point
     @type op: float
 
-    @returns: EERlow, EERhigh, EER
+    @returns: index for EERlow and EERhigh, EERlow, EERhigh, EER
     @rtype: tuple
     """
     diff = fmr - fnmr
@@ -299,7 +300,7 @@ def get_eer_values(fmr, fnmr):
     if fmr[t1] + fnmr[t1] <= fmr[t2] + fnmr[t2]:
         return fnmr[t1], fmr[t1], (fnmr[t1] + fmr[t1]) / 2
     else:
-        return fmr[t2], fnmr[t2], (fnmr[t2] + fmr[t2]) / 2
+        return t2, fmr[t2], fnmr[t2], (fnmr[t2] + fmr[t2]) / 2
 
     # index = np.argmin(abs(fmr - fnmr))
     # eer = np.abs(fnmr[index] + fmr[index]) / 2.0

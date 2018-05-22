@@ -40,8 +40,8 @@ def generate_eer_report(stats, ids, save_file):
         row = ['Experiment ID', 'GMean', 'GSTD', 'IMean',
                'ISTD', "Sensitivity index (d')", 'AUC', 'J-Index',
                'J-Index (Threshold)', 'MCC', 'MCC (Threshold)', 'EERlow',
-               'EERhigh', 'EER', 'FMR=0', 'FMR1000', 'FMR100', 'FMR20',
-               'FMR10', 'FNMR0']
+               'EERhigh', 'EER', 'EER_TH', 'FMR=0', 'FMR1000', 'FMR100',
+               'FMR20', 'FMR10', 'FNMR0']
         writer.writerow(row)
 
         for i, st in enumerate(stats):
@@ -49,8 +49,8 @@ def generate_eer_report(stats, ids, save_file):
             row = [ids[i], st.gmean, st.gstd, st.imean, st.istd,
                    st.decidability, st.auc, st.j_index, st.j_index_th,
                    st.mccoef, st.mccoef_th, st.eer_low, st.eer_high,
-                   st.eer, st.fmr0, st.fmr1000, st.fmr100, st.fmr20,
-                   st.fmr10, st.fnmr0]
+                   st.eer, st.eer_th, st.fmr0, st.fmr1000, st.fmr100,
+                   st.fmr20, st.fmr10, st.fnmr0]
             writer.writerow(row)
 
         # Writing legend
@@ -69,6 +69,8 @@ def generate_eer_report(stats, ids, save_file):
         writer.writerow(["MCC: Matthews Correlation Coefficient"])
         writer.writerow(['EER: Equal Error Rate'])
         writer.writerow(['EERlow, EERhigh: See FVC2000 protocol evaluation'])
+        writer.writerow(['EER_TH: Threshold for which EERlow and EERHigh were'
+                         ' calculated'])
         writer.writerow(['FMR: False Match Rate'])
         writer.writerow(['FNMR: False Non-Match Rate'])
 
