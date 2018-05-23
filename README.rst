@@ -131,7 +131,7 @@ For all the above examples a CSV file will be generated in the directory where t
 include all the calculated stats. To specify the directory where to saved it, you can use the "-sp" option.
 
 **Note:** To run the above examples you can download the score files from the project site on Gitlab or extract them from 
-inside the package installation
+inside the package installation.
 
 **To use from other scripts**
 
