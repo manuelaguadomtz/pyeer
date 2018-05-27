@@ -140,14 +140,17 @@ inside the package installation.
     from pyeer.eer_info import get_eer_stats
     from pyeer.reports import generate_eer_report, plot_eer_stats
 
-    # Calculating stats
-    stats = get_eer_stats(gscores, iscores)
+    # Calculating stats for classifier A
+    stats_a = get_eer_stats(gscores_a, iscores_a)
+
+    # Calculating stats for classifier B
+    stats_b = get_eer_stats(gscores_b, iscores_b)
 
     # Generating CSV report
-    generate_eer_report([stats], ['test'], 'report.csv')
+    generate_eer_report([stats_a, stats_b], ['A', 'B'], 'report.csv')
 
     # Plotting
-    plot_eer_stats([stats], ['test'])
+    plot_eer_stats([stats_a, stats_b], ['A', 'B'])
 
 
 Contributing
