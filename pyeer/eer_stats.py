@@ -306,7 +306,7 @@ def get_eer_values(fmr, fnmr):
     t1 = t2 - 1 if diff[t2] != 0 and t2 != 0 else t2
 
     if fmr[t1] + fnmr[t1] <= fmr[t2] + fnmr[t2]:
-        return fnmr[t1], fmr[t1], (fnmr[t1] + fmr[t1]) / 2
+        return t1, fnmr[t1], fmr[t1], (fnmr[t1] + fmr[t1]) / 2
     else:
         return t2, fmr[t2], fnmr[t2], (fnmr[t2] + fmr[t2]) / 2
 
