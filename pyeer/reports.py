@@ -259,7 +259,7 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
         roc_fig.savefig(join(save_path, 'ROC' + ext), dpi=dpi)
 
         # closing plots
-        plt.close()
+        plt.close('all')
     else:
         plt.show()
 
