@@ -56,7 +56,7 @@ def load_scores_from_file(scores_filename, true_pairs_filename,
 
 
 def get_cmc_curve(scores, max_rank):
-    """Calculate the values of a CMC curve
+    """Calculates the values of a CMC curve
 
     @param scores: The dictionary returned by the function
         load_scores_from_file or a similar one.

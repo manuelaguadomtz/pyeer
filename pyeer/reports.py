@@ -265,7 +265,7 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
 
 
 def plot_cmc_stats(stats, max_rank, line_width=3, lgf_size=15,
-                   save_plots=False, dpi=None, save_path='', ext='.png'):
+                   save_plots=False, dpi=None, save_path='.', ext='.png'):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple CMCstats

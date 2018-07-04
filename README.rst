@@ -152,6 +152,31 @@ inside the package installation.
     # Plotting
     plot_eer_stats([stats_a, stats_b], ['A', 'B'])
 
+.. code:: python
+
+    from pyeer.cmc_stats import load_scores_from_file, get_cmc_curve, CMCstats
+    from pyeer.reports import generate_cmc_report, plot_cmc_stats
+
+    # CMC maximum rank
+    r = 20
+
+    # Loading scores
+    sfile = 'cmc/exp1_scores.txt'  # The scores file
+    tp_file = 'cmc/exp1_tp.txt'  # The genuine pairs relationship in "sfile"
+    scores = load_scores_from_file(sfile, tp_file)
+
+    # Calculating CMC curve
+    ranks = get_cmc_curve(scores, r)
+
+    # Creating stats
+    stats = [CMCstats(exp_id='A', ranks=ranks)]
+
+    # Generating CSV report
+    generate_cmc_report(stats, r, 'cmc_report.csv')
+
+    # Plotting
+    plot_cmc_stats(stats, r)
+
 
 Contributing
 ============
