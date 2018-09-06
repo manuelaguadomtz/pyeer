@@ -58,6 +58,8 @@ setup(
 
     long_description=readme,
 
+    long_description_content_type='text/x-rst',
+
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
               'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
               'ZeroFMR', 'CMC', 'Biometric Systems'],
