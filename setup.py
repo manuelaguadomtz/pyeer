@@ -40,8 +40,13 @@ setup(
 
     maintainer_email='manuelaguadomtz@gmail.com',
 
-    url='https://www.researchgate.net/project/Python-package'
-        '-to-calculate-EER-values-and-probability-curves',
+    url='https://github.com/manuelaguadomtz/pyeer',
+
+    project_urls={
+        'Information': 'https://www.researchgate.net/project/Python-package'
+                       '-to-calculate-EER-values-and-probability-curves',
+        'Source Code': 'https://github.com/manuelaguadomtz/pyeer',
+    },
 
     # Package requirements
     install_requires=['numpy',
