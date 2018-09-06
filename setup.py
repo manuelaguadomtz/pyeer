@@ -35,6 +35,11 @@ setup(
 
     author_email='manuelaguadomtz@gmail.com',
 
+    # Package author information
+    maintainer=u'Manuel Aguado Martínez',
+
+    maintainer_email='manuelaguadomtz@gmail.com',
+
     url='https://www.researchgate.net/project/Python-package'
         '-to-calculate-EER-values-and-probability-curves',
 
