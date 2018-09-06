@@ -35,11 +35,6 @@ setup(
 
     author_email='manuelaguadomtz@gmail.com',
 
-    # Package author information
-    maintainer=u'Manuel Aguado Martínez',
-
-    maintainer_email='manuelaguadomtz@gmail.com',
-
     url='https://github.com/manuelaguadomtz/pyeer',
 
     project_urls={
