@@ -38,8 +38,9 @@ setup(
     url='https://github.com/manuelaguadomtz/pyeer',
 
     project_urls={
-        'Information': 'https://www.researchgate.net/project/Python-package'
-                       '-to-calculate-EER-values-and-probability-curves',
+        'Project Information': 'https://www.researchgate.net/project/'
+                               'Python-package-to-calculate-EER-values'
+                               '-and-probability-curves',
         'Source Code': 'https://github.com/manuelaguadomtz/pyeer',
     },
 
