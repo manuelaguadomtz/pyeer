@@ -51,4 +51,12 @@ setup(
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
               'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
               'ZeroFMR', 'CMC', 'Biometric Systems'],
+
+    classifiers=[
+        'Intended Audience :: Science/Research',
+        'Operating System :: OS Independent',
+        'Topic :: Scientific/Engineering',
+        'Programming Language :: Python',
+        'License :: OSI Approved :: MIT License'
+    ],
 )
