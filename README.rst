@@ -183,7 +183,7 @@ Contributing
 
 Do you find **PyEER** useful? You can collaborate with us:
 
-`Link Gitlab <https://gitlab.com/manuelaguadomtz/pyeer>`_
+`Link GitHub <https://github.com/manuelaguadomtz/pyeer>`_
 
 References
 ==========
