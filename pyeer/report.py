@@ -7,7 +7,7 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
-def generate_eer_report(stats, ids, save_file):
+def generate_csv_eer_report(stats, ids, save_file):
     """ Generate a CSV file with the given statistics
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -91,7 +91,28 @@ def generate_eer_report(stats, ids, save_file):
             writer.writerow(row)
 
 
-def generate_cmc_report(stats, max_rank, save_file):
+def generate_eer_report(stats, ids, save_file):
+    """Writes EER statistics to a file
+
+    @param stats: An iterable with instances of the named tuple Stats
+    @type stats: iterable
+    @param ids: An iterable with an ID (str) for each stat
+    @type ids: iterable
+    @param save_file: The filename used to save the report.
+        The file format will depend on the filename extension.
+    @type save_file: str
+    """
+
+    # Getting file extension
+    ext = save_file.split('.')[-1]
+
+    if ext.lower() == 'csv':
+        generate_csv_eer_report(stats, ids, save_file)
+    else:
+        raise ValueError('Unsupported file format')
+
+
+def generate_csv_cmc_report(stats, max_rank, save_file):
     """ Generate a CSV file with the given CMC rank values
 
     @param exps_cmc: A list of CMCstats instances
@@ -111,3 +132,23 @@ def generate_cmc_report(stats, max_rank, save_file):
         for st in stats:
             # Writing rank values
             writer.writerow([st.exp_id] + st.ranks)
+
+
+def generate_cmc_report(stats, max_rank, save_file):
+    """ Writes CMC rank values to a file
+
+    @param exps_cmc: A list of CMCstats instances
+    @type exps_cmc: list
+    @param max_rank: The maximum rank of the CMC curves
+    @type max_rank: int
+    @param save_file: The filename used to save the report.
+        The file format will depend on the filename extension.
+    @type save_file: str
+    """
+    # Getting file extension
+    ext = save_file.split('.')[-1]
+
+    if ext.lower() == 'csv':
+        generate_csv_cmc_report(stats, max_rank, save_file)
+    else:
+        raise ValueError('Unsupported file format')
