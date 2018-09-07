@@ -138,7 +138,8 @@ inside the package installation.
 .. code:: python
 
     from pyeer.eer_info import get_eer_stats
-    from pyeer.reports import generate_eer_report, plot_eer_stats
+    from pyeer.report import generate_eer_report
+    from pyeer.plot import plot_eer_stats
 
     # Calculating stats for classifier A
     stats_a = get_eer_stats(gscores_a, iscores_a)
@@ -155,7 +156,8 @@ inside the package installation.
 .. code:: python
 
     from pyeer.cmc_stats import load_scores_from_file, get_cmc_curve, CMCstats
-    from pyeer.reports import generate_cmc_report, plot_cmc_stats
+    from pyeer.report import generate_cmc_report
+    from pyeer.plot import plot_cmc_stats
 
     # CMC maximum rank
     r = 20

@@ -5,7 +5,8 @@ import argparse
 from os.path import join
 
 from .cmc_stats import load_scores_from_file, get_cmc_curve, CMCstats
-from .reports import generate_cmc_report, plot_cmc_stats
+from .report import generate_cmc_report
+from .plot import plot_cmc_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Manuel Aguado Martínez'

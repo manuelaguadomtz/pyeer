@@ -10,7 +10,8 @@ import numpy as np
 from .eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op, get_eer_values, Stats, get_decidability_value,\
     get_youden_index, get_matthews_ccoef
-from .reports import generate_eer_report, plot_eer_stats
+from .report import generate_eer_report
+from .plot import plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
