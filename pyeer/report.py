@@ -7,6 +7,9 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
+MAX_LATEX_TABLE_CMC_RANK = 4
+
+
 def generate_html_eer_report(stats, ids, save_file):
     """ Generate an HTML file with the given statistics
 
@@ -51,7 +54,7 @@ def generate_html_eer_report(stats, ids, save_file):
         sf.write('<th>%s</th>\n' % 'J-Index')
         sf.write('<th>%s</th>\n' % 'J-Index Threshold')
         sf.write('<th>%s</th>\n' % 'MCC')
-        sf.write('<th>%s</th>\n' % 'MCC_TH')
+        sf.write('<th>%s</th>\n' % 'MCC Threshold')
         sf.write('<th>%s</th>\n' % 'EERlow')
         sf.write('<th>%s</th>\n' % 'EERhigh')
         sf.write('<th>%s</th>\n' % 'EER')
@@ -150,7 +153,6 @@ def generate_html_eer_report(stats, ids, save_file):
         sf.write('<table>\n')
 
         # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
         caption = 'FMR and FNMR curves'
         sf.write('<caption><h3>%s</h3></caption>\n' % caption)
 
@@ -193,6 +195,311 @@ def generate_html_eer_report(stats, ids, save_file):
 
         # Closing html tag
         sf.write('</html>\n')
+
+
+def generate_tex_eer_report(stats, ids, save_file):
+    """ Generate an TEX file with the given statistics
+
+    @param stats: An iterable with instances of the named tuple Stats
+    @type stats: iterable
+    @param ids: An iterable with an ID (str) for each stat
+    @type ids: iterable
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    with open(save_file, 'w') as sf:
+
+        # document type
+        sf.write('\documentclass[10pt]{article}\n')
+
+        # Writing document title
+        sf.write('\\title{EER report}\n')
+
+        # Writing author
+        sf.write('\\author{PyEER}\n')
+
+        # Writing document begin
+        sf.write('\\begin{document}\n')
+
+        # Making title
+        sf.write('\maketitle\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{eer_table1}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'GMean')
+        sf.write('& \\textbf{%s} ' % 'GSTD')
+        sf.write('& \\textbf{%s} ' % 'IMean')
+        sf.write('& \\textbf{%s} ' % 'ISTD')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.gmean)
+            sf.write(' & %f' % st.gstd)
+            sf.write(' & %f' % st.imean)
+            sf.write(' & %f' % st.istd)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{eer_table2}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % "Sensitivity index (d')")
+        sf.write('& \\textbf{%s} ' % 'AUC')
+        sf.write('& \\textbf{%s} ' % 'J-Index')
+        sf.write('& \\textbf{%s} ' % 'J-Index TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.decidability)
+            sf.write(' & %f' % st.auc)
+            sf.write(' & %f' % st.j_index)
+            sf.write(' & %f' % st.j_index_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{eer_table3}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'MCC')
+        sf.write('& \\textbf{%s} ' % 'MCC TH')
+        sf.write('& \\textbf{%s} ' % 'EERlow')
+        sf.write('& \\textbf{%s} ' % 'EERhigh')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.mccoef)
+            sf.write(' & %f' % st.mccoef_th)
+            sf.write(' & %f' % st.eer_low)
+            sf.write(' & %f' % st.eer_high)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{eer_table4}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'EER')
+        sf.write('& \\textbf{%s} ' % 'ZeroFMR')
+        sf.write('& \\textbf{%s} ' % 'FMR1000')
+        sf.write('& \\textbf{%s} ' % 'FMR100')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.eer)
+            sf.write(' & %f' % st.fmr0)
+            sf.write(' & %f' % st.fmr1000)
+            sf.write(' & %f' % st.fmr100)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{eer_table5}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 6))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'FMR20')
+        sf.write('& \\textbf{%s} ' % 'FMR10')
+        sf.write('& \\textbf{%s} ' % 'ZeroFNMR')
+        sf.write('& \\textbf{%s} ' % 'EER TH')
+        sf.write('& \\textbf{%s} ' % 'ZeroFMR TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.fmr20)
+            sf.write(' & %f' % st.fmr10)
+            sf.write(' & %f' % st.fnmr0)
+            sf.write(' & %f' % st.eer_th)
+            sf.write(' & %f' % st.fmr0_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{eer_table6}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 6))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'FMR1000 TH')
+        sf.write('& \\textbf{%s} ' % 'FMR100 TH')
+        sf.write('& \\textbf{%s} ' % 'FMR20 TH')
+        sf.write('& \\textbf{%s} ' % 'FMR10 TH')
+        sf.write('& \\textbf{%s} ' % 'ZeroFNMR TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.fmr1000_th)
+            sf.write(' & %f' % st.fmr100_th)
+            sf.write(' & %f' % st.fmr20_th)
+            sf.write(' & %f' % st.fmr10_th)
+            sf.write(' & %f' % st.fnmr0_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Table legend
+        sf.write('\\begin{itemize}\n')
+        sf.write('\item \\textbf{GMean:} Genuine scores distribution  mean\n')
+        sf.write('\item \\textbf{GSTD:} Genuine scores distribution standard '
+                 'deviation\n')
+        sf.write('\item \\textbf{IMean:} Impostor scores distribution  mean\n')
+        sf.write('\item \\textbf{IVariance:} Impostor scores distribution'
+                 ' standard deviation')
+        sf.write("\item \\textbf{Sensitivity index (d')}:NICE:II protocol "
+                 "evaluation\n")
+        sf.write('\item \\textbf{AUC:} Area under the ROC curve\n')
+        sf.write("\item \\textbf{J-Index:} Youden's J statistic (Youden's "
+                 "Index)\n")
+        sf.write('\item \\textbf{MCC:} Matthews Correlation Coefficient\n')
+        sf.write('\item \\textbf{EER:} Equal Error Rate\n')
+        sf.write('\item \\textbf{EERlow,} EERhigh: See FVC2000 protocol '
+                 'evaluation\n')
+        sf.write('\item \\textbf{FMR:} False Match Rate\n')
+        sf.write('\item \\textbf{FNMR:} False Non-Match Rate\n')
+        sf.write('\item \\textbf{EER TH:} Threshold for which EERlow'
+                 ' and EERHigh were calculated\n')
+        sf.write('\item TH: Threshold\n')
+        sf.write('\end{itemize}\n')
+
+        # Writing document end
+        sf.write('\end{document}\n')
 
 
 def generate_csv_eer_report(stats, ids, save_file):
@@ -298,12 +605,14 @@ def generate_eer_report(stats, ids, save_file):
         generate_csv_eer_report(stats, ids, save_file)
     elif ext.lower() == 'html':
         generate_html_eer_report(stats, ids, save_file)
+    elif ext.lower() == 'tex':
+        generate_tex_eer_report(stats, ids, save_file)
     else:
         raise ValueError('Unsupported file format')
 
 
 def generate_csv_cmc_report(stats, max_rank, save_file):
-    """ Generate a CSV file with the given CMC rank values
+    """ Generates a CSV file with the given CMC rank values
 
     @param exps_cmc: A list of CMCstats instances
     @type exps_cmc: list
@@ -325,7 +634,7 @@ def generate_csv_cmc_report(stats, max_rank, save_file):
 
 
 def generate_html_cmc_report(stats, max_rank, save_file):
-    """ Generate a CSV file with the given CMC rank values
+    """ Generates an HTML file with the given CMC rank values
 
     @param exps_cmc: A list of CMCstats instances
     @type exps_cmc: list
@@ -385,8 +694,49 @@ def generate_html_cmc_report(stats, max_rank, save_file):
         sf.write('</html>\n')
 
 
+def __write_cmc_tex_table(sf, table_number, stats, max_rank):
+    # Beginning table
+    sf.write('\\begin{table}[h]\n')
+
+    # Centering
+    sf.write('\centering')
+
+    # Writing table caption
+    label = 'cmc_table' + str(table_number + 1)
+    sf.write('\caption{CMC Ranks.}\label{%s}\n' % label)
+
+    # Beginning tabular block
+    sf.write('\\begin{tabular}{%s}\n' % ('l' * (MAX_LATEX_TABLE_CMC_RANK + 1)))
+
+    # Inserting line
+    sf.write('\hline\n')
+
+    rstart = table_number * MAX_LATEX_TABLE_CMC_RANK
+    rend = rstart + MAX_LATEX_TABLE_CMC_RANK
+
+    # Inserting table headers
+    sf.write('\\textbf{%s} ' % 'Experiment ID')
+    for i in range(rstart + 1, min(max_rank, rend) + 1):
+        sf.write(' & \\textbf{Rank-%d}' % i)
+    sf.write('\\\\\n')
+
+    for st in stats:
+        # Writing rank values
+        sf.write('\hline\n')
+        sf.write('%s' % st.exp_id)
+        for i in range(rstart, min(max_rank, rend)):
+            sf.write(' & %f' % st.ranks[i])
+        sf.write('\\\\\n')
+
+    # Ending tabular block
+    sf.write('\end{tabular}\n')
+
+    # Ending table
+    sf.write('\end{table}\n')
+
+
 def generate_tex_cmc_report(stats, max_rank, save_file):
-    """ Generate a CSV file with the given CMC rank values
+    """ Generates a TEX file with the given CMC rank values
 
     @param exps_cmc: A list of CMCstats instances
     @type exps_cmc: list
@@ -404,7 +754,9 @@ def generate_tex_cmc_report(stats, max_rank, save_file):
         sf.write('\\title{CMC report}\n')
 
         # Writing author
-        sf.write('\\author{PyEER}\n')
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\\author{%s}\n' % caption)
 
         # Writing document begin
         sf.write('\\begin{document}\n')
@@ -412,42 +764,11 @@ def generate_tex_cmc_report(stats, max_rank, save_file):
         # Making title
         sf.write('\maketitle\n')
 
-        # Beginning table
-        sf.write('\\begin{table}[h]\n')
-
-        # Centering
-        sf.write('\centering')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{cmc_table}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * (len(stats) + 1)))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Ranks')
-        for st in stats:
-            sf.write(' & \\textbf{%s}' % st.exp_id)
-        sf.write('\\\\\n')
-
-        for i in range(1, max_rank + 1):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('Rank-%d' % i)
-            for st in stats:
-                sf.write(' & %f' % st.ranks[i - 1])
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
+        table_count = int(max_rank / MAX_LATEX_TABLE_CMC_RANK)
+        if max_rank % MAX_LATEX_TABLE_CMC_RANK != 0:
+            table_count += 1
+        for i in range(table_count):
+            __write_cmc_tex_table(sf, i, stats, max_rank)
 
         # Writing document end
         sf.write('\end{document}\n')

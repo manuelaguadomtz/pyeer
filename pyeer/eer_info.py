@@ -98,7 +98,7 @@ def get_eer_info_cmd():
                          "(png, pdf, ps, eps and svg)")
     ap.add_argument("-rf", "--report_format", required=False, default='csv',
                     help="Format in which to save the report file. "
-                         "Valid formats are: (csv, html). Default csv.")
+                         "Valid formats are: (csv, html, tex). Default csv.")
     ap.add_argument("-sr", "--save_dpi", required=False, default=None,
                     help="Plots resolution (dots per inch) in the cases"
                          " where the option -s was specified. If not given"
