@@ -96,6 +96,9 @@ def get_eer_info_cmd():
                     help="Format to save the plots in the cases where the"
                          " option -s was specified. Valid formats are: "
                          "(png, pdf, ps, eps and svg)")
+    ap.add_argument("-rf", "--report_format", required=False, default='csv',
+                    help="Format in which to save the report file. "
+                         "Valid formats are: (csv, html). Default csv.")
     ap.add_argument("-sr", "--save_dpi", required=False, default=None,
                     help="Plots resolution (dots per inch) in the cases"
                          " where the option -s was specified. If not given"
@@ -147,7 +150,8 @@ def get_eer_info_cmd():
     # Generating reports
     print('Generating report...')
 
-    generate_eer_report(stats, ids, join(args.save_path, 'pyeer_report.csv'))
+    filename = join(args.save_path, 'pyeer_report.' + args.report_format)
+    generate_eer_report(stats, ids, filename)
 
     if not args.no_plots:
         print('Plotting...')
