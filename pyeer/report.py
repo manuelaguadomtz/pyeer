@@ -385,6 +385,74 @@ def generate_html_cmc_report(stats, max_rank, save_file):
         sf.write('</html>\n')
 
 
+def generate_tex_cmc_report(stats, max_rank, save_file):
+    """ Generate a CSV file with the given CMC rank values
+
+    @param exps_cmc: A list of CMCstats instances
+    @type exps_cmc: list
+    @param max_rank: The maximum rank of the CMC curves
+    @type max_rank: int
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    with open(save_file, 'w') as sf:
+
+        # document type
+        sf.write('\documentclass[10pt]{article}\n')
+
+        # Writing document title
+        sf.write('\\title{CMC report}\n')
+
+        # Writing author
+        sf.write('\\author{PyEER}\n')
+
+        # Writing document begin
+        sf.write('\\begin{document}\n')
+
+        # Making title
+        sf.write('\maketitle\n')
+
+        # Beginning table
+        sf.write('\\begin{table}[h]\n')
+
+        # Centering
+        sf.write('\centering')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\caption{%s.}\label{cmc_table}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * (len(stats) + 1)))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Ranks')
+        for st in stats:
+            sf.write(' & \\textbf{%s}' % st.exp_id)
+        sf.write('\\\\\n')
+
+        for i in range(1, max_rank + 1):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('Rank-%d' % i)
+            for st in stats:
+                sf.write(' & %f' % st.ranks[i - 1])
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Writing document end
+        sf.write('\end{document}\n')
+
+
 def generate_cmc_report(stats, max_rank, save_file):
     """ Writes CMC rank values to a file
 
@@ -403,5 +471,7 @@ def generate_cmc_report(stats, max_rank, save_file):
         generate_csv_cmc_report(stats, max_rank, save_file)
     elif ext.lower() == 'html':
         generate_html_cmc_report(stats, max_rank, save_file)
+    elif ext.lower() == 'tex':
+        generate_tex_cmc_report(stats, max_rank, save_file)
     else:
         raise ValueError('Unsupported file format')
