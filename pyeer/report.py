@@ -324,6 +324,67 @@ def generate_csv_cmc_report(stats, max_rank, save_file):
             writer.writerow([st.exp_id] + st.ranks)
 
 
+def generate_html_cmc_report(stats, max_rank, save_file):
+    """ Generate a CSV file with the given CMC rank values
+
+    @param exps_cmc: A list of CMCstats instances
+    @type exps_cmc: list
+    @param max_rank: The maximum rank of the CMC curves
+    @type max_rank: int
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    with open(save_file, 'w') as sf:
+
+        # Write html tag
+        sf.write('<html>\n')
+
+        # Writing encoding type
+        sf.write('<meta charset="UTF-8">\n')
+
+        # Writing styles
+        sf.write('<style>')
+        sf.write('td{ padding-right: 15px; padding-left:15px;}')
+        sf.write('</style>')
+
+        # Writing html table tag
+        sf.write('<table>\n')
+
+        # Writing table caption
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('<caption><h3>%s</h3></caption>\n' % caption)
+
+        # Writing table headers
+        sf.write('<thead>\n')
+        sf.write('<tr>\n')
+        sf.write('<th>%s</th>\n' % 'Experiment ID')
+        for i in range(1, max_rank + 1):
+            sf.write('<th>Rank-%d</th>\n' % i)
+        sf.write('</tr>\n')
+        sf.write('</thead>\n')
+
+        # Writing table body
+        sf.write('<tbody>\n')
+
+        for st in stats:
+            # Writing rank values
+            sf.write('<tr>\n')
+            sf.write('<td>%s</td>\n' % st.exp_id)
+            for r in st.ranks:
+                sf.write('<td>%f</td>\n' % r)
+            sf.write('</tr>\n')
+
+        # Closing table body
+        sf.write('</tbody>\n')
+
+        # Closing html table tag
+        sf.write('</table>\n')
+
+        # Closing html tag
+        sf.write('</html>\n')
+
+
 def generate_cmc_report(stats, max_rank, save_file):
     """ Writes CMC rank values to a file
 
@@ -340,5 +401,7 @@ def generate_cmc_report(stats, max_rank, save_file):
 
     if ext.lower() == 'csv':
         generate_csv_cmc_report(stats, max_rank, save_file)
+    elif ext.lower() == 'html':
+        generate_html_cmc_report(stats, max_rank, save_file)
     else:
         raise ValueError('Unsupported file format')

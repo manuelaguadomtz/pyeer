@@ -34,6 +34,8 @@ def get_cmc_info():
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
                     help="Indicates whether to save the plots instead of"
                          " showing them")
+    ap.add_argument("-np", "--no_plots", required=False, action='store_true',
+                    help="Indicates whether to not plot the results")
     ap.add_argument("-sp", "--save_path", required=False, default='',
                     help="Path to save the plots (if -s was specified)"
                          " and stats report")
@@ -41,6 +43,9 @@ def get_cmc_info():
                     help="Format to save the plots in the cases where the"
                          " option -s was specified. Valid formats are: "
                          "(png, pdf, ps, eps and svg)")
+    ap.add_argument("-rf", "--report_format", required=False, default='csv',
+                    help="Format in which to save the report file. "
+                         "Valid formats are: (csv, html). Default csv.")
     ap.add_argument("-sr", "--save_dpi", required=False, default=None,
                     help="Plots resolution (dots per inch) in the cases"
                          " where the option -s was specified. If not given"
@@ -82,9 +87,10 @@ def get_cmc_info():
     # Generating reports
     print('Generating report...')
 
-    generate_cmc_report(stats, rank, join(args.save_path, 'pyeer_report.csv'))
+    filename = join(args.save_path, 'pyeer_report.' + args.report_format)
+    generate_cmc_report(stats, rank, filename)
 
-    print('Plotting...')
-
-    plot_cmc_stats(stats, rank, line_width, lgf_size, args.save_plots,
-                   dpi, args.save_path, ext)
+    if not args.no_plots:
+        print('Plotting...')
+        plot_cmc_stats(stats, rank, line_width, lgf_size, args.save_plots,
+                       dpi, args.save_path, ext)
