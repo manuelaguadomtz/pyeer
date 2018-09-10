@@ -37,12 +37,12 @@ setup(
 
     url='https://github.com/manuelaguadomtz/pyeer',
 
-    project_urls={
-        'Project Information': 'https://www.researchgate.net/project/'
-                               'Python-package-to-calculate-EER-values'
-                               '-and-probability-curves',
-        'Source Code': 'https://github.com/manuelaguadomtz/pyeer',
-    },
+    # project_urls={
+    #     'Project Information': 'https://www.researchgate.net/project/'
+    #                            'Python-package-to-calculate-EER-values'
+    #                             '-and-probability-curves',
+    #     'Source Code': 'https://github.com/manuelaguadomtz/pyeer',
+    # },
 
     # Package requirements
     install_requires=['numpy',
@@ -54,7 +54,7 @@ setup(
 
     long_description=readme,
 
-    long_description_content_type='text/x-rst',
+    # long_description_content_type='text/x-rst',
 
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
               'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
