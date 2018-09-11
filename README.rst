@@ -150,6 +150,12 @@ inside the package installation.
     # Generating CSV report
     generate_eer_report([stats_a, stats_b], ['A', 'B'], 'report.csv')
 
+    # Generating HTML report
+    generate_cmc_report(stats, r, 'pyeer_report.html')
+
+    # Generating Latex report
+    generate_cmc_report(stats, r, 'pyeer_report.tex')
+
     # Plotting
     plot_eer_stats([stats_a, stats_b], ['A', 'B'])
 
@@ -174,7 +180,13 @@ inside the package installation.
     stats = [CMCstats(exp_id='A', ranks=ranks)]
 
     # Generating CSV report
-    generate_cmc_report(stats, r, 'cmc_report.csv')
+    generate_cmc_report(stats, r, 'pyeer_report.csv')
+
+    # Generating HTML report
+    generate_cmc_report(stats, r, 'pyeer_report.html')
+
+    # Generating Latex report
+    generate_cmc_report(stats, r, 'pyeer_report.tex')
 
     # Plotting
     plot_cmc_stats(stats, r)
