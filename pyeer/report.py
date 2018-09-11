@@ -216,263 +216,15 @@ def generate_tex_eer_report(stats, ids, save_file):
         sf.write('\\title{EER report}\n')
 
         # Writing author
-        sf.write('\\author{PyEER}\n')
+        pkg_version = pkg_resources.require('pyeer')[0].version
+        caption = 'Generated using PyEER ' + pkg_version
+        sf.write('\\author{%s}\n' % caption)
 
         # Writing document begin
         sf.write('\\begin{document}\n')
 
         # Making title
         sf.write('\maketitle\n')
-
-        # Beginning table
-        sf.write('\\begin{table}\n')
-
-        # Centering
-        sf.write('\centering\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{eer_table1}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Experiment ID')
-        sf.write('& \\textbf{%s} ' % 'GMean')
-        sf.write('& \\textbf{%s} ' % 'GSTD')
-        sf.write('& \\textbf{%s} ' % 'IMean')
-        sf.write('& \\textbf{%s} ' % 'ISTD')
-        sf.write('\\\\\n')
-
-        for i, st in enumerate(stats):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('%s' % ids[i])
-            sf.write(' & %f' % st.gmean)
-            sf.write(' & %f' % st.gstd)
-            sf.write(' & %f' % st.imean)
-            sf.write(' & %f' % st.istd)
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
-
-        # Beginning table
-        sf.write('\\begin{table}\n')
-
-        # Centering
-        sf.write('\centering\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{eer_table2}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Experiment ID')
-        sf.write('& \\textbf{%s} ' % "Sensitivity index (d')")
-        sf.write('& \\textbf{%s} ' % 'AUC')
-        sf.write('& \\textbf{%s} ' % 'J-Index')
-        sf.write('& \\textbf{%s} ' % 'J-Index TH')
-        sf.write('\\\\\n')
-
-        for i, st in enumerate(stats):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('%s' % ids[i])
-            sf.write(' & %f' % st.decidability)
-            sf.write(' & %f' % st.auc)
-            sf.write(' & %f' % st.j_index)
-            sf.write(' & %f' % st.j_index_th)
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
-
-        # Beginning table
-        sf.write('\\begin{table}\n')
-
-        # Centering
-        sf.write('\centering\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{eer_table3}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Experiment ID')
-        sf.write('& \\textbf{%s} ' % 'MCC')
-        sf.write('& \\textbf{%s} ' % 'MCC TH')
-        sf.write('& \\textbf{%s} ' % 'EERlow')
-        sf.write('& \\textbf{%s} ' % 'EERhigh')
-        sf.write('\\\\\n')
-
-        for i, st in enumerate(stats):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('%s' % ids[i])
-            sf.write(' & %f' % st.mccoef)
-            sf.write(' & %f' % st.mccoef_th)
-            sf.write(' & %f' % st.eer_low)
-            sf.write(' & %f' % st.eer_high)
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
-
-        # Beginning table
-        sf.write('\\begin{table}\n')
-
-        # Centering
-        sf.write('\centering\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{eer_table4}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Experiment ID')
-        sf.write('& \\textbf{%s} ' % 'EER')
-        sf.write('& \\textbf{%s} ' % 'ZeroFMR')
-        sf.write('& \\textbf{%s} ' % 'FMR1000')
-        sf.write('& \\textbf{%s} ' % 'FMR100')
-        sf.write('\\\\\n')
-
-        for i, st in enumerate(stats):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('%s' % ids[i])
-            sf.write(' & %f' % st.eer)
-            sf.write(' & %f' % st.fmr0)
-            sf.write(' & %f' % st.fmr1000)
-            sf.write(' & %f' % st.fmr100)
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
-
-        # Beginning table
-        sf.write('\\begin{table}\n')
-
-        # Centering
-        sf.write('\centering\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{eer_table5}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * 6))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Experiment ID')
-        sf.write('& \\textbf{%s} ' % 'FMR20')
-        sf.write('& \\textbf{%s} ' % 'FMR10')
-        sf.write('& \\textbf{%s} ' % 'ZeroFNMR')
-        sf.write('& \\textbf{%s} ' % 'EER TH')
-        sf.write('& \\textbf{%s} ' % 'ZeroFMR TH')
-        sf.write('\\\\\n')
-
-        for i, st in enumerate(stats):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('%s' % ids[i])
-            sf.write(' & %f' % st.fmr20)
-            sf.write(' & %f' % st.fmr10)
-            sf.write(' & %f' % st.fnmr0)
-            sf.write(' & %f' % st.eer_th)
-            sf.write(' & %f' % st.fmr0_th)
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
-
-        # Beginning table
-        sf.write('\\begin{table}\n')
-
-        # Centering
-        sf.write('\centering\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('\caption{%s.}\label{eer_table6}\n' % caption)
-
-        # Beginning tabular block
-        sf.write('\\begin{tabular}{%s}\n' % ('l' * 6))
-
-        # Inserting line
-        sf.write('\hline\n')
-
-        # Inserting table headers
-        sf.write('\\textbf{%s} ' % 'Experiment ID')
-        sf.write('& \\textbf{%s} ' % 'FMR1000 TH')
-        sf.write('& \\textbf{%s} ' % 'FMR100 TH')
-        sf.write('& \\textbf{%s} ' % 'FMR20 TH')
-        sf.write('& \\textbf{%s} ' % 'FMR10 TH')
-        sf.write('& \\textbf{%s} ' % 'ZeroFNMR TH')
-        sf.write('\\\\\n')
-
-        for i, st in enumerate(stats):
-            # Writing rank values
-            sf.write('\hline\n')
-            sf.write('%s' % ids[i])
-            sf.write(' & %f' % st.fmr1000_th)
-            sf.write(' & %f' % st.fmr100_th)
-            sf.write(' & %f' % st.fmr20_th)
-            sf.write(' & %f' % st.fmr10_th)
-            sf.write(' & %f' % st.fnmr0_th)
-            sf.write('\\\\\n')
-
-        # Ending tabular block
-        sf.write('\end{tabular}\n')
-
-        # Ending table
-        sf.write('\end{table}\n')
 
         # Table legend
         sf.write('\\begin{itemize}\n')
@@ -497,6 +249,275 @@ def generate_tex_eer_report(stats, ids, save_file):
                  ' and EERHigh were calculated\n')
         sf.write('\item TH: Threshold\n')
         sf.write('\end{itemize}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table1}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 6))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'GMean')
+        sf.write('& \\textbf{%s} ' % 'GSTD')
+        sf.write('& \\textbf{%s} ' % 'IMean')
+        sf.write('& \\textbf{%s} ' % 'ISTD')
+        sf.write('& \\textbf{%s} ' % "d'")
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.gmean)
+            sf.write(' & %f' % st.gstd)
+            sf.write(' & %f' % st.imean)
+            sf.write(' & %f' % st.istd)
+            sf.write(' & %f' % st.decidability)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table2}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'J-Index')
+        sf.write('& \\textbf{%s} ' % 'J-Index TH')
+        sf.write('& \\textbf{%s} ' % 'MCC')
+        sf.write('& \\textbf{%s} ' % 'MCC TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.j_index)
+            sf.write(' & %f' % st.j_index_th)
+            sf.write(' & %f' % st.mccoef)
+            sf.write(' & %f' % st.mccoef_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table3}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'AUC')
+        sf.write('& \\textbf{%s} ' % 'EERlow')
+        sf.write('& \\textbf{%s} ' % 'EERhigh')
+        sf.write('& \\textbf{%s} ' % 'EER')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.auc)
+            sf.write(' & %f' % st.eer_low)
+            sf.write(' & %f' % st.eer_high)
+            sf.write(' & %f' % st.eer)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table4}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 5))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'ZeroFMR')
+        sf.write('& \\textbf{%s} ' % 'FMR1000')
+        sf.write('& \\textbf{%s} ' % 'FMR100')
+        sf.write('& \\textbf{%s} ' % 'FMR20')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.fmr0)
+            sf.write(' & %f' % st.fmr1000)
+            sf.write(' & %f' % st.fmr100)
+            sf.write(' & %f' % st.fmr20)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table5}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 4))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'FMR10')
+        sf.write('& \\textbf{%s} ' % 'ZeroFNMR')
+        sf.write('& \\textbf{%s} ' % 'EER TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.fmr10)
+            sf.write(' & %f' % st.fnmr0)
+            sf.write(' & %f' % st.eer_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table6}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 4))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'ZeroFMR TH')
+        sf.write('& \\textbf{%s} ' % 'FMR1000 TH')
+        sf.write('& \\textbf{%s} ' % 'FMR100 TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.fmr0_th)
+            sf.write(' & %f' % st.fmr1000_th)
+            sf.write(' & %f' % st.fmr100_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
+
+        # Beginning table
+        sf.write('\\begin{table}\n')
+
+        # Centering
+        sf.write('\centering\n')
+
+        # Writing table caption
+        sf.write('\caption{%s.}\label{eer_table7}\n' % caption)
+
+        # Beginning tabular block
+        sf.write('\\begin{tabular}{%s}\n' % ('l' * 4))
+
+        # Inserting line
+        sf.write('\hline\n')
+
+        # Inserting table headers
+        sf.write('\\textbf{%s} ' % 'Experiment ID')
+        sf.write('& \\textbf{%s} ' % 'FMR20 TH')
+        sf.write('& \\textbf{%s} ' % 'FMR10 TH')
+        sf.write('& \\textbf{%s} ' % 'ZeroFNMR TH')
+        sf.write('\\\\\n')
+
+        for i, st in enumerate(stats):
+            # Writing rank values
+            sf.write('\hline\n')
+            sf.write('%s' % ids[i])
+            sf.write(' & %f' % st.fmr20_th)
+            sf.write(' & %f' % st.fmr10_th)
+            sf.write(' & %f' % st.fnmr0_th)
+            sf.write('\\\\\n')
+
+        # Ending tabular block
+        sf.write('\end{tabular}\n')
+
+        # Ending table
+        sf.write('\end{table}\n')
 
         # Writing document end
         sf.write('\end{document}\n')
