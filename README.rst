@@ -151,10 +151,10 @@ inside the package installation.
     generate_eer_report([stats_a, stats_b], ['A', 'B'], 'report.csv')
 
     # Generating HTML report
-    generate_cmc_report(stats, r, 'pyeer_report.html')
+    generate_cmc_report([stats_a, stats_b], ['A', 'B'], 'pyeer_report.html')
 
     # Generating Latex report
-    generate_cmc_report(stats, r, 'pyeer_report.tex')
+    generate_cmc_report([stats_a, stats_b], ['A', 'B'], 'pyeer_report.tex')
 
     # Plotting
     plot_eer_stats([stats_a, stats_b], ['A', 'B'])
