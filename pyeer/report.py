@@ -7,7 +7,7 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
-MAX_LATEX_TABLE_CMC_RANK = 4
+LATEX_TABLE_CMC_MAX_RANK = 4
 
 
 def generate_html_eer_report(stats, ids, save_file):
@@ -727,13 +727,13 @@ def __write_cmc_tex_table(sf, table_number, stats, max_rank):
     sf.write('\caption{CMC Ranks.}\label{%s}\n' % label)
 
     # Beginning tabular block
-    sf.write('\\begin{tabular}{%s}\n' % ('l' * (MAX_LATEX_TABLE_CMC_RANK + 1)))
+    sf.write('\\begin{tabular}{%s}\n' % ('l' * (LATEX_TABLE_CMC_MAX_RANK + 1)))
 
     # Inserting line
     sf.write('\hline\n')
 
-    rstart = table_number * MAX_LATEX_TABLE_CMC_RANK
-    rend = rstart + MAX_LATEX_TABLE_CMC_RANK
+    rstart = table_number * LATEX_TABLE_CMC_MAX_RANK
+    rend = rstart + LATEX_TABLE_CMC_MAX_RANK
 
     # Inserting table headers
     sf.write('\\textbf{%s} ' % 'Experiment ID')
@@ -785,8 +785,8 @@ def generate_tex_cmc_report(stats, max_rank, save_file):
         # Making title
         sf.write('\maketitle\n')
 
-        table_count = int(max_rank / MAX_LATEX_TABLE_CMC_RANK)
-        if max_rank % MAX_LATEX_TABLE_CMC_RANK != 0:
+        table_count = int(max_rank / LATEX_TABLE_CMC_MAX_RANK)
+        if max_rank % LATEX_TABLE_CMC_MAX_RANK != 0:
             table_count += 1
         for i in range(table_count):
             __write_cmc_tex_table(sf, i, stats, max_rank)
