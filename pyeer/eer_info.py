@@ -10,7 +10,7 @@ import numpy as np
 from .eer_stats import calculate_roc, calculate_roc_hist, calculate_roc_auc,\
     get_fmr_op, get_fnmr_op, get_eer_values, Stats, get_decidability_value,\
     get_youden_index, get_matthews_ccoef
-from .report import generate_eer_report
+from .report import generate_eer_report, export_error_rates
 from .plot import plot_eer_stats
 
 __copyright__ = 'Copyright 2017'
@@ -152,6 +152,11 @@ def get_eer_info_cmd():
 
     filename = join(args.save_path, 'pyeer_report.' + args.report_format)
     generate_eer_report(stats, ids, filename)
+
+    # Exporting error rates
+    for i, st in enumerate(stats):
+        filename = join(args.save_path, ids[i] + ' (Rates).csv')
+        export_error_rates(st.fmr, st.fnmr, filename)
 
     if not args.no_plots:
         print('Plotting...')

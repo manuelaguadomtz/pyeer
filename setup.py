@@ -11,7 +11,7 @@ setup(
     name='pyeer',
 
     # Package version
-    version='0.5.1',
+    version='0.5.2',
 
     entry_points={
         'console_scripts': [

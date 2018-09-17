@@ -138,7 +138,7 @@ inside the package installation.
 .. code:: python
 
     from pyeer.eer_info import get_eer_stats
-    from pyeer.report import generate_eer_report
+    from pyeer.report import generate_eer_report, export_error_rates
     from pyeer.plot import plot_eer_stats
 
     # Calculating stats for classifier A
@@ -155,6 +155,10 @@ inside the package installation.
 
     # Generating Latex report
     generate_cmc_report([stats_a, stats_b], ['A', 'B'], 'pyeer_report.tex')
+
+    # Exporting error rates
+    export_error_rates(stats_a.fmr, stats_a.fnmr, 'A_DET.csv')
+    export_error_rates(stats_b.fmr, stats_b.fnmr, 'B_DET.csv')
 
     # Plotting
     plot_eer_stats([stats_a, stats_b], ['A', 'B'])

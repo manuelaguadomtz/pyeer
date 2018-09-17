@@ -25,6 +25,9 @@ def generate_html_eer_report(stats, ids, save_file):
         # Write html tag
         sf.write('<html>\n')
 
+        # Beginning head section
+        sf.write('<head>')
+
         # Writing encoding type
         sf.write('<meta charset="UTF-8">\n')
 
@@ -32,6 +35,12 @@ def generate_html_eer_report(stats, ids, save_file):
         sf.write('<style>')
         sf.write('td{ padding-right: 15px; padding-left:15px;}')
         sf.write('</style>')
+
+        # Ending head section
+        sf.write('</head>')
+
+        # Beginning body section
+        sf.write('<body>')
 
         # Writing html table tag
         sf.write('<table>\n')
@@ -149,49 +158,8 @@ def generate_html_eer_report(stats, ids, save_file):
         # Closing html table tag
         sf.write('</table>\n')
 
-        # Writing rates html table tag
-        sf.write('<table>\n')
-
-        # Writing table caption
-        caption = 'FMR and FNMR curves'
-        sf.write('<caption><h3>%s</h3></caption>\n' % caption)
-
-        # Writing table headers
-        sf.write('<thead>\n')
-        sf.write('<tr>\n')
-
-        max_nthrs = -1
-        for i, st in enumerate(stats):
-            sf.write('<td>%s (FMR)</td>\n' % ids[i])
-            sf.write('<td>%s (FNMR)</td>\n' % ids[i])
-
-            nthrs = len(st.thrs)
-            if nthrs > max_nthrs:
-                max_nthrs = nthrs
-
-        sf.write('</tr>\n')
-        sf.write('</thead>\n')
-
-        # Writing table body
-        sf.write('<tbody>\n')
-
-        # Writing rates
-        for i in range(max_nthrs):
-            sf.write('<tr>\n')
-            for st in stats:
-                if i < len(st.thrs):
-                    sf.write('<td>%f</td>\n' % st.fmr[i])
-                    sf.write('<td>%f</td>\n' % st.fnmr[i])
-                else:
-                    sf.write('<td></td>\n')
-                    sf.write('<td></td>\n')
-            sf.write('</tr>\n')
-
-        # Closing table body
-        sf.write('</tbody>\n')
-
-        # Closing rates html table tag
-        sf.write('</table>\n')
+        # Closing body tag
+        sf.write('</body>')
 
         # Closing html tag
         sf.write('</html>\n')
@@ -583,28 +551,27 @@ def generate_csv_eer_report(stats, ids, save_file):
         writer.writerow(['EER_TH: Threshold for which EERlow and EERHigh were'
                          ' calculated'])
 
-        writer.writerow([])
+
+def export_error_rates(fmr, fnmr, filename):
+    """Exports the given error rates to a CSV file
+
+    @param fmr: False Match Rates
+    @type fmr: iterable
+    @param fnmr: False Non-Match Rates
+    @type fnmr: iterable
+    @param filename: The output filename
+    @type filename: str
+    """
+    with open(filename, 'w') as sf:
+        # Creating CSV writer
+        writer = csv.writer(sf)
 
         # Writing rates header
-        headers = []
-        max_nthrs = -1
-        for i, st in enumerate(stats):
-            headers += [' ', ids[i] + ' (FMR)', ids[i] + ' (FNMR)']
-
-            nthrs = len(st.thrs)
-            if nthrs > max_nthrs:
-                max_nthrs = nthrs
-        writer.writerow(headers)
+        writer.writerow(['FMR', 'FNMR'])
 
         # Writing rates
-        for i in range(max_nthrs):
-            row = []
-            for st in stats:
-                if i < len(st.thrs):
-                    row += [' ', st.fmr[i], st.fnmr[i]]
-                else:
-                    row += [' ', ' ', ' ']
-            writer.writerow(row)
+        for i in range(len(fmr)):
+            writer.writerow([fmr[i], fnmr[i]])
 
 
 def generate_eer_report(stats, ids, save_file):
