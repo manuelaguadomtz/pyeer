@@ -12,4 +12,4 @@ Please feel free of contributing in any of the following ways:
 
 It is also very important to notice that for any contribution is mandatory to follow our code of conduct. Actions will be taken against any violations of this code.
 
-To finish, only welcome you again to our community and to wish you happy coding!!!!
+To conclude, only rest us to welcome you again to our community and to wish you happy coding!!!!
