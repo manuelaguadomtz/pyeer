@@ -2,26 +2,17 @@
 PyEER
 =====
 
-**PyEER** is a python package for biometric systems performance evaluation. Includes ROC, DET, FNMR, FMR and CMC curves
-plotting, scores distribution plotting, EER and operating points estimation. It can be also used to evaluate binary
-classification systems.
+**PyEER** is a python package intended for biometric systems performance evaluation. Includes ROC, DET, FNMR, FMR and CMC curves plotting, scores distribution plotting, EER, and operating points estimation. It can also be used to evaluate binary classification systems.
 
-Two programs are provided within this package:
+Within this package, two command line programs are provided:
 
-**geteerinf:** Receive two files holding genuine match scores and impostor match scores [1].
-Genuine match scores are obtained by matching feature sets of the same class (same person), while impostor matching
-scores are obtained by matching feature sets of different classes (different persons). Using these scores the program 
-plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate Value and operating points for each system. EER 
-values are  reported as specified in [2]
+**geteerinf:** Useful to evaluate biometrics systems in verification scenarios as well as binary classification systems. It receives two files holding genuine match scores and impostor match scores [1]. Genuine match scores are obtained by matching feature sets of the same class (same person), while impostor matching scores are obtained by matching feature sets of different classes (different persons). Using these scores the program plots ROC, DET, FNMR(t), FMR(t) curves and estimates Equal Error Rate (EER) values and operating points for each system. EER values are reported as specified in [2].
 
-**getcmcinf:** Receive two files holding match scores and genuine query-template pairs [1]. This program is provided to 
-evaluate biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each 
-score file are reported.
+**getcmcinf:** Receives two files holding match scores and genuine query-template pairs [1]. This program is provided to evaluate biometrics systems in identification scenarios. Using the scores provided, CMC curves and rank values for each score file are reported.
 
 Utilities provided within this package can also be used to develop other scripts by importing the module **pyeer**.
 
-**PyEER** has been developed with the idea of providing researchers and the scientific community in general with a 
-tool to correctly evaluate and report the performance of their systems.
+**PyEER** has been developed with the idea of providing researchers and the scientific community in general with a tool to correctly evaluate and report the performance of their systems.
 
 Installing
 ==========
@@ -156,7 +147,8 @@ inside the package installation.
     # Generating Latex report
     generate_cmc_report([stats_a, stats_b], ['A', 'B'], 'pyeer_report.tex')
 
-    # Exporting error rates
+    # Exporting error rates (Exporting FMR and FNMR to a CSV file)
+    # This is the DET curve, the ROC curve is a plot of FMR against 1 - FNMR
     export_error_rates(stats_a.fmr, stats_a.fnmr, 'A_DET.csv')
     export_error_rates(stats_b.fmr, stats_b.fnmr, 'B_DET.csv')
 
@@ -202,6 +194,8 @@ Contributing
 Do you find **PyEER** useful? You can collaborate with us:
 
 `Link GitHub <https://github.com/manuelaguadomtz/pyeer>`_
+
+Please follow our contributing guidelines.
 
 References
 ==========
