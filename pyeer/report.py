@@ -2,12 +2,84 @@
 
 import csv
 import pkg_resources
+import json
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 LATEX_TABLE_CMC_MAX_RANK = 4
+
+
+def generate_json_eer_report(stats, ids, save_file):
+    """ Generate a JSON file with the given statistics
+
+    @param stats: An iterable with instances of the named tuple Stats
+    @type stats: iterable
+    @param ids: An iterable with an ID (str) for each stat
+    @type ids: iterable
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    with open(save_file, 'w') as sf:
+        pkg_version = pkg_resources.require('pyeer')[0].version
+
+        jdict = {
+            'Information': 'Generated using PyEER ' + pkg_version,
+            'Legend:': {
+                'GMean': 'Genuine scores distribution mean',
+                'GSTD': 'Genuine scores distribution '
+                        'standard deviation',
+                'IMean': 'Impostor scores distribution mean',
+                'IVariance': 'Impostor scores distribution '
+                             'standard deviation',
+                "Sensitivity index (d')": "See NICE:II protocol"
+                                          " evaluation",
+                'AUC': 'Area under the ROC curve',
+                "J-Index": "Youden's J statistic (Youden's Index)",
+                "MCC": "Matthews Correlation Coefficient",
+                'EER': 'Equal Error Rate',
+                'EERlow, EERhigh': 'See FVC2000 protocol evaluation',
+                'FMR': 'False Match Rate',
+                'FNMR': 'False Non-Match Rate',
+                '_TH': 'Threshold',
+                'EER_TH': 'Threshold for which EERlow and EERHigh were'
+                          ' calculated'
+            }
+        }
+
+        for i, st in enumerate(stats):
+            st_dict = {
+                'GMean': st.gmean,
+                'GSTD': st.gstd,
+                'IMean': st.imean,
+                'ISTD': st.istd,
+                "Sensitivity index (d')": st.decidability,
+                'AUC': st.auc,
+                'J-Index': st.j_index,
+                'J-Index Threshold': st.j_index_th,
+                'MCC': st.mccoef,
+                'MCC Threshold': st.mccoef_th,
+                'EERlow': st.eer_low,
+                'EERhigh': st.eer_high,
+                'EER': st.eer,
+                'ZeroFMR': st.fmr0,
+                'FMR1000': st.fmr1000,
+                'FMR100': st.fmr100,
+                'FMR20': st.fmr20,
+                'FMR10': st.fmr10,
+                'ZeroFNMR': st.fnmr0,
+                'EER Threshold': st.eer_th,
+                'ZeroFMR Threshold': st.fmr0_th,
+                'FMR1000 Threshold': st.fmr1000_th,
+                'FMR100 Threshold': st.fmr100_th,
+                'FMR20 Threshold': st.fmr20_th,
+                'FMR10 Threshold': st.fmr10_th,
+                'ZeroFNMR Threshold': st.fnmr0_th,
+            }
+            jdict['Stats for %s' % ids[i]] = st_dict
+
+        json.dump(jdict, sf, ensure_ascii=False, indent=4)
 
 
 def generate_html_eer_report(stats, ids, save_file):
@@ -595,6 +667,8 @@ def generate_eer_report(stats, ids, save_file):
         generate_html_eer_report(stats, ids, save_file)
     elif ext.lower() == 'tex':
         generate_tex_eer_report(stats, ids, save_file)
+    elif ext.lower() == 'json':
+        generate_json_eer_report(stats, ids, save_file)
     else:
         raise ValueError('Unsupported file format')
 
@@ -762,6 +836,29 @@ def generate_tex_cmc_report(stats, max_rank, save_file):
         sf.write('\end{document}\n')
 
 
+def generate_json_cmc_report(stats, max_rank, save_file):
+    """ Generates a JSON file with the given CMC rank values
+
+    @param exps_cmc: A list of CMCstats instances
+    @type exps_cmc: list
+    @param max_rank: The maximum rank of the CMC curves
+    @type max_rank: int
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    with open(save_file, 'w') as sf:
+        pkg_version = pkg_resources.require('pyeer')[0].version
+
+        jdict = {
+            'Information': 'Generated using PyEER ' + pkg_version,
+        }
+
+        for st in stats:
+            jdict['Rank values for %s' % st.exp_id] = st.ranks
+
+        json.dump(jdict, sf, ensure_ascii=False, indent=4)
+
+
 def generate_cmc_report(stats, max_rank, save_file):
     """ Writes CMC rank values to a file
 
@@ -782,5 +879,7 @@ def generate_cmc_report(stats, max_rank, save_file):
         generate_html_cmc_report(stats, max_rank, save_file)
     elif ext.lower() == 'tex':
         generate_tex_cmc_report(stats, max_rank, save_file)
+    elif ext.lower() == 'json':
+        generate_json_cmc_report(stats, max_rank, save_file)
     else:
         raise ValueError('Unsupported file format')
