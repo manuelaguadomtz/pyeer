@@ -160,34 +160,42 @@ def __plt_distributions(stats, ids, hformat=False, bins=100,
     for i, st in enumerate(stats):
         # Plotting score distributions
         title = 'Score distributions experiment: ' + ids[i]
-        dist_fig = plt.figure()
-        dist_plot = dist_fig.add_subplot(111)
-        dist_plot.grid(False)
-        dist_plot.set_ylabel('Frequency')
-        dist_plot.set_xlabel('Scores')
-        dist_plot.set_title(title)
+        fig, ax1 = plt.subplots()
+
+        ax1.grid(False)
+        ax1.set_xlabel('Scores')
+        ax1.set_title(title)
+        ax1.set_ylabel('Frequency (Genuines)')
+        # ax1.tick_params(axis='y', labelcolor=color)
+
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('Frequency (Impostors)')
 
         if hformat:
+            # Obtaining histogram
             m = max(st.gen_scores)
             x = np.arange(m)
             ghist = np.histogram(st.gen_scores, bins=np.arange(m + 1))[0]
-            dist_plot.plot(x, ghist, color='g',
-                           label='Genuine scores %d' % len(st.gen_scores))
+
+            ax1.plot(x, ghist, color='g',
+                     label='Genuine scores %d' % len(st.gen_scores))
 
             x = np.arange(len(st.imp_scores))
-            dist_plot.plot(x, st.imp_scores, color='r',
-                           label='Impostor scores %d' % sum(st.imp_scores))
+            ax2.plot(x, st.imp_scores, color='r',
+                     label='Impostor scores %d' % sum(st.imp_scores))
         else:
-            dist_plot.hist(st.gen_scores, bins=bins, color='g',
-                           label='Genuine scores %d' % len(st.gen_scores))
-            dist_plot.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
-                           label='Impostor scores %d' % len(st.imp_scores))
+            ax1.hist(st.gen_scores, bins=bins, color='g',
+                     label='Genuine scores %d' % len(st.gen_scores))
+            ax2.hist(st.imp_scores, bins=bins, alpha=0.5, color='r',
+                     label='Impostor scores %d' % len(st.imp_scores))
 
-        dist_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
+        fig.legend(prop=FontProperties(size=lgf_size), bbox_to_anchor=(1, 1),
+                   bbox_transform=ax1.transAxes)
+        fig.tight_layout()
 
         if save_plots:
             fig_name = 'Distributions (%s)' % ids[i] + ext
-            dist_fig.savefig(join(save_path, fig_name), dpi=dpi)
+            fig.savefig(join(save_path, fig_name), dpi=dpi)
 
 
 def __plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=False,
