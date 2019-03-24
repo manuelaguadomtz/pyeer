@@ -36,7 +36,7 @@ def get_cmc_info():
     ap.add_argument("-sp", "--save_path", required=False, default='',
                     help="Path to save the plots (if -s was specified)"
                          " and stats report")
-    ap.add_argument("-sf", "--save_format", required=False, default='png',
+    ap.add_argument("-pf", "--plots_format", required=False, default='png',
                     help="Format to save the plots in the cases where the"
                          " option -s was specified. Valid formats are: "
                          "(png, pdf, ps, eps and svg)")
@@ -64,7 +64,7 @@ def get_cmc_info():
     rank = int(args.maximum_rank)
     line_width = int(args.line_width)
     lgf_size = int(args.legend_font)
-    ext = '.' + args.save_format
+    ext = '.' + args.plots_format
     dpi = None if args.save_dpi is None else int(args.save_dpi)
 
     # Calculating CMC values for each experiment and plotting them

@@ -85,7 +85,7 @@ def get_eer_info_cmd():
                     help="Indicates whether to not plot the results")
     ap.add_argument("-sp", "--save_path", required=False, default='',
                     help="Path to save the plots and stats report")
-    ap.add_argument("-sf", "--save_format", required=False, default='png',
+    ap.add_argument("-pf", "--plots_format", required=False, default='png',
                     help="Format to save the plots. Valid formats are: "
                          "(png, pdf, ps, eps and svg)")
     ap.add_argument("-rf", "--report_format", required=False, default='csv',
@@ -117,7 +117,7 @@ def get_eer_info_cmd():
     line_width = int(args.line_width)
     lgf_size = int(args.legend_font_size)
     dpi = None if args.save_dpi is None else int(args.save_dpi)
-    ext = '.' + args.save_format
+    ext = '.' + args.plots_format
     bins = int(args.distribution_bins)
 
     # Experiment stats
