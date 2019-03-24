@@ -15,8 +15,6 @@ __author__ = u'Bsc. Manuel Aguado Martínez'
 
 Stats = namedtuple('Stats', [
 
-    # 'exp_id',  # Exp id
-
     # Rate curves
     'thrs',  # Thresholds
     'fmr',  # False match rates

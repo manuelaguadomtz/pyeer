@@ -31,9 +31,6 @@ def get_cmc_info():
                     help="The width of the plotted curves (default=2)")
     ap.add_argument("-lf", "--legend_font", required=False, default=12,
                     help="The size of the legend font (default=12)")
-    ap.add_argument("-s", "--save_plots", required=False, action='store_true',
-                    help="Indicates whether to save the plots instead of"
-                         " showing them")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
     ap.add_argument("-sp", "--save_path", required=False, default='',
@@ -92,5 +89,5 @@ def get_cmc_info():
 
     if not args.no_plots:
         print('Plotting...')
-        plot_cmc_stats(stats, rank, line_width, lgf_size, args.save_plots,
+        plot_cmc_stats(stats, rank, line_width, lgf_size, True,
                        dpi, args.save_path, ext)

@@ -83,15 +83,10 @@ def get_eer_info_cmd():
                          " (default=100)")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
-    ap.add_argument("-s", "--save_plots", required=False, action='store_true',
-                    help="Indicates whether to save the plots instead of"
-                         " showing them")
     ap.add_argument("-sp", "--save_path", required=False, default='',
-                    help="Path to save the plots (if -s was specified)"
-                         " and stats report")
+                    help="Path to save the plots and stats report")
     ap.add_argument("-sf", "--save_format", required=False, default='png',
-                    help="Format to save the plots in the cases where the"
-                         " option -s was specified. Valid formats are: "
+                    help="Format to save the plots. Valid formats are: "
                          "(png, pdf, ps, eps and svg)")
     ap.add_argument("-rf", "--report_format", required=False, default='csv',
                     help="Format in which to save the report file. "
@@ -158,7 +153,7 @@ def get_eer_info_cmd():
     if not args.no_plots:
         print('Plotting...')
         plot_eer_stats(stats, ids, line_width, args.hist, bins, lgf_size,
-                       args.save_plots, dpi, args.save_path, ext)
+                       True, dpi, args.save_path, ext)
 
 
 def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):

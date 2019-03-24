@@ -10,7 +10,7 @@ STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
           'd--', '|--', '---']
 
 
-def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=False,
+def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
                     dpi=None, save_path='', ext='.png'):
     """Plot the DET curve
 
@@ -68,9 +68,12 @@ def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=False,
         # saving plots
         det_fig.savefig(join(save_path, 'DET' + ext), dpi=dpi)
         det_lg_fig.savefig(join(save_path, 'DET (Log)' + ext), dpi=dpi)
+        plt.close('all')
+    else:
+        plt.show()
 
 
-def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=False,
+def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
                     dpi=None, save_path='', ext='.png'):
     """Plot the ROC curve
 
@@ -132,10 +135,13 @@ def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=False,
         # saving plots
         roc_fig.savefig(join(save_path, 'ROC' + ext), dpi=dpi)
         roc_lg_fig.savefig(join(save_path, 'ROC (Log)' + ext), dpi=dpi)
+        plt.close('all')
+    else:
+        plt.show()
 
 
 def __plt_distributions(stats, ids, hformat=False, bins=100,
-                        lgf_size=15, save_plots=False, dpi=None,
+                        lgf_size=15, save_plots=True, dpi=None,
                         save_path='', ext='.png'):
     """Plot the scores distribution of each experiment
 
@@ -205,9 +211,12 @@ def __plt_distributions(stats, ids, hformat=False, bins=100,
         if save_plots:
             fig_name = 'Distributions (%s)' % ids[i] + ext
             fig.savefig(join(save_path, fig_name), dpi=dpi)
+            plt.close('all')
+        else:
+            plt.show()
 
 
-def __plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=False,
+def __plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=True,
                        dpi=None, save_path='', ext='.png'):
     """Plot FMR and FNMR curves for each experiment
 
@@ -254,10 +263,13 @@ def __plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=False,
         if save_plots:
             fname = 'FMR and FNMR curves (%s)' % ids[i] + ext
             eer_fig.savefig(join(save_path, fname), dpi=dpi)
+            plt.close('all')
+        else:
+            plt.show()
 
 
 def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
-                   lgf_size=15, save_plots=False, dpi=None, save_path='',
+                   lgf_size=15, save_plots=True, dpi=None, save_path='',
                    ext='.png'):
     """Plot a series of graphs from the given stats
 
@@ -306,16 +318,9 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
     __plt_error_curves(stats, ids, line_width, lgf_size, save_plots,
                        dpi, save_path, ext)
 
-    # Showing plots or saving plots
-    if save_plots:
-        # closing plots
-        plt.close('all')
-    else:
-        plt.show()
-
 
 def plot_cmc_stats(stats, max_rank, line_width=3, lgf_size=15,
-                   save_plots=False, dpi=None, save_path='.', ext='.png'):
+                   save_plots=True, dpi=None, save_path='.', ext='.png'):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple CMCstats
