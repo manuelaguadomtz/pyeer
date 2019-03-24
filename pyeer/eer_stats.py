@@ -4,6 +4,7 @@ import operator
 import warnings
 
 from collections import namedtuple
+from warnings import warn
 
 import numpy as np
 
@@ -214,7 +215,14 @@ def calculate_roc_auc(fmr, fnmr):
     y1 = tpr[:-1]
     y2 = tpr[1:]
 
-    return ((x1 - x2) * (y1 + (y2 - y1) / 2)).sum()
+    auc = ((x1 - x2) * (y1 + (y2 - y1) / 2)).sum()
+
+    if auc < 0.5:
+        warn("It is possible that you had set the wrong score"
+             " type. Please consider reviewing if you are using"
+             " dissimilarity or similarity scores")
+
+    return auc
 
 
 def get_fnmr_op(fmr, fnmr, op):
