@@ -3,6 +3,7 @@
 import operator
 
 from collections import namedtuple
+from warnings import warn
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Manuel Aguado Martínez'
@@ -78,5 +79,10 @@ def get_cmc_curve(scores, max_rank):
             if match[TEMPLATE_POS] == true_template:
                 in_rank += 1
         ranks_values[r + 1] = in_rank / queries_total + ranks_values[r]
+
+    if ranks_values[-1] < 0.2:
+        warn("It is possible that you had set the wrong score"
+             " type. Please consider reviewing if you are using"
+             " dissimilarity or similarity scores")
 
     return ranks_values[1:]
