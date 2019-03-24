@@ -83,9 +83,6 @@ def get_eer_info_cmd():
                          " (default=100)")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
-    ap.add_argument("-lg", "--log_plt", required=False, action='store_true',
-                    help="Indicates whether to plot the DET and ROC curves "
-                         "in logarithmic scale")
     ap.add_argument("-s", "--save_plots", required=False, action='store_true',
                     help="Indicates whether to save the plots instead of"
                          " showing them")
@@ -161,8 +158,7 @@ def get_eer_info_cmd():
     if not args.no_plots:
         print('Plotting...')
         plot_eer_stats(stats, ids, line_width, args.hist, bins, lgf_size,
-                       args.log_plt, args.save_plots, dpi, args.save_path,
-                       ext)
+                       args.save_plots, dpi, args.save_path, ext)
 
 
 def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):

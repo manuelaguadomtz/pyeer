@@ -10,8 +10,8 @@ STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
           'd--', '|--', '---']
 
 
-def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, log_plot=True,
-                    save_plots=False, dpi=None, save_path='', ext='.png'):
+def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=False,
+                    dpi=None, save_path='', ext='.png'):
     """Plot the DET curve
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -22,9 +22,6 @@ def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, log_plot=True,
     @type line_width: int
     @param lgf_size: The size of the legend font (default=15)
     @type lgf_size: int
-    @param log_plot: Indicates whether to plot the DET curves in a
-                     log-log scale
-    @type log_plot: bool
     @param save_plots: Indicates whether to save the plots instead
                        of showing them
     @type save_plots: bool
@@ -41,33 +38,40 @@ def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, log_plot=True,
     @type ext: str
     """
     det_fig = plt.figure()
+    det_lg_fig = plt.figure()
+
     det_plot = det_fig.add_subplot(111)
     det_plot.set_title('DET Curves')
     det_plot.set_ylabel('FNMR')
     det_plot.set_xlabel('FMR')
+    det_plot.grid(True)
 
-    if log_plot:
-        det_plot.set_yscale('log')
-        det_plot.set_xscale('log')
-        det_plot.grid(True, which='both', ls='--')
-    else:
-        det_plot.grid(True)
+    det_lg_plot = det_lg_fig.add_subplot(111)
+    det_lg_plot.set_title('DET Curves (Log scale)')
+    det_lg_plot.set_ylabel('FNMR')
+    det_lg_plot.set_xlabel('FMR')
+    det_lg_plot.set_yscale('log')
+    det_lg_plot.set_xscale('log')
+    det_lg_plot.grid(True, which='both', ls='--')
 
     for i, st in enumerate(stats):
         # Plotting DET Curve
         det_plot.plot(st.fmr, st.fnmr, label=ids[i], linewidth=line_width)
+        det_lg_plot.plot(st.fmr, st.fnmr, label=ids[i], linewidth=line_width)
 
     # Finalizing plots
     det_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
+    det_lg_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
     # Showing plots or saving plots
     if save_plots:
         # saving plots
         det_fig.savefig(join(save_path, 'DET' + ext), dpi=dpi)
+        det_lg_fig.savefig(join(save_path, 'DET (Log)' + ext), dpi=dpi)
 
 
-def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, log_plot=True,
-                    save_plots=False, dpi=None, save_path='', ext='.png'):
+def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=False,
+                    dpi=None, save_path='', ext='.png'):
     """Plot the ROC curve
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -78,9 +82,6 @@ def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, log_plot=True,
     @type line_width: int
     @param lgf_size: The size of the legend font (default=15)
     @type lgf_size: int
-    @param log_plot: Indicates whether to plot the DET curves in a
-                     log-log scale
-    @type log_plot: bool
     @param save_plots: Indicates whether to save the plots instead
                        of showing them
     @type save_plots: bool
@@ -97,32 +98,40 @@ def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, log_plot=True,
     @type ext: str
     """
     roc_fig = plt.figure()
+    roc_lg_fig = plt.figure()
+
     roc_plot = roc_fig.add_subplot(111)
     roc_plot.set_title('ROC Curves')
     roc_plot.grid(True)
     roc_plot.set_ylabel('1 - FNMR')
     roc_plot.set_xlabel('FMR')
+    roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
+    roc_plot.grid(True)
 
-    if log_plot:
-        # roc_plot.set_yscale('log')
-        roc_plot.set_xscale('log')
-        roc_plot.grid(True, which='minor', ls='--')
-    else:
-        roc_plot.plot([0, 1], [0, 1], 'k--', linewidth=line_width)
-        roc_plot.grid(True)
+    roc_lg_plot = roc_lg_fig.add_subplot(111)
+    roc_lg_plot.set_title('ROC Curves (Log scale)')
+    roc_lg_plot.grid(True)
+    roc_lg_plot.set_ylabel('1 - FNMR')
+    roc_lg_plot.set_xlabel('FMR')
+    roc_lg_plot.set_xscale('log')
+    roc_lg_plot.grid(True, which='minor', ls='--')
 
     for i, st in enumerate(stats):
         # Plotting ROC Curve
         label = ids[i] + ' AUC = %f' % st.auc
         roc_plot.plot(st.fmr, 1 - st.fnmr, label=label, linewidth=line_width)
+        roc_lg_plot.plot(st.fmr, 1 - st.fnmr, label=label,
+                         linewidth=line_width)
 
     # Finalizing plots
     roc_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
+    roc_lg_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
 
     # Showing plots or saving plots
     if save_plots:
         # saving plots
         roc_fig.savefig(join(save_path, 'ROC' + ext), dpi=dpi)
+        roc_lg_fig.savefig(join(save_path, 'ROC (Log)' + ext), dpi=dpi)
 
 
 def __plt_distributions(stats, ids, hformat=False, bins=100,
@@ -248,8 +257,8 @@ def __plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=False,
 
 
 def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
-                   lgf_size=15, log_plot=True, save_plots=False, dpi=None,
-                   save_path='', ext='.png'):
+                   lgf_size=15, save_plots=False, dpi=None, save_path='',
+                   ext='.png'):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -266,9 +275,6 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
     @type bins: int
     @param lgf_size: The size of the legend font (default=15)
     @type lgf_size: int
-    @param log_plot: Indicates whether to plot the DET curves in a
-                     log-log scale
-    @type log_plot: bool
     @param save_plots: Indicates whether to save the plots instead
                        of showing them
     @type save_plots: bool
@@ -285,11 +291,11 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
     @type ext: str
     """
     # Plotting the DET curve
-    __plt_det_curve(stats, ids, line_width, lgf_size, log_plot, save_plots,
+    __plt_det_curve(stats, ids, line_width, lgf_size, save_plots,
                     dpi, save_path, ext)
 
     # Plotting the ROC curve
-    __plt_roc_curve(stats, ids, line_width, lgf_size, log_plot, save_plots,
+    __plt_roc_curve(stats, ids, line_width, lgf_size, save_plots,
                     dpi, save_path, ext)
 
     # Plotting scores distribution
