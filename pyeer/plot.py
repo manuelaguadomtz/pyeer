@@ -10,8 +10,8 @@ STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
           'd--', '|--', '---']
 
 
-def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
-                    dpi=None, save_path='', ext='.png'):
+def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
+                  dpi=None, save_path='', ext='.png'):
     """Plot the DET curve
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -73,8 +73,8 @@ def __plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
         plt.show()
 
 
-def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
-                    dpi=None, save_path='', ext='.png'):
+def plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
+                  dpi=None, save_path='', ext='.png'):
     """Plot the ROC curve
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -140,9 +140,9 @@ def __plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
         plt.show()
 
 
-def __plt_distributions(stats, ids, hformat=False, bins=100,
-                        lgf_size=15, save_plots=True, dpi=None,
-                        save_path='', ext='.png'):
+def plt_distributions(stats, ids, hformat=False, bins=100,
+                      lgf_size=15, save_plots=True, dpi=None,
+                      save_path='', ext='.png'):
     """Plot the scores distribution of each experiment
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -216,8 +216,8 @@ def __plt_distributions(stats, ids, hformat=False, bins=100,
             plt.show()
 
 
-def __plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=True,
-                       dpi=None, save_path='', ext='.png'):
+def plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=True,
+                     dpi=None, save_path='', ext='.png'):
     """Plot FMR and FNMR curves for each experiment
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -303,20 +303,20 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
     @type ext: str
     """
     # Plotting the DET curve
-    __plt_det_curve(stats, ids, line_width, lgf_size, save_plots,
-                    dpi, save_path, ext)
+    plt_det_curve(stats, ids, line_width, lgf_size, save_plots,
+                  dpi, save_path, ext)
 
     # Plotting the ROC curve
-    __plt_roc_curve(stats, ids, line_width, lgf_size, save_plots,
-                    dpi, save_path, ext)
+    plt_roc_curve(stats, ids, line_width, lgf_size, save_plots,
+                  dpi, save_path, ext)
 
     # Plotting scores distribution
-    __plt_distributions(stats, ids, hformat, bins, lgf_size, save_plots,
-                        dpi, save_path, ext)
+    plt_distributions(stats, ids, hformat, bins, lgf_size, save_plots,
+                      dpi, save_path, ext)
 
     # Plotting error curves
-    __plt_error_curves(stats, ids, line_width, lgf_size, save_plots,
-                       dpi, save_path, ext)
+    plt_error_curves(stats, ids, line_width, lgf_size, save_plots,
+                     dpi, save_path, ext)
 
 
 def plot_cmc_stats(stats, max_rank, line_width=3, lgf_size=15,
