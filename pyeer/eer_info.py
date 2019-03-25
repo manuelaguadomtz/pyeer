@@ -50,35 +50,33 @@ def get_eer_info_cmd():
     ap.add_argument("-p", "--path", required=False, default='.',
                     help="Path to scores files. (Default='.')")
     ap.add_argument("-i", "--iscores_files", required=True,
-                    help="Impostor scores file names. If there is more than "
-                         " one file, the file names must be separated by comma"
-                         ". Additionally, instead of the file names a"
-                         " directory relative to PATH could be specified."
-                         " In the last case, it is hardly encouraged that"
-                         " genuine score files are specified in the same way"
-                         " and corresponding pairs of scores (genuine, "
-                         " impostor) have the same name")
+                    help="Impostor scores filenames. Multiple filenames"
+                         " are separated by comma. Instead of the filenames,"
+                         " a directory relative to PATH could be specified."
+                         " In this case, it is hardly encouraged that"
+                         " genuine scores files are specified in the same way,"
+                         " and that corresponding pairs of scores"
+                         " have the same name")
     ap.add_argument("-g", "--gscores_files", required=True,
-                    help="Genuine scores file names. If there is more than "
-                         " one file, the file names must be separated by comma"
-                         ". Additionally, instead of the file names a"
-                         " directory relative to PATH could be specified."
-                         " In the last case, it is hardly encouraged that"
-                         " impostor score files are specified in the same way"
-                         " and corresponding pairs of scores (genuine, "
-                         " impostor) have the same name")
+                    help="Genuine scores filenames. Multiple filenames"
+                         " are separated by comma. Instead of the filenames,"
+                         " a directory relative to PATH could be specified."
+                         " In this case, it is hardly encouraged that"
+                         " impostor scores files are specified in the same"
+                         " way, and that corresponding pairs of scores"
+                         " have the same name")
     ap.add_argument("-e", "--experiment_ids", required=False,
-                    help="Experiment IDs separated by comma. If not"
-                         " specified genuine score file names will be used to"
-                         " identified each experiment")
+                    help="Experiment ID. Multiple IDs are separated by comma."
+                         " If not given, genuine score file names will be"
+                         " used to identified each experiment")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
                     help="Indicates that the impostor file is in"
                          " histogram format")
     ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
-                    help="Indicates whether the input scores are dissimilarity"
+                    help="Indicates that the input scores are dissimilarity"
                          " scores")
     ap.add_argument("-hb", "--distribution_bins", required=False, default=100,
-                    help="The number of bins to compute scores distribution."
+                    help="The number of bins to compute scores distributions."
                          " Will be ignored if -ht is passed as parameter"
                          " (default=100)")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
