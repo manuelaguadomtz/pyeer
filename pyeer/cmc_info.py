@@ -16,37 +16,36 @@ def get_cmc_info():
     # Setting script arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--path", required=False, default='.',
-                    help="path to match files")
+                    help="The path to the scores files")
     ap.add_argument("-ms", "--scores_filenames", required=True,
-                    help="Match scores file names separated by comma")
+                    help="The scores file. Multiple files must be"
+                         " separated by a comma")
     ap.add_argument("-t", "--true_pairs_file_names", required=True,
-                    help="True templates file names separated by comma. "
-                         "Or a single filename if all the files are the same")
+                    help="Genuine pairs file. Multiple files must be"
+                         " separated by a comma.")
     ap.add_argument("-e", "--experiment_names", required=True,
-                    help="Experiment names separated by comma")
+                    help="Experiment ID. Multiple IDS must be separated by "
+                         " comma")
     ap.add_argument("-r", "--maximum_rank", required=False, default=20,
                     help="The maximum rank to calculate the penetration"
                          " coefficient. (default=20)")
     ap.add_argument("-lw", "--line_width", required=False, default=2,
-                    help="The width of the plotted curves (default=2)")
+                    help="Line width for plots (default=2)")
     ap.add_argument("-lf", "--legend_font", required=False, default=12,
-                    help="The size of the legend font (default=12)")
+                    help="The size of the plots legend font (default=12)")
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
     ap.add_argument("-sp", "--save_path", required=False, default='',
                     help="Path to save the plots (if -s was specified)"
                          " and stats report")
     ap.add_argument("-pf", "--plots_format", required=False, default='png',
-                    help="Format to save the plots in the cases where the"
-                         " option -s was specified. Valid formats are: "
+                    help="Format to save plots. Valid formats are:"
                          "(png, pdf, ps, eps and svg)")
     ap.add_argument("-rf", "--report_format", required=False, default='csv',
-                    help="Format in which to save the report file. "
-                         "Valid formats are: (csv, html, tex, json)."
-                         " Default csv.")
+                    help="Format to save the report. Valid formats are:"
+                         " (csv, html, tex, json). Default csv.")
     ap.add_argument("-sr", "--save_dpi", required=False, default=None,
-                    help="Plots resolution (dots per inch) in the cases"
-                         " where the option -s was specified. If not given"
+                    help="Plots resolution (dots per inch). If not given"
                          " it will default to the value savefig.dpi in the"
                          " matplotlibrc file")
     ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',

@@ -48,30 +48,30 @@ def __get_score(line):
 def get_eer_info_cmd():
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--path", required=False, default='.',
-                    help="Path to scores files. (Default='.')")
+                    help="The path to the scores files. (Default='.')")
     ap.add_argument("-i", "--iscores_files", required=True,
-                    help="Impostor scores filenames. Multiple filenames"
-                         " are separated by comma. Instead of the filenames,"
-                         " a directory relative to PATH could be specified."
-                         " In this case, it is hardly encouraged that"
-                         " genuine scores files are specified in the same way,"
-                         " and that corresponding pairs of scores"
-                         " have the same name")
+                    help="The impostor scores files. Multiple files must be"
+                         " separated by a comma. Instead of the filenames, a"
+                         " directory relative to PATH could be given. In this"
+                         " case, it is strongly recommended that genuine"
+                         " scores files are specified in the same way and that"
+                         " corresponding pairs of scores files (genuine and"
+                         " impostor) have the same name.")
     ap.add_argument("-g", "--gscores_files", required=True,
-                    help="Genuine scores filenames. Multiple filenames"
-                         " are separated by comma. Instead of the filenames,"
-                         " a directory relative to PATH could be specified."
-                         " In this case, it is hardly encouraged that"
-                         " impostor scores files are specified in the same"
-                         " way, and that corresponding pairs of scores"
-                         " have the same name")
+                    help="The genuine scores files. Multiple files must be"
+                         " separated by a comma. Instead of the filenames, a"
+                         " directory relative to PATH could be given. In this"
+                         " case, it is strongly recommended that impostor"
+                         " scores files are specified in the same way and that"
+                         " corresponding pairs of scores files (genuine and"
+                         " impostor) have the same name.")
     ap.add_argument("-e", "--experiment_ids", required=False,
-                    help="Experiment ID. Multiple IDs are separated by comma."
-                         " If not given, genuine score file names will be"
-                         " used to identified each experiment")
+                    help="Experiment ID. Multiple IDs must be separated by"
+                         " a comma. If not given, genuine score file names"
+                         " will be used to identified each experiment")
     ap.add_argument("-ht", "--hist", required=False, action='store_true',
-                    help="Indicates that the impostor file is in"
-                         " histogram format")
+                    help="Indicates that the impostor file is in histogram"
+                         " format")
     ap.add_argument("-ds", "--ds_scores", required=False, action='store_true',
                     help="Indicates that the input scores are dissimilarity"
                          " scores")
@@ -82,23 +82,21 @@ def get_eer_info_cmd():
     ap.add_argument("-np", "--no_plots", required=False, action='store_true',
                     help="Indicates whether to not plot the results")
     ap.add_argument("-sp", "--save_path", required=False, default='',
-                    help="Path to save the plots and stats report")
+                    help="Path to save plots and stats reports")
     ap.add_argument("-pf", "--plots_format", required=False, default='png',
-                    help="Format to save the plots. Valid formats are: "
+                    help="Format to save plots. Valid formats are:"
                          "(png, pdf, ps, eps and svg)")
     ap.add_argument("-rf", "--report_format", required=False, default='csv',
-                    help="Format in which to save the report file. "
-                         "Valid formats are: (csv, html, tex, json). "
-                         "Default csv.")
+                    help="Format to save the report. Valid formats are:"
+                         " (csv, html, tex, json). Default csv.")
     ap.add_argument("-sr", "--save_dpi", required=False, default=None,
-                    help="Plots resolution (dots per inch) in the cases"
-                         " where the option -s was specified. If not given"
+                    help="Plots resolution (dots per inch). If not given"
                          " it will default to the value savefig.dpi in the"
                          " matplotlibrc file")
     ap.add_argument("-lw", "--line_width", required=False, default=3,
-                    help="The width of the plotted curves (default=3)")
+                    help="Line width for plots (default=3)")
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
-                    help="The size of the legend font (default=15)")
+                    help="The size of the plots legend font (default=15)")
     args = ap.parse_args()
 
     # Parsing arguments
