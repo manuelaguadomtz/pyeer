@@ -11,7 +11,7 @@ setup(
     name='pyeer',
 
     # Package version
-    version='0.5.2',
+    version='0.5.3',
 
     entry_points={
         'console_scripts': [
@@ -54,7 +54,7 @@ setup(
 
     long_description=readme,
 
-    # long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
 
     keywords=['Equal Error Rate', 'False Match Rate', 'ROC', 'DET',
               'False Non-Match Rate', 'EER', 'FMR', 'FNMR', 'ZeroFNMR',
