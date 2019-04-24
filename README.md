@@ -20,13 +20,12 @@ To install the **PyEER** package you only need to type into a terminal the follo
 
 ## Usage
 
-Using **PyEER** is very easy and straightforward. Don't you believed? Lets see if we can convince you.
+Using **PyEER** is very easy and straightforward. Don't you believe? Let's see if we can convince you.
 
 ### geteerinf
 
 When evaluating biometric systems in verification scenarios some researchers will only report Equal Error Rate (EER) values
-to show the accuracy of their proposals. However, this is wrong. The behavior of biometric systems cannot be fully assesed 
-in this way. In other to achieve that, Receiver Operating Characteristic (ROC) or Detection Error Tradeoff (DET) graph must
+to show the accuracy of their proposals. However, this is wrong. The behavior of biometric systems cannot be fully assessed in this way. In other to achieve that, Receiver Operating Characteristic (ROC) or Detection Error Tradeoff (DET) graph must
 be reported. It is also very common to report other operating points besides EER (i.e. MR100, FMR1000, ZeroFMR, and ZeroFNMR).
 **geteerinf** provides these and more. You will only need to provide genuine match scores and impostor match scores [1]. Genuine
 match scores are obtained by matching feature sets of the same class (same person), while impostor matching scores are obtained
@@ -35,7 +34,7 @@ by matching feature sets of different classes (different persons).
 #### Input file formats
 
 Genuine match scores and impostor match scores must be provided in separated files one score per line. Each line can have any
-number of columns but the scores must be in the last column. Additionaly, impostor match scores can be provided in a different
+number of columns but the scores must be in the last column. Additionally, impostor match scores can be provided in a different
 format which explained next
 
 ###### Histogram format 
@@ -72,7 +71,7 @@ If you have any doubts left, you should check the example files on [GitHub](http
 
 #### Output
 
-All the above examples will generate the following information:
+All of the above examples will generate the following information:
 
 * Graphs: 
     * Receiver operating characteristic (ROC)
@@ -92,9 +91,9 @@ All the above examples will generate the following information:
     * Matthews Correlation Coefficient (MCC)
     * Matthews Correlation Coefficient threshold
     * Equal Error Rate (EER) (EER values are reported as specified in [2]).
-    * ZeroFMR, FMR1000, FMR100, FMR20, FMR10 and ZeroFNMR
+    * ZeroFMR, FMR1000, FMR100, FMR20, FMR10, and ZeroFNMR
     * Equal Error Rate threshold
-    * ZeroFMR, FMR1000, FMR100, FMR20, FMR10 and ZeroFNMR thresholds
+    * ZeroFMR, FMR1000, FMR100, FMR20, FMR10, and ZeroFNMR thresholds
 * rates.csv:
     * False Match Rates
     * False Non-Match Rates
@@ -133,7 +132,7 @@ All the above examples will generate the following information:
 
 ### getcmcinf
 
-In identification experiments in closed sets sometimes only rank values are reported [1]. To obtain rank values and the Cumulative match curve (CMC) **getcmcinf** is provided. It receives the match scores and the genuine correspondences. The input format will be described
+In identification experiments in closed sets sometimes only rank values are reported [1]. To obtain rank values and the Cumulative match curve (CMC) **getcmcinf** is provided. It receives the match scores and genuine correspondences. The input format will be described
 next.
 
 #### Input files format
@@ -144,7 +143,7 @@ Input files must have the following formats:
 
 * **Genuine query-template pairs:** Each line must have the following format: (query corresponding_template)
 
-For more clarification you should check the example files on [GitHub](https://github.com/manuelaguadomtz/pyeer/tree/master/pyeer/example_files).
+For more clarification, you should check the example files on [GitHub](https://github.com/manuelaguadomtz/pyeer/tree/master/pyeer/example_files).
 
 ## Usage examples
 
@@ -163,7 +162,7 @@ For more clarification you should check the example files on [GitHub](https://gi
 
 #### Output
 
-All the above examples will generate the following information:
+All of the above examples will generate the following information:
 
 * Graphs: 
     * Cumulative match curve (CMC)
@@ -219,7 +218,7 @@ Please follow our contributing guidelines.
 
 [1] D. Maltoni et al., Handbook of Fingerprint Recognition, Springer-Verlag London Limited 2009
 
-[2] Maio D., Maltoni D., Cappelli R., Wayman J.L. and Jain A.K., "FVC2000: Fingerprint verification
+[2] Maio D., Maltoni D., Cappelli R., Wayman J.L., and Jain A.K., "FVC2000: Fingerprint verification
 competition,"" IEEE Transactions on Pattern Analysis Machine Intelligence, vol. 24, no. 3, pp. 402–412,
 2002
 
