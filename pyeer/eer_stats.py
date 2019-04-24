@@ -307,7 +307,7 @@ def get_eer_values(fmr, fnmr):
         warnings.warn('It seems that the FMR and FNMR curves'
                       ' do not intersect each other. Did you mean'
                       ' to use dissimilarity scores?', RuntimeWarning)
-        return 1, 1, 1
+        return 0, 1, 1, 1
 
     t1 = t2 - 1 if diff[t2] != 0 and t2 != 0 else t2
 
@@ -339,6 +339,8 @@ def get_decidability_value(gmean, gstd, imean, istd):
     @returns: The decidability value
     @rtype: float
     """
+    if gstd == 0 and istd == 0:
+        return 1
     return abs(gmean - imean) / np.sqrt(0.5 * (gstd ** 2 + istd ** 2))
 
 
