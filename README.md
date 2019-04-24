@@ -38,7 +38,7 @@ Genuine match scores and impostor match scores must be provided in separated fil
 number of columns but the scores must be in the last column. Additionaly, impostor match scores can be provided in a different
 format which explained next
 
-###### Histogram format	
+###### Histogram format 
 
 Although the vast majority of the systems report scores normalized between 0 and 1, there are some that
 report integer scores [3]. When computing a lot of impostor scores, millions of them, it can be computationally expensive to read
@@ -75,29 +75,29 @@ If you have any doubts left, you should check the example files on [GitHub](http
 All the above examples will generate the following information:
 
 * Graphs: 
-	* Receiver operating characteristic (ROC)
-	* Detection error tradeoff (DET)
-	* False Match Rate (FMR) and False Non-Match Rate(FNMR)
-	* Genuine and impostor score histograms
+    * Receiver operating characteristic (ROC)
+    * Detection error tradeoff (DET)
+    * False Match Rate (FMR) and False Non-Match Rate(FNMR)
+    * Genuine and impostor score histograms
 * pyeer_report.csv: 
-	* Genuine scores mean
-	* Genuine sores standard deviation
-	* Impostor scores mean
-	* Impostor sores standard deviation
-	* Sensitivity index (d') (See [NICE:II](http://nice2.di.ubi.pt/) protocol evaluation)
-	* Equal Error Rate (EER) (EER values are reported as specified in [2]).
-	* Area under the ROC curve
-	* Youden's J statistic (Youden's Index)
-	* Youden's Index threshold
-	* Matthews Correlation Coefficient (MCC)
-	* Matthews Correlation Coefficient threshold
-	* Equal Error Rate (EER) (EER values are reported as specified in [2]).
-	* ZeroFMR, FMR1000, FMR100, FMR20, FMR10 and ZeroFNMR
-	* Equal Error Rate threshold
-	* ZeroFMR, FMR1000, FMR100, FMR20, FMR10 and ZeroFNMR thresholds
+    * Genuine scores mean
+    * Genuine sores standard deviation
+    * Impostor scores mean
+    * Impostor sores standard deviation
+    * Sensitivity index (d') (See [NICE:II](http://nice2.di.ubi.pt/) protocol evaluation)
+    * Equal Error Rate (EER) (EER values are reported as specified in [2]).
+    * Area under the ROC curve
+    * Youden's J statistic (Youden's Index)
+    * Youden's Index threshold
+    * Matthews Correlation Coefficient (MCC)
+    * Matthews Correlation Coefficient threshold
+    * Equal Error Rate (EER) (EER values are reported as specified in [2]).
+    * ZeroFMR, FMR1000, FMR100, FMR20, FMR10 and ZeroFNMR
+    * Equal Error Rate threshold
+    * ZeroFMR, FMR1000, FMR100, FMR20, FMR10 and ZeroFNMR thresholds
 * rates.csv:
-	* False Match Rates
-	* False Non-Match Rates
+    * False Match Rates
+    * False Non-Match Rates
 
 #### To use from your own scripts
 
@@ -166,10 +166,10 @@ For more clarification you should check the example files on [GitHub](https://gi
 All the above examples will generate the following information:
 
 * Graphs: 
-	* Cumulative match curve (CMC)
-	
+    * Cumulative match curve (CMC)
+    
 * pyeer_report.csv: 
-	* Rank identification rates
+    * Rank identification rates
 
 #### To use from your own scripts
 
