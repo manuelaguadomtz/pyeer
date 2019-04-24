@@ -53,19 +53,19 @@ If you have any doubts left, you should check the example files on [GitHub](http
 
 #### Usage examples
 
-**To print the help**
+##### To print the help
 
     geteerinf -h
 
-**One experiment (Non-histogram format):**
+##### One experiment (Non-histogram format):
 
     geteerinf -p "example_files/non_hist/" -i "exp3_false.txt" -g "exp3_true.txt" -e "exp3"
 
-**More than one experiment (Non-histogram format):**
+##### More than one experiment (Non-histogram format):
 
     geteerinf -p "example_files/non_hist/" -i "exp1_false.txt,exp2_false.txt" -g "exp1_true.txt,exp2_true.txt" -e "exp1,exp2"
 
-**One experiment (Histogram format):**
+##### One experiment (Histogram format):
 
     geteerinf -p "example_files/hist/" -i "exp1_false.txt" -g "exp1_true.txt" -e "exp1" -ht
 
@@ -145,17 +145,17 @@ Input files must have the following formats:
 
 For more clarification, you should check the example files on [GitHub](https://github.com/manuelaguadomtz/pyeer/tree/master/pyeer/example_files).
 
-## Usage examples
+#### Usage examples
 
-**To print the script help**
+##### To print the script help
 
     getcmcinf -h
 
-**One experiment**
+##### One experiment
 
     getcmcinf -p "example_files/cmc/" -ms "exp1_scores.txt" -t "exp1_tp.txt" -e "Exp1"
 
-**More than one experiment**
+##### More than one experiment
 
     getcmcinf -p "example_files/cmc/" -ms "exp1_scores.txt,exp2_scores.txt" -t "exp1_tp.txt,exp2_tp.txt" -e "Exp1,Exp2"
 
