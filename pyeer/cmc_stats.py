@@ -42,7 +42,7 @@ def load_scores_from_file(scores_filename, true_pairs_filename,
     with open(true_pairs_filename) as tpf:
         for line in tpf:
             query, template = line.split(delimiter, 1)
-            matching_scores[query] = (template, [])
+            matching_scores[query] = (template.strip(), [])
 
     with open(scores_filename) as sf:
         for line in sf:
@@ -71,13 +71,23 @@ def get_cmc_curve(scores, max_rank):
     ranks_values = [0.0] * (max_rank + 1)
     queries_total = len(scores)
 
+    # Calculating identification rates
     for r in range(max_rank):
+
+        # Calculating identification rate at Rank-r
         in_rank = 0.0
         for query_match_info in scores.values():
-            match = query_match_info[SCORE_POS][r]
-            true_template = query_match_info[TEMPLATE_POS].strip()
-            if match[TEMPLATE_POS] == true_template:
-                in_rank += 1
+
+            if r < len(query_match_info[SCORE_POS]):
+                # Candidate at position r
+                candidate = query_match_info[SCORE_POS][r][TEMPLATE_POS]
+
+                # Checking if candidate is the corresponding positive id
+                true_template = query_match_info[TEMPLATE_POS]
+                if candidate == true_template:
+                    in_rank += 1
+
+        # Updating rank values
         ranks_values[r + 1] = in_rank / queries_total + ranks_values[r]
 
     if ranks_values[-1] < 0.2:
