@@ -97,6 +97,9 @@ def get_eer_info_cmd():
                     help="Line width for plots (default=3)")
     ap.add_argument("-ls", "--legend_font_size", required=False, default=15,
                     help="The size of the plots legend font (default=15)")
+    ap.add_argument("-nrs", "--no_resample_curves", required=False,
+                    action='store_true',
+                    help="Plotting all sample points for ROC and DET curves.")
     args = ap.parse_args()
 
     # Parsing arguments
@@ -150,7 +153,8 @@ def get_eer_info_cmd():
     if not args.no_plots:
         print('Plotting...')
         plot_eer_stats(stats, ids, line_width, args.hist, bins, lgf_size,
-                       True, dpi, args.save_path, ext)
+                       True, dpi, args.save_path, ext,
+                       not args.no_resample_curves)
 
 
 def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):

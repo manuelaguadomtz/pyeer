@@ -11,7 +11,7 @@ STYLES = ['s--', 'v--', 'o--', '^--', ',--', '<--', '>--', '1--', '2--'
 
 
 def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
-                  dpi=None, save_path='', ext='.png'):
+                  dpi=None, save_path='', ext='.png', resampling=True):
     """Plot the DET curve
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -36,6 +36,10 @@ def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
                 formats are: (.png, .pdf, .ps, .eps and .svg)
                 (default='.png')
     @type ext: str
+    @param resampling: Indicates whether to resample DET curves. If
+        resampled, DET curves will be interpolated and sample points
+        will be x-distant.
+    @type ext: bool
     """
     det_fig = plt.figure()
     det_lg_fig = plt.figure()
@@ -55,9 +59,29 @@ def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
     det_lg_plot.grid(True, which='both', ls='--')
 
     for i, st in enumerate(stats):
+
+        if resampling:
+            x = np.arange(0, 1, 0.05)
+            y = np.interp(x, st.fmr[::-1], st.fnmr[::-1])
+        else:
+            x = st.fmr
+            y = st.fnmr
+
         # Plotting DET Curve
-        det_plot.plot(st.fmr, st.fnmr, label=ids[i], linewidth=line_width)
-        det_lg_plot.plot(st.fmr, st.fnmr, label=ids[i], linewidth=line_width)
+        det_plot.plot(
+            x, y,
+            STYLES[i],
+            label=ids[i],
+            linewidth=line_width,
+            pickradius=0.5
+        )
+        det_lg_plot.plot(
+            x, y,
+            STYLES[i],
+            label=ids[i],
+            linewidth=line_width,
+            pickradius=0.5
+        )
 
     # Finalizing plots
     det_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
@@ -74,7 +98,7 @@ def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
 
 
 def plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
-                  dpi=None, save_path='', ext='.png'):
+                  dpi=None, save_path='', ext='.png', resampling=True):
     """Plot the ROC curve
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -99,6 +123,10 @@ def plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
                 formats are: (.png, .pdf, .ps, .eps and .svg)
                 (default='.png')
     @type ext: str
+    @param resampling: Indicates whether to resample ROC curves. If
+        resampled, ROC curves will be interpolated and sample points
+        will be x-distant.
+    @type ext: bool
     """
     roc_fig = plt.figure()
     roc_lg_fig = plt.figure()
@@ -122,9 +150,24 @@ def plt_roc_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
     for i, st in enumerate(stats):
         # Plotting ROC Curve
         label = ids[i] + ' AUC = %f' % st.auc
-        roc_plot.plot(st.fmr, 1 - st.fnmr, label=label, linewidth=line_width)
-        roc_lg_plot.plot(st.fmr, 1 - st.fnmr, label=label,
-                         linewidth=line_width)
+
+        if resampling:
+            x = np.arange(0, 1.05, 0.05)
+            y = np.interp(x, st.fmr[::-1], (1 - st.fnmr)[::-1])
+        else:
+            x = st.fmr
+            y = 1 - st.fnmr
+
+        roc_plot.plot(
+            x, y, STYLES[i],
+            label=label,
+            linewidth=line_width
+        )
+        roc_lg_plot.plot(
+            x, y, STYLES[i],
+            label=label,
+            linewidth=line_width
+        )
 
     # Finalizing plots
     roc_plot.legend(loc='best', prop=FontProperties(size=lgf_size))
@@ -270,7 +313,7 @@ def plt_error_curves(stats, ids, line_width=3, lgf_size=15, save_plots=True,
 
 def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
                    lgf_size=15, save_plots=True, dpi=None, save_path='',
-                   ext='.png'):
+                   ext='.png', resampling=True):
     """Plot a series of graphs from the given stats
 
     @param stats: An iterable with instances of the named tuple Stats
@@ -301,14 +344,18 @@ def plot_eer_stats(stats, ids, line_width=3, hformat=False, bins=100,
                 formats are: (.png, .pdf, .ps, .eps and .svg)
                 (default='.png')
     @type ext: str
+    @param resampling: Indicates whether to resample ROC and DET curves.
+        If resampled, curves will be interpolated and sample points
+        will be x-distant.
+    @type ext: bool
     """
     # Plotting the DET curve
     plt_det_curve(stats, ids, line_width, lgf_size, save_plots,
-                  dpi, save_path, ext)
+                  dpi, save_path, ext, resampling)
 
     # Plotting the ROC curve
     plt_roc_curve(stats, ids, line_width, lgf_size, save_plots,
-                  dpi, save_path, ext)
+                  dpi, save_path, ext, resampling)
 
     # Plotting scores distribution
     plt_distributions(stats, ids, hformat, bins, lgf_size, save_plots,
