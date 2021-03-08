@@ -402,7 +402,6 @@ def plot_cmc_stats(stats, max_rank, line_width=3, lgf_size=15,
     plt.xticks(range(1, max_rank))
 
     for i, st in enumerate(stats):
-        print(STYLES[i])
         plt.plot(range(1, len(st.ranks) + 1), st.ranks, STYLES[i],
                  label=st.exp_id, linewidth=line_width)
 
