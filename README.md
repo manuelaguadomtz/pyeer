@@ -216,7 +216,7 @@ Please follow our contributing guidelines.
 
 ### Contributors
 
-We would like to thanks to those who has collaborated with the project:
+We would like to thanks to those who have collaborated with the project:
 
 * [ljsoler](https://github.com/ljsoler)
     * Added support in CMC stats for multiple templates for a single query
