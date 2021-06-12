@@ -1,3 +1,11 @@
 include pyeer/example_files/hist/*.txt
 include pyeer/example_files/non_hist/*.txt
 include pyeer/example_files/cmc/*.txt
+include html/assets/js/*.js
+include html/assets/css/*.css
+include html/dist/js/*.js
+include html/dist/css/*.css
+include html/dist/css/icons/*.woff2
+include html/data/*.txt
+include html/img/*.txt
+include html/*.html

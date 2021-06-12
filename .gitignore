@@ -10,7 +10,7 @@
 # Ignoring build directories
 pyeer.egg-info/
 build/
-dist/
+/dist/
 
 # Ignoring CSV files
 *.csv

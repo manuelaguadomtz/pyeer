@@ -11,7 +11,7 @@ setup(
     name='pyeer',
 
     # Package version
-    version='0.5.5',
+    version='0.6.0',
 
     entry_points={
         'console_scripts': [
@@ -23,8 +23,19 @@ setup(
     include_package_data=True,
 
     package_data={
-        'pyeer': ['example_files/hist/*.txt', 'example_files/non_hist/*.txt',
-                  'example_files/cmc/*.txt'],
+        'pyeer': [
+            'example_files/hist/*.txt',
+            'example_files/non_hist/*.txt',
+            'example_files/cmc/*.txt',
+            'html/assets/js/*.js',
+            'html/assets/css/*.css',
+            'html/dist/js/*.js',
+            'html/dist/css/*.css',
+            'html/dist/css/icons/*.woff2',
+            'html/data/*.txt',
+            'html/img/*.txt',
+            'html/*.html'
+        ],
     },
 
     # Included packages

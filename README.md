@@ -223,6 +223,10 @@ We would like to thanks to those who have collaborated with the project:
 * [jpalancar](https://github.com/jpalancar)
     * Testing and guidance
 
+## Notice
+
+HTML report template is based on [SB Admin](https://startbootstrap.com/template/sb-admin)
+
 
 ## References
 

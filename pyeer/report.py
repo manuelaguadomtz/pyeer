@@ -1,14 +1,105 @@
 # -*- coding:utf-8 -*-
 
+import re
+import os
 import csv
 import pkg_resources
 import json
+import shutil
 
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
 LATEX_TABLE_CMC_MAX_RANK = 4
+
+
+def _replace_placeholder(string, placeholder, value):
+    """Replaces placeholder in a file
+
+    @param string: String with placeholders
+    @param placeholder: The placeholder
+    @param value: The replacement value
+    """
+    pattern = '{{ %s }}' % placeholder
+    return re.sub(pattern, value, string)
+
+
+def _get_eer_json_stats(stats, ids):
+    """Get eer json stats"""
+    json_stats = [
+        {
+            'Experiment': ids[i],
+            'GMean': st.gmean,
+            'GSTD': st.gstd,
+            'IMean': st.imean,
+            'ISTD': st.istd,
+            "Sensitivity index (d')": st.decidability,
+            'AUC': st.auc,
+            'J-Index': st.j_index,
+            'J-Index Threshold': st.j_index_th,
+            'MCC': st.mccoef,
+            'MCC Threshold': st.mccoef_th,
+            'EERlow': st.eer_low,
+            'EERhigh': st.eer_high,
+            'EER': st.eer,
+            'ZeroFMR': st.fmr0,
+            'FMR1000': st.fmr1000,
+            'FMR100': st.fmr100,
+            'FMR20': st.fmr20,
+            'FMR10': st.fmr10,
+            'ZeroFNMR': st.fnmr0,
+            'EER Threshold': st.eer_th,
+            'ZeroFMR Threshold': st.fmr0_th,
+            'FMR1000 Threshold': st.fmr1000_th,
+            'FMR100 Threshold': st.fmr100_th,
+            'FMR20 Threshold': st.fmr20_th,
+            'FMR10 Threshold': st.fmr10_th,
+            'ZeroFNMR Threshold': st.fnmr0_th,
+        }
+        for i, st in enumerate(stats)
+    ]
+
+    return json.dumps(json_stats)
+
+
+def generate_html_eer_report(stats, ids, save_dir):
+    """ Generate an HTML file with the given statistics
+
+    @param stats: An iterable with instances of the named tuple Stats
+    @type stats: iterable
+    @param ids: An iterable with an ID (str) for each stat
+    @type ids: iterable
+    @param save_file: The filename used to save the report
+    @type save_file: str
+    """
+    pkg_version = pkg_resources.require('pyeer')[0].version
+    htmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "html")
+    output_path = os.path.join(save_dir, "pyeer_report")
+
+    # Copying base template
+    shutil.copytree(htmlpath, output_path)
+
+    indexbase = os.path.join(htmlpath, 'index.html')
+    indexoutput = os.path.join(output_path, 'index.html')
+
+    # Building index.html
+    with open(indexbase) as fi, open(indexoutput, 'w') as fo:
+        indexhtml = fi.read()
+
+        # Replacing version
+        indexhtml = _replace_placeholder(indexhtml, 'version', pkg_version)
+
+        fo.write(indexhtml)
+
+    # Copying data
+    datafolder = os.path.join(output_path, "data")
+    with open(os.path.join(datafolder, 'stats.js'), 'w') as fo:
+        json_stats = _get_eer_json_stats(stats, ids)
+        fo.write(f'data = {json_stats};')
+
+    # Copying images
+    imgfolder = os.path.join(output_path, "img")
 
 
 def generate_json_eer_report(stats, ids, save_file):
@@ -80,161 +171,6 @@ def generate_json_eer_report(stats, ids, save_file):
             jdict['Stats for %s' % ids[i]] = st_dict
 
         json.dump(jdict, sf, ensure_ascii=False, indent=4)
-
-
-def generate_html_eer_report(stats, ids, save_file):
-    """ Generate an HTML file with the given statistics
-
-    @param stats: An iterable with instances of the named tuple Stats
-    @type stats: iterable
-    @param ids: An iterable with an ID (str) for each stat
-    @type ids: iterable
-    @param save_file: The filename used to save the report
-    @type save_file: str
-    """
-    with open(save_file, 'w') as sf:
-
-        # Write html tag
-        sf.write('<html>\n')
-
-        # Beginning head section
-        sf.write('<head>')
-
-        # Writing encoding type
-        sf.write('<meta charset="UTF-8">\n')
-
-        # Writing styles
-        sf.write('<style>')
-        sf.write('td{ padding-right: 15px; padding-left:15px;}')
-        sf.write('</style>')
-
-        # Ending head section
-        sf.write('</head>')
-
-        # Beginning body section
-        sf.write('<body>')
-
-        # Writing html table tag
-        sf.write('<table>\n')
-
-        # Writing table caption
-        pkg_version = pkg_resources.require('pyeer')[0].version
-        caption = 'Generated using PyEER ' + pkg_version
-        sf.write('<caption><h3>%s</h3></caption>\n' % caption)
-
-        # Writing table headers
-        sf.write('<thead>\n')
-        sf.write('<tr>\n')
-        sf.write('<th>%s</th>\n' % 'Experiment ID')
-        sf.write('<th>%s</th>\n' % 'GMean')
-        sf.write('<th>%s</th>\n' % 'GSTD')
-        sf.write('<th>%s</th>\n' % 'IMean')
-        sf.write('<th>%s</th>\n' % 'ISTD')
-        sf.write('<th>%s</th>\n' % "Sensitivity index (d')")
-        sf.write('<th>%s</th>\n' % 'AUC')
-        sf.write('<th>%s</th>\n' % 'J-Index')
-        sf.write('<th>%s</th>\n' % 'J-Index Threshold')
-        sf.write('<th>%s</th>\n' % 'MCC')
-        sf.write('<th>%s</th>\n' % 'MCC Threshold')
-        sf.write('<th>%s</th>\n' % 'EERlow')
-        sf.write('<th>%s</th>\n' % 'EERhigh')
-        sf.write('<th>%s</th>\n' % 'EER')
-        sf.write('<th>%s</th>\n' % 'ZeroFMR')
-        sf.write('<th>%s</th>\n' % 'FMR1000')
-        sf.write('<th>%s</th>\n' % 'FMR100')
-        sf.write('<th>%s</th>\n' % 'FMR20')
-        sf.write('<th>%s</th>\n' % 'FMR10')
-        sf.write('<th>%s</th>\n' % 'ZeroFNMR')
-        sf.write('<th>%s</th>\n' % 'EER Threshold')
-        sf.write('<th>%s</th>\n' % 'ZeroFMR Threshold')
-        sf.write('<th>%s</th>\n' % 'FMR1000 Threshold')
-        sf.write('<th>%s</th>\n' % 'FMR100 Threshold')
-        sf.write('<th>%s</th>\n' % 'FMR20 Threshold')
-        sf.write('<th>%s</th>\n' % 'FMR10 Threshold')
-        sf.write('<th>%s</th>\n' % 'ZeroFNMR Threshold')
-        sf.write('</tr>\n')
-        sf.write('</thead>\n')
-
-        # Writing table body
-        sf.write('<tbody>\n')
-
-        for i, st in enumerate(stats):
-            # Writing stats
-            sf.write('<tr>\n')
-            sf.write('<td>%s</td>\n' % ids[i])
-            sf.write('<td>%f</td>\n' % st.gmean)
-            sf.write('<td>%f</td>\n' % st.gstd)
-            sf.write('<td>%f</td>\n' % st.imean)
-            sf.write('<td>%f</td>\n' % st.istd)
-            sf.write('<td>%f</td>\n' % st.decidability)
-            sf.write('<td>%f</td>\n' % st.auc)
-            sf.write('<td>%f</td>\n' % st.j_index)
-            sf.write('<td>%f</td>\n' % st.j_index_th)
-            sf.write('<td>%f</td>\n' % st.mccoef)
-            sf.write('<td>%f</td>\n' % st.mccoef_th)
-            sf.write('<td>%f</td>\n' % st.eer_low)
-            sf.write('<td>%f</td>\n' % st.eer_high)
-            sf.write('<td>%f</td>\n' % st.eer)
-            sf.write('<td>%f</td>\n' % st.fmr0)
-            sf.write('<td>%f</td>\n' % st.fmr1000)
-            sf.write('<td>%f</td>\n' % st.fmr100)
-            sf.write('<td>%f</td>\n' % st.fmr20)
-            sf.write('<td>%f</td>\n' % st.fmr10)
-            sf.write('<td>%f</td>\n' % st.fnmr0)
-            sf.write('<td>%f</td>\n' % st.eer_th)
-            sf.write('<td>%f</td>\n' % st.fmr0_th)
-            sf.write('<td>%f</td>\n' % st.fmr1000_th)
-            sf.write('<td>%f</td>\n' % st.fmr100_th)
-            sf.write('<td>%f</td>\n' % st.fmr20_th)
-            sf.write('<td>%f</td>\n' % st.fmr10_th)
-            sf.write('<td>%f</td>\n' % st.fnmr0_th)
-            sf.write('<tr>\n')
-
-        # Closing table body
-        sf.write('</tbody>\n')
-
-        # Writing table footer
-        sf.write('<tfoot>\n')
-
-        sf.write('<tr><td colspan="27"><strong>GMean:</strong> Genuine scores'
-                 ' distribution  mean</td><tr>\n')
-        sf.write('<tr><td colspan="27"><strong>GSTD:</strong> Genuine scores'
-                 '  distribution standard deviation</td><tr>\n')
-        sf.write('<tr><td colspan="27"><strong>IMean:</strong> Impostor scores'
-                 ' distribution  mean</td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>IVariance:</strong> Impostor'
-                 ' scores distribution standard deviation</td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>Sensitivity index' "(d')" ':'
-                 '</strong> NICE:II protocol evaluation </td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>AUC:</strong> Area under the'
-                 ' ROC curve </td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>J-Index:</strong> ' "Youden's J"
-                 " statistic (Youden's Index) </td></tr>\n")
-        sf.write('<tr><td colspan="27"><strong>MCC:</strong> Matthews'
-                 ' Correlation Coefficient </td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>EER:</strong> Equal Error Rate'
-                 '</td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>EERlow, EERhigh:</strong> See'
-                 ' FVC2000 protocol evaluation </td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>FMR:</strong> False Match Rate'
-                 '</td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>FNMR:</strong> False Non-Match'
-                 ' Rate</td></tr>\n')
-        sf.write('<tr><td colspan="27"><strong>EER Threshold:</strong> '
-                 ' Threshold for which EERlow and EERHigh were calculated'
-                 '</td></tr>\n')
-
-        # Closing table footer
-        sf.write('<tfoot>\n')
-
-        # Closing html table tag
-        sf.write('</table>\n')
-
-        # Closing body tag
-        sf.write('</body>')
-
-        # Closing html tag
-        sf.write('</html>\n')
 
 
 def generate_tex_eer_report(stats, ids, save_file):
@@ -664,7 +600,8 @@ def generate_eer_report(stats, ids, save_file):
     if ext.lower() == 'csv':
         generate_csv_eer_report(stats, ids, save_file)
     elif ext.lower() == 'html':
-        generate_html_eer_report(stats, ids, save_file)
+        save_dir = os.path.dirname(save_file)
+        generate_html_eer_report(stats, ids, save_dir)
     elif ext.lower() == 'tex':
         generate_tex_eer_report(stats, ids, save_file)
     elif ext.lower() == 'json':
