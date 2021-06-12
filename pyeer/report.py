@@ -11,6 +11,7 @@ __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
 
+ROUND_DECIMAL_PLACES = 4
 LATEX_TABLE_CMC_MAX_RANK = 4
 
 
@@ -29,33 +30,33 @@ def _get_eer_json_stats(stats, ids):
     """Get eer json stats"""
     json_stats = [
         {
-            'Experiment': ids[i],
-            'GMean': st.gmean,
-            'GSTD': st.gstd,
-            'IMean': st.imean,
-            'ISTD': st.istd,
-            "Sensitivity index (d')": st.decidability,
-            'AUC': st.auc,
-            'J-Index': st.j_index,
-            'J-Index Threshold': st.j_index_th,
-            'MCC': st.mccoef,
-            'MCC Threshold': st.mccoef_th,
-            'EERlow': st.eer_low,
-            'EERhigh': st.eer_high,
-            'EER': st.eer,
-            'ZeroFMR': st.fmr0,
-            'FMR1000': st.fmr1000,
-            'FMR100': st.fmr100,
-            'FMR20': st.fmr20,
-            'FMR10': st.fmr10,
-            'ZeroFNMR': st.fnmr0,
-            'EER Threshold': st.eer_th,
-            'ZeroFMR Threshold': st.fmr0_th,
-            'FMR1000 Threshold': st.fmr1000_th,
-            'FMR100 Threshold': st.fmr100_th,
-            'FMR20 Threshold': st.fmr20_th,
-            'FMR10 Threshold': st.fmr10_th,
-            'ZeroFNMR Threshold': st.fnmr0_th,
+            'experiment': ids[i],
+            'gmean': round(st.gmean, ROUND_DECIMAL_PLACES),
+            'gstd': round(st.gstd, ROUND_DECIMAL_PLACES),
+            'imean': round(st.imean, ROUND_DECIMAL_PLACES),
+            'istd': round(st.istd, ROUND_DECIMAL_PLACES),
+            'sindex': round(st.decidability, ROUND_DECIMAL_PLACES),
+            'AUC': round(st.auc, ROUND_DECIMAL_PLACES),
+            'jndex': round(st.j_index, ROUND_DECIMAL_PLACES),
+            'jindexTh': st.j_index_th,
+            'MCC': round(st.mccoef, ROUND_DECIMAL_PLACES),
+            'MCCTh': st.mccoef_th,
+            'EERLow': round(st.eer_low, ROUND_DECIMAL_PLACES),
+            'EERHigh': round(st.eer_high, ROUND_DECIMAL_PLACES),
+            'EER': round(st.eer, ROUND_DECIMAL_PLACES),
+            'ZeroFMR': round(st.fmr0, ROUND_DECIMAL_PLACES),
+            'FMR1000': round(st.fmr1000, ROUND_DECIMAL_PLACES),
+            'FMR100': round(st.fmr100, ROUND_DECIMAL_PLACES),
+            'FMR20': round(st.fmr20, ROUND_DECIMAL_PLACES),
+            'FMR10': round(st.fmr10, ROUND_DECIMAL_PLACES),
+            'ZeroFNMR': round(st.fnmr0, ROUND_DECIMAL_PLACES),
+            'EERTh': st.eer_th,
+            'ZeroFMRTh': st.fmr0_th,
+            'FMR1000Th': st.fmr1000_th,
+            'FMR100Th': st.fmr100_th,
+            'FMR20Th': st.fmr20_th,
+            'FMR10Th': st.fmr10_th,
+            'ZeroFNMRTh': st.fnmr0_th,
         }
         for i, st in enumerate(stats)
     ]
@@ -96,7 +97,7 @@ def generate_html_eer_report(stats, ids, save_dir):
     datafolder = os.path.join(output_path, "data")
     with open(os.path.join(datafolder, 'stats.js'), 'w') as fo:
         json_stats = _get_eer_json_stats(stats, ids)
-        fo.write(f'data = {json_stats};')
+        fo.write(f'var data = {json_stats};')
 
     # Copying images
     imgfolder = os.path.join(output_path, "img")

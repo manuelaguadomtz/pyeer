@@ -46,11 +46,33 @@
 
                         <div class="card mb-4">
                             <div class="card-header">
-                                <i class="fas fa-table me-1"></i> Satistics
+                                <i class="fas fa-table me-1"></i>General statistics
                             </div>
                             <div class="card-body">
                                 <div class="demo-container">
-                                    <div id="gridContainer"></div>
+                                    <div id="gridContainerGeneral"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i> Probability errors
+                            </div>
+                            <div class="card-body">
+                                <div class="demo-container">
+                                    <div id="gridContainerErrors"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>Thresholds
+                            </div>
+                            <div class="card-body">
+                                <div class="demo-container">
+                                    <div id="gridContainerThresholds"></div>
                                 </div>
                             </div>
                         </div>
@@ -90,6 +112,9 @@
         <script src="data/stats.js"></script>
 
         <script src="dist/js/jquery-3.5.1.min.js"></script>
+        <script src="dist/js/polyfill.min.js"></script>
+        <script src="dist/js/exceljs.min.js"></script>
+        <script src="dist/js/FileSaver.min.js"></script>
         <script src="dist/js/bootstrap.bundle.min.js"></script>
         <script src="dist/js/bootstrap-theme.js"></script>
         <script src="dist/js/Chart.min.js"></script>
