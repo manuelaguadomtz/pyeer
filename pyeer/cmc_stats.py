@@ -44,11 +44,8 @@ def load_scores_from_file(scores_filename, true_pairs_filename,
             query, template = line.split(delimiter, 1)
 
             if query in matching_scores:
-
                 matching_scores[query][TEMPLATE_POS].append(template.strip())
-
             else:
-
                 matching_scores[query] = ([template.strip()], [])
 
     with open(scores_filename) as sf:
@@ -96,9 +93,7 @@ def get_cmc_curve(scores, max_rank):
 
         # Updating rank values
         ranks_values[r + 1] = in_rank / queries_total + ranks_values[r]
-
         if ranks_values[r + 1] >= 1.0:
-
             ranks_values[r + 1:] = [1.0] * (len(ranks_values) - r - 1)
 
             break

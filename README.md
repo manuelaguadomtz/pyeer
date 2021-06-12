@@ -214,6 +214,16 @@ Do you find **PyEER** useful? You can collaborate with us:
 
 Please follow our contributing guidelines.
 
+### Contributors
+
+We would like to thanks to those who has collaborated with the project:
+
+* [ljsoler](https://github.com/ljsoler)
+    * Added support in CMC stats for multiple templates for a single query
+* [jpalancar](https://github.com/jpalancar)
+    * Testing and guidance
+
+
 ## References
 
 [1] D. Maltoni et al., Handbook of Fingerprint Recognition, Springer-Verlag London Limited 2009
