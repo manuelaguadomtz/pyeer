@@ -42,7 +42,14 @@ def load_scores_from_file(scores_filename, true_pairs_filename,
     with open(true_pairs_filename) as tpf:
         for line in tpf:
             query, template = line.split(delimiter, 1)
-            matching_scores[query] = (template.strip(), [])
+
+            if query in matching_scores:
+
+                matching_scores[query][TEMPLATE_POS].append(template.strip())
+
+            else:
+
+                matching_scores[query] = ([template.strip()], [])
 
     with open(scores_filename) as sf:
         for line in sf:
@@ -84,11 +91,17 @@ def get_cmc_curve(scores, max_rank):
 
                 # Checking if candidate is the corresponding positive id
                 true_template = query_match_info[TEMPLATE_POS]
-                if candidate == true_template:
+                if candidate in true_template:
                     in_rank += 1
 
         # Updating rank values
         ranks_values[r + 1] = in_rank / queries_total + ranks_values[r]
+
+        if ranks_values[r + 1] >= 1.0:
+
+            ranks_values[r + 1:] = [1.0] * (len(ranks_values) - r - 1)
+
+            break
 
     if ranks_values[-1] < 0.2:
         warn("It is possible that you had set the wrong score"
