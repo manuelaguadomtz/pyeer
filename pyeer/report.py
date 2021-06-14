@@ -7,6 +7,8 @@ import pkg_resources
 import json
 import shutil
 
+import numpy as np
+
 __copyright__ = 'Copyright 2017'
 __author__ = u'Bsc. Manuel Aguado Martínez'
 
@@ -28,9 +30,17 @@ def _replace_placeholder(string, placeholder, value):
 
 def _get_eer_json_stats(stats, ids):
     """Get eer json stats"""
+
+    samples = np.round(np.arange(0, 1, 0.01), 2)
+
     json_stats = [
         {
             'experiment': ids[i],
+            'samples': samples.tolist(),
+            'fnmr_samples': np.interp(
+                samples, st.fmr[::-1], st.fnmr[::-1]).tolist(),
+            'tpr_samples': np.interp(
+                samples, st.fmr[::-1], 1 - st.fnmr[::-1]).tolist(),
             'gmean': round(st.gmean, ROUND_DECIMAL_PLACES),
             'gstd': round(st.gstd, ROUND_DECIMAL_PLACES),
             'imean': round(st.imean, ROUND_DECIMAL_PLACES),
@@ -98,9 +108,6 @@ def generate_html_eer_report(stats, ids, save_dir):
     with open(os.path.join(datafolder, 'stats.js'), 'w') as fo:
         json_stats = _get_eer_json_stats(stats, ids)
         fo.write(f'var data = {json_stats};')
-
-    # Copying images
-    imgfolder = os.path.join(output_path, "img")
 
 
 def generate_json_eer_report(stats, ids, save_file):
