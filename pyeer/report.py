@@ -74,6 +74,20 @@ def _get_eer_json_stats(stats, ids):
     return json.dumps(json_stats)
 
 
+def _get_html_eer_exp_links(ids):
+    """Get links for experiments individual stats in html report"""
+    htmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "html")
+
+    with open(os.path.join(htmlpath, "exp_link.html")) as fi:
+        template = fi.read()
+
+        links = [
+            _replace_placeholder(template, "exp_name", exp_name)
+            for exp_name in ids
+        ]
+        return " ".join(links)
+
+
 def generate_html_eer_report(stats, ids, save_dir):
     """ Generate an HTML file with the given statistics
 
@@ -84,24 +98,65 @@ def generate_html_eer_report(stats, ids, save_dir):
     @param save_file: The filename used to save the report
     @type save_file: str
     """
-    pkg_version = pkg_resources.require('pyeer')[0].version
+    version = pkg_resources.require('pyeer')[0].version
     htmlpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "html")
     output_path = os.path.join(save_dir, "pyeer_report")
 
     # Copying base template
-    shutil.copytree(htmlpath, output_path)
+    shutil.copytree(
+        os.path.join(htmlpath, "assets"),
+        os.path.join(output_path, "assets")
+    )
+    shutil.copytree(
+        os.path.join(htmlpath, "data"),
+        os.path.join(output_path, "data")
+    )
+    shutil.copytree(
+        os.path.join(htmlpath, "dist"),
+        os.path.join(output_path, "dist")
+    )
+    shutil.copytree(
+        os.path.join(htmlpath, "img"),
+        os.path.join(output_path, "img")
+    )
 
     indexbase = os.path.join(htmlpath, 'index.html')
     indexoutput = os.path.join(output_path, 'index.html')
+
+    # building experiment links
+    exp_links = _get_html_eer_exp_links(ids)
 
     # Building index.html
     with open(indexbase) as fi, open(indexoutput, 'w') as fo:
         indexhtml = fi.read()
 
         # Replacing version
-        indexhtml = _replace_placeholder(indexhtml, 'version', pkg_version)
+        indexhtml = _replace_placeholder(indexhtml, 'version', version)
+
+        # Generating experiment links
+        indexhtml = _replace_placeholder(indexhtml, "exp_links", exp_links)
 
         fo.write(indexhtml)
+
+    # Building experiments templates
+    exp_template = os.path.join(htmlpath, 'exp_template.html')
+    with open(exp_template) as fi:
+        exp_template = fi.read()
+
+    for exp_name in ids:
+        exp_output = os.path.join(output_path, f'{exp_name}.html')
+
+        with open(exp_output, 'w') as fo:
+            # Replacing version
+            exp_html = _replace_placeholder(exp_template, 'version', version)
+
+            # Generating experiment links
+            exp_html = _replace_placeholder(exp_html, "exp_links", exp_links)
+
+            # Replacing experiment id
+            exp_html = _replace_placeholder(exp_html, "exp_name", exp_name)
+
+            fo.write(exp_html)
 
     # Copying data
     datafolder = os.path.join(output_path, "data")
