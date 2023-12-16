@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 # Get the long description from the README file
-with open('README.md') as f:
+with open('README.md', encoding='utf-8') as f:
     readme = f.read()
 
 setup(

@@ -1,3 +1,33 @@
+# conda 기준 사용법
+
+* Change directory to your repo
+  * `cd repo`
+
+* Clone and checkout to specific branch
+  * `git clone https://github.com/blastak/pyeer.git`
+  * `cd pyeer`
+  * `git checkout blastak-patch-1`
+
+* Create new conda environment
+  * `conda create -n pyeer python=3.8`
+  * `conda activate pyeer`
+ 
+* Setup
+  * `python setup.py install`
+  * `pip install numpy==1.19 matplotlib==3.6.3`
+ 
+* Make folder for experiment, go into folder
+  * `mkdir <EXPERIMENT_NAME>`
+  * `cd <EXPERIMENT_NAME>`
+ 
+* Prepare two text files. One is the imposter matching score and the other is the genuine matching score.
+The score must be written at the end of each line.
+
+* Run `geteerinf` to get EER, FNMR, FMR, etc.
+    * `geteerinf -i imposter.txt -g genuine.txt -e <EXPERIMENT_NAME> -nrs`
+
+
+***
 # PyEER
 
 **PyEER** is a python package intended for biometric systems performance evaluation but it can be used to evaluate binary
