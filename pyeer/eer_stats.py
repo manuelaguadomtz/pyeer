@@ -149,10 +149,10 @@ def calculate_roc(gscores, iscores, ds_scores=False, rates=True):
     if isinstance(iscores, list):
         iscores = np.array(iscores, dtype=np.float64)
 
-    if gscores.dtype == np.int:
+    if gscores.dtype == int:
         gscores = np.float64(gscores)
 
-    if iscores.dtype == np.int:
+    if iscores.dtype == int:
         iscores = np.float64(iscores)
 
     if ds_scores:
