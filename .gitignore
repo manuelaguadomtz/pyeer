@@ -17,3 +17,5 @@ dist/
 
 # Ignoring TODO file
 TODO.txt
+
+venv/
