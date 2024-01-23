@@ -17,3 +17,6 @@ dist/
 
 # Ignoring TODO file
 TODO.txt
+
+#
+exp/

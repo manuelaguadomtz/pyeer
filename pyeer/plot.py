@@ -56,12 +56,17 @@ def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
     det_lg_plot.set_xlabel('FMR')
     det_lg_plot.set_yscale('log')
     det_lg_plot.set_xscale('log')
-    det_lg_plot.grid(True, which='both', ls='--')
+    det_lg_plot.grid(True, which='minor', ls='--')
+
+    det_lg_plot.grid(axis='x', which='major', linewidth=1.5, ls='-', color='black') #############################
+
+    det_lg_plot.axis(xmin=1e-5/2,xmax=1,ymin=1e-5/2,ymax=1) ##########################################################
 
     for i, st in enumerate(stats):
 
         if resampling:
-            x = np.arange(0, 1, 0.05)
+            # x = np.arange(0, 1, 0.05)
+            x = np.arange(0, 1, 0.0001) #################################################
             y = np.interp(x, st.fmr[::-1], st.fnmr[::-1])
         else:
             x = st.fmr
@@ -78,10 +83,16 @@ def plt_det_curve(stats, ids, line_width=3, lgf_size=15, save_plots=True,
         det_lg_plot.plot(
             x, y,
             STYLES[i],
-            label=ids[i],
-            linewidth=line_width,
-            pickradius=0.5
+            linewidth=line_width/3,
+            pickradius=0.1,
+            markersize=5
         )
+
+        det_lg_plot.plot(
+            st.eer, st.eer,
+            'm*',
+            markersize=10
+            ) ##################################################
 
     # Finalizing plots
     det_plot.legend(loc='best', prop=FontProperties(size=lgf_size))

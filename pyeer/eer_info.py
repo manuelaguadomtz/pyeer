@@ -152,6 +152,7 @@ def get_eer_info_cmd():
 
     if not args.no_plots:
         print('Plotting...')
+        stats[0].fnmr[-1] = 1 ########################################################################
         plot_eer_stats(stats, ids, line_width, args.hist, bins, lgf_size,
                        True, dpi, args.save_path, ext,
                        not args.no_resample_curves)
