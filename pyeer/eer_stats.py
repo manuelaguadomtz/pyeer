@@ -26,7 +26,8 @@ Stats = namedtuple('Stats', [
     'mccoef_th',  # Matthew correlation coefficient threshold
 
     # Operation points
-    'fmr0',  # Zero false math rate
+    'fmr0',  # Zero false math rate+
+    'fmr10000',  # 1000 false match rate
     'fmr1000',  # 1000 false match rate
     'fmr100',  # 100 false match rate
     'fmr20',  # 20 false match rate

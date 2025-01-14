@@ -199,7 +199,10 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
     # Estimating FMR operating points
     ind, fmr0 = get_fmr_op(fmr, fnmr, 0)
     fmr0_th = thrs[ind]
-
+    
+    ind, fmr10000 = get_fmr_op(fmr, fnmr, 0.0001)
+    fmr10000_th = thrs[ind]
+    
     ind, fmr1000 = get_fmr_op(fmr, fnmr, 0.001)
     fmr1000_th = thrs[ind]
 
@@ -244,12 +247,12 @@ def get_eer_stats(gen_scores, imp_scores, hformat=False, ds_scores=False):
 
     # Stacking stats
     return Stats(thrs=thrs, fmr=fmr, fnmr=fnmr, auc=auc, eer=eer,
-                 fmr0=fmr0, fmr100=fmr100, fmr1000=fmr1000,
+                 fmr0=fmr0, fmr100=fmr100, fmr10000=fmr10000,fmr1000=fmr1000,
                  fmr20=fmr20, fmr10=fmr10, fnmr0=fnmr0,
                  gen_scores=gen_scores, imp_scores=imp_scores,
                  gmean=gmean, gstd=gstd, imean=imean, istd=istd,
                  eer_low=eer_low, eer_high=eer_high, decidability=dec,
                  j_index=j_index, j_index_th=j_index_th, eer_th=eer_th,
                  mccoef=mccoef, mccoef_th=mccoef_th, fmr0_th=fmr0_th,
-                 fmr1000_th=fmr1000_th, fmr100_th=fmr100_th,
+                fmr1000_th=fmr1000_th, fmr100_th=fmr100_th,
                  fmr20_th=fmr20_th, fmr10_th=fmr10_th, fnmr0_th=fnmr0_th)
